@@ -1,16 +1,16 @@
-""" Módulo de lançamento do jogo """
+""" Módulo de lançamento """
 
-# Importação externa
+# Imports de pacotes externos
 from arcade import run
 
-# Importação local
+# Imports de pacotes locais
 from game import *
 
-def main():
+def main() -> None:
     """ Função Principal """
 
     # Cria e configura a janela
-    window = GameWindow(Properties())
+    window = GameWindow()
 
     # inicia o loop principal
     run()

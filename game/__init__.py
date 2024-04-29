@@ -1,8 +1,9 @@
 """ Pacote principal do jogo """
 
-# Importações dos módulos
-from .properties import *
+# Imports dos módulos
 from .window import *
+from .properties import *
+from .resources import *
 
-# Exportação padrão
-__all__ = ["Properties", "GameWindow"]
+# Export padrão
+__all__ = ["GameWindow"]

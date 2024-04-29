@@ -1,9 +1,9 @@
 """ Módulo das propriedadedes """
 
-# Importyação BuiltIn
+# Imports de pacotes BuiltIn
 from typing import NamedTuple, Optional
 
-class Properties(NamedTuple):
+class GameProperties(NamedTuple):
     """ Define as propriedades """
     
     width: Optional[int] = 800
@@ -13,4 +13,4 @@ class Properties(NamedTuple):
     center_window: Optional[bool] = True
 
 # Exportação padrão
-__all__ = ["Properties"]
+__all__ = ["GameProperties"]
