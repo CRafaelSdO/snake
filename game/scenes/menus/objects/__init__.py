@@ -5,4 +5,4 @@ from .text_area import *
 from .button import *
 
 # Export padrão
-__all__ = [""]
+__all__ = ["TextArea"]

@@ -11,6 +11,9 @@ class GameProperties(NamedTuple):
     title: Optional[str] = 'Snake Game'
     fullscreen: Optional[bool] = False
     center_window: Optional[bool] = True
+    fonts_sizes: Optional[dict[str, float]] = {
+        "title": 3 * min(width, height) / 16
+    }
 
 # Exportação padrão
 __all__ = ["GameProperties"]

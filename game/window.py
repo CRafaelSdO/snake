@@ -32,6 +32,14 @@ class GameWindow(Window):
 
         # Cenas
         self._main_menu: MainMenu = None
+
+    @property
+    def properties(self) -> GameProperties:
+        return self._properties
+    
+    @property
+    def resources(self) -> GameResources:
+        return self._resources
     
     def setup(self) -> None:
         """ Configura a janela """
@@ -52,6 +60,8 @@ class GameWindow(Window):
 
         match(self._current_scene):
             case GameScene.MAIN_MENU:
+                self._main_menu.setup()
+                self.show_view(self._main_menu)
                 pass
             case _:
                 pass
