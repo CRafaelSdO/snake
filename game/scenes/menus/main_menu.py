@@ -35,20 +35,24 @@ class MainMenu(View):
         box = UIBoxLayout()
         box.add(title_text)
 
-        anchor = UIAnchorWidget()
-        anchor.add(box)
-
-        self._ui_manager.add(anchor)
+        self._ui_manager = UIManager()
+        self._ui_manager.add(UIAnchorWidget(child = box))
 
         self._setup = True
     
     def on_show_view(self):
+        """ Chamada uma vez ao entrar nessa cena """
+        self.window.background_color = (255, 255, 255)
+
         self._ui_manager.enable()
     
     def on_hide_view(self):
+        """ Chamada uma vez ao sair dessa cena """
         self._ui_manager.disable()
     
     def on_draw(self):
+        """ Chamada sempre ao desenhar """
+        self.clear()
         self._ui_manager.draw()
 
 # Export padrão

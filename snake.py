@@ -11,6 +11,7 @@ def main() -> None:
 
     # Cria e configura a janela
     window = GameWindow()
+    window.setup()
 
     # inicia o loop principal
     run()

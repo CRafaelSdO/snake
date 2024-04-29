@@ -1,7 +1,6 @@
 """ Módulo dos recursos """
 
 # Imports de pacotes BuiltIn
-from dataclasses import dataclass
 from os.path import normpath
 from typing import NamedTuple, Optional
 
@@ -11,7 +10,6 @@ from arcade import load_font
 class GameResources():
     """ Define as propriedades """
 
-    @dataclass
     class Font(NamedTuple):
         """ Define uma fonte """
 
@@ -20,9 +18,9 @@ class GameResources():
 
     # Fontes padrão
     DEFAULT_FONTS: dict[str, Font] = {
-        "title": Font("Dimitri Swank", normpath(".resources.fonts.Dimitri Swank.ttf")),
-        "body": Font("Type Machine", normpath(".resources.fonts.Type Machine.ttf")),
-        "button": Font("Retro Gaming", normpath(".resources.fonts.Retro Gaming.ttf"))
+        "title": Font("Dimitri Swank", "game\\resources\\fonts\\Dimitri Swank.ttf"),
+        "body": Font("Type Machine", "game\\resources\\fonts\\Type Machine.ttf"),
+        "button": Font("Retro Gaming", "game\\resources\\fonts\\Retro Gaming.ttf")
     }
 
     def __init__(self, fonts: Optional[dict[str, Font]] = DEFAULT_FONTS) -> None:
