@@ -1,9 +1,9 @@
 """ Módulo da área de texto """
 
 # Imports de pacotes externos
-from arcade.gui import UITextArea
-from arcade.arcade_types import Color
 from arcade import create_text_image
+from arcade.arcade_types import Color
+from arcade.gui import UITextArea
 
 class TextArea(UITextArea):
     """ Define uma área de texto """

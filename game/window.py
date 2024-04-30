@@ -58,10 +58,21 @@ class GameWindow(Window):
 
         self._last_scene, self._current_scene = self._current_scene, next_scene
 
+        print(self._current_scene)
+
         match(self._current_scene):
             case GameScene.MAIN_MENU:
                 self._main_menu.setup()
                 self.show_view(self._main_menu)
+                pass
+            case GameScene.PLAY_MENU:
+                self._last_scene, self._current_scene = self._current_scene, self._last_scene
+                pass
+            case GameScene.RANKING_MENU:
+                self._last_scene, self._current_scene = self._current_scene, self._last_scene
+                pass
+            case GameScene.SETTINGS_MENU:
+                self._last_scene, self._current_scene = self._current_scene, self._last_scene
                 pass
             case _:
                 pass

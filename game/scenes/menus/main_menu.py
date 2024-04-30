@@ -4,11 +4,12 @@
 from typing import Optional
 
 # Imports de pacotes externos
-from arcade import View, Window
-from arcade.gui import UIManager, UIAnchorWidget, UIBoxLayout
+from arcade import draw_rectangle_filled, View, Window
+from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 
 # Imports de pacotes locais
 from .objects import *
+from ..scenes import GameScene
 
 class MainMenu(View):
     """ Define um menu principal """
@@ -37,12 +38,18 @@ class MainMenu(View):
         button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
 
         # Botões
-        play = Button("Jogar", button_style)
+        play = Button("Jogar", button_style, self.window, GameScene.PLAY_MENU)
+        ranking = Button("Classificação", button_style, self.window, GameScene.RANKING_MENU)
+        settings = Button("Configurações", button_style, self.window, GameScene.SETTINGS_MENU)
         
-        box = UIBoxLayout()
+        # Box layout para conter os botões
+        box = UIBoxLayout(space_between = 10)
         box.add(title_text)
         box.add(play)
+        box.add(ranking)
+        box.add(settings)
 
+        # Gerenciador de UI com elemento de ancoragem para centralizar tudo
         self._ui_manager = UIManager()
         self._ui_manager.add(UIAnchorWidget(child = box))
 
@@ -50,17 +57,36 @@ class MainMenu(View):
     
     def on_show_view(self):
         """ Chamada uma vez ao entrar nessa cena """
-        self.window.background_color = (255, 255, 255)
+        
+        # Muda a cor de fundo
+        self.window.background_color = (148, 202, 73)
 
+        # Ativa o gerenciador de UI
         self._ui_manager.enable()
     
     def on_hide_view(self):
         """ Chamada uma vez ao sair dessa cena """
+
+        # Desativa o gerenciador de UI
         self._ui_manager.disable()
     
     def on_draw(self):
         """ Chamada sempre ao desenhar """
+
+        # Limpa a tela
         self.clear()
+
+        cell_size = self.window.properties.cell_size
+        rows = self.window.properties.height // cell_size
+        columns = self.window.properties.width // cell_size
+
+        for row in range(rows):
+            start = 1 if row % 2 == 0 else 0
+
+            for column in range(start, columns, 2):
+                draw_rectangle_filled(cell_size / 2 + column  * cell_size, cell_size / 2 + row * cell_size, cell_size, cell_size, (172, 215, 86))
+
+        # Desenha a UI
         self._ui_manager.draw()
 
 # Export padrão
