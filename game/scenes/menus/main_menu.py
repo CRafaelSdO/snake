@@ -30,10 +30,18 @@ class MainMenu(View):
         if self._setup:
             return
         
+        # Área de texto
         title_text = TextArea("Snake", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
+
+        # Estilo dos botões
+        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+
+        # Botões
+        play = Button("Jogar", button_style)
         
         box = UIBoxLayout()
         box.add(title_text)
+        box.add(play)
 
         self._ui_manager = UIManager()
         self._ui_manager.add(UIAnchorWidget(child = box))

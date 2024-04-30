@@ -12,7 +12,9 @@ class GameProperties(NamedTuple):
     fullscreen: Optional[bool] = False
     center_window: Optional[bool] = True
     fonts_sizes: Optional[dict[str, float]] = {
-        "title": 3 * min(width, height) / 16
+        "title": 3 * min(width, height) / 16,
+        "body": 3 * min(width, height) / 32,
+        "button": 3 * min(width, height) / 80
     }
 
 # Exportação padrão

@@ -1,9 +1,9 @@
 """ Módulo da área de texto """
 
 # Imports de pacotes externos
-from arcade import create_text_image
 from arcade.gui import UITextArea
 from arcade.arcade_types import Color
+from arcade import create_text_image
 
 class TextArea(UITextArea):
     """ Define uma área de texto """
@@ -17,4 +17,5 @@ class TextArea(UITextArea):
 
         super().__init__(width = width + font_size / 10, height = height + font_size / 10, text = text, font_name = font_name, font_size = font_size, text_color = text_color, multiline = multiline)
 
+# Export padrão
 __all__ = ["TextArea"]
