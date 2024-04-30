@@ -11,6 +11,7 @@ from arcade.gui.events import UIOnClickEvent
 
 # Imports de pacotes locais
 from ...scenes import GameScene
+from ...speeds import GameSpeed
 
 class Button(UIFlatButton):
     """ Define um botão """
@@ -28,7 +29,7 @@ class Button(UIFlatButton):
         border_color_pressed: Optional[Color] = (0, 0, 0)
         bg_color_pressed: Optional[Color] = (170, 170, 170)
 
-    def __init__(self, text: str, style: ButtonStyle, window: Window, scene: GameScene) -> None:
+    def __init__(self, text: str, style: ButtonStyle, window: Window, scene: GameScene, speed: Optional[GameSpeed] = None) -> None:
         """ Inicializa um botão """
 
         # Imagem de texto para definir largura e altura da área de texto
@@ -38,14 +39,19 @@ class Button(UIFlatButton):
         super().__init__(width = width * 2, height = height * 2, text = text, style = style._asdict())
 
         # Janela deste botão
-        self._window = window
+        self._window: Window = window
 
         # Cena para a qual a janela vai ao clicar no botão
-        self._scene = scene
+        self._scene: GameScene = scene
+
+        # Velocidade que sera configurada ao clicar nesse botão
+        self._speed: GameSpeed = speed
     
-    def on_click(self, event: UIOnClickEvent):
+    def on_click(self, event: UIOnClickEvent) -> None:
         """ Chamado ao clicar no botão """
 
+        # Configura a velocidade e muda a cena
+        self._window.speed = self._speed
         self._window.switch_scene(self._scene)
 
 # Export padrão

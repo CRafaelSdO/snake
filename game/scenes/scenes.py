@@ -10,6 +10,7 @@ class GameScene(Enum):
     PLAY_MENU = 1
     RANKING_MENU = 2
     SETTINGS_MENU = 3
+    PLAYING = 4
 
 # Export padrão
 __all__ = ["GameScene"]

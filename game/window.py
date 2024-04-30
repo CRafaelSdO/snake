@@ -30,8 +30,12 @@ class GameWindow(Window):
         self._last_scene: GameScene = None
         self._current_scene: GameScene = None
 
+        # Velocidade da cena de jogo
+        self._speed: GameSpeed = None
+
         # Cenas
         self._main_menu: MainMenu = None
+        self._play_menu: PlayMenu =None
 
     @property
     def properties(self) -> GameProperties:
@@ -41,6 +45,18 @@ class GameWindow(Window):
     def resources(self) -> GameResources:
         return self._resources
     
+    @property
+    def last_scene(self) -> GameScene:
+        return self._last_scene
+    
+    @property
+    def speed(self):
+        return self._speed
+    
+    @speed.setter
+    def speed(self, speed: GameSpeed):
+        self._speed = speed
+    
     def setup(self) -> None:
         """ Configura a janela """
 
@@ -49,6 +65,7 @@ class GameWindow(Window):
 
         # Inicializa as cenas
         self._main_menu = MainMenu(self)
+        self._play_menu = PlayMenu(self)
 
         # Inicia o ciclo das cenas
         self.switch_scene(GameScene.MAIN_MENU)
@@ -58,7 +75,7 @@ class GameWindow(Window):
 
         self._last_scene, self._current_scene = self._current_scene, next_scene
 
-        print(self._current_scene)
+        print(f"scene: {self._current_scene}\nspeed: {self._speed}")
 
         match(self._current_scene):
             case GameScene.MAIN_MENU:
@@ -66,12 +83,16 @@ class GameWindow(Window):
                 self.show_view(self._main_menu)
                 pass
             case GameScene.PLAY_MENU:
-                self._last_scene, self._current_scene = self._current_scene, self._last_scene
+                self._play_menu.setup()
+                self.show_view(self._play_menu)
                 pass
             case GameScene.RANKING_MENU:
                 self._last_scene, self._current_scene = self._current_scene, self._last_scene
                 pass
             case GameScene.SETTINGS_MENU:
+                self._last_scene, self._current_scene = self._current_scene, self._last_scene
+                pass
+            case GameScene.PLAYING:
                 self._last_scene, self._current_scene = self._current_scene, self._last_scene
                 pass
             case _:

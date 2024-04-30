@@ -13,9 +13,9 @@ class GameProperties(NamedTuple):
     center_window: Optional[bool] = True
     cell_size: Optional[int] = 20
     fonts_sizes: Optional[dict[str, float]] = {
-        "title": 3 * min(width, height) / 16,
-        "body": 3 * min(width, height) / 32,
-        "button": 3 * min(width, height) / 80
+        "title": 150,
+        "body": 30,
+        "button": 20
     }
 
 # Exportação padrão

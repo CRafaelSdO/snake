@@ -2,6 +2,7 @@
 
 # Imports dos módulos
 from .scenes import *
+from .speeds import *
 
 # Export padrão
-__all__ = ["GameScene"]
+__all__ = ["GameScene", "GameSpeed"]
