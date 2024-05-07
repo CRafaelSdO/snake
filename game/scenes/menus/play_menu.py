@@ -9,8 +9,8 @@ from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 
 # Imports de pacotes locais
 from .objects import *
-from ..scenes import GameScene
-from ..speeds import GameSpeed
+from ..scenes import *
+from ..speeds import *
 
 class PlayMenu(View):
     """ Define um menu jogar """

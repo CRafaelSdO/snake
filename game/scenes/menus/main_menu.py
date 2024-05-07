@@ -9,7 +9,7 @@ from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 
 # Imports de pacotes locais
 from .objects import *
-from ..scenes import GameScene
+from ..scenes import *
 
 class MainMenu(View):
     """ Define um menu principal """
