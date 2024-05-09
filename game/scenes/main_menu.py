@@ -8,7 +8,7 @@ from arcade import draw_rectangle_filled, View, Window
 from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 
 # Imports de pacotes locais
-from .objects import *
+from .gui import *
 from .scenes import *
 
 class MainMenu(View):

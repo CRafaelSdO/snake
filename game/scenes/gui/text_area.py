@@ -1,7 +1,6 @@
 """ Módulo da área de texto """
 
 # Imports de pacotes externos
-from arcade import create_text_image, create_text_sprite
 from arcade.arcade_types import Color
 from arcade.gui import UITextArea
 

@@ -1,4 +1,4 @@
-""" Pacote dos objetos dos menus do jogo """
+""" Pacote dos objetos de interface gráfica do jogo """
 
 # Imports dos módulos
 from .text_area import *

@@ -20,10 +20,10 @@ class GameWindow(Window):
         super().__init__(properties.width, properties.height, properties.title, properties.fullscreen, center_window = properties.center_window)
 
         # Propriedades
-        self._properties = properties
+        self._properties: GameProperties = properties
         
         # Recursos
-        self._resources = resources
+        self._resources: GameResources = resources
 
         # Última cena e cena atual
         self._last_scene: GameScene = None
@@ -49,7 +49,7 @@ class GameWindow(Window):
         return self._last_scene
     
     @property
-    def speed(self):
+    def speed(self) -> GameSpeed:
         return self._speed
     
     @speed.setter
