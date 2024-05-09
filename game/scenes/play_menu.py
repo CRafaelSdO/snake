@@ -1,4 +1,4 @@
-""" Módulo do menu principal """
+""" Módulo do menu jogar """
 
 # Imports de pacotes BuiltIn
 from typing import Optional
@@ -9,13 +9,14 @@ from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 
 # Imports de pacotes locais
 from .objects import *
-from ..scenes import *
+from .scenes import *
+from .speeds import *
 
-class MainMenu(View):
-    """ Define um menu principal """
+class PlayMenu(View):
+    """ Define um menu jogar """
 
     def __init__(self, window: Optional[Window]) -> None:
-        """ Inicializa um menu principal """
+        """ Inicializa um menu jogar """
 
         super().__init__(window)
 
@@ -26,28 +27,34 @@ class MainMenu(View):
         self._setup: bool = False
     
     def setup(self) -> None:
-        """ Configura o menu principal """
+        """ Configura o menu jogar """
 
         if self._setup:
             return
         
         # Área de texto
-        title_text = TextArea(550, 230, "Snake", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
+        title_text = TextArea(470, 80, "Escolha a dificuldade:", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
 
         # Estilo dos botões
         button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
 
         # Botões
-        play = Button("Jogar", button_style, self.window, GameScene.PLAY_MENU)
-        ranking = Button("Classificação", button_style, self.window, GameScene.RANKING_MENU)
-        settings = Button("Configurações", button_style, self.window, GameScene.SETTINGS_MENU)
+        very_easy = Button("Muito Fácil", button_style, self.window, GameScene.PLAYING, GameSpeed.VERY_EASY)
+        easy = Button("Fácil", button_style, self.window, GameScene.PLAYING, GameSpeed.EASY)
+        medium = Button("Médio", button_style, self.window, GameScene.PLAYING, GameSpeed.MEDIUM)
+        hard = Button("Difícil", button_style, self.window, GameScene.PLAYING, GameSpeed.HARD)
+        extreme = Button("Extremo", button_style, self.window, GameScene.PLAYING, GameSpeed.EXTREME)
+        back = Button("Voltar", button_style, self.window, self.window.last_scene)
         
         # Box layout para conter os botões
         box = UIBoxLayout(space_between = 10)
         box.add(title_text)
-        box.add(play)
-        box.add(ranking)
-        box.add(settings)
+        box.add(very_easy)
+        box.add(easy)
+        box.add(medium)
+        box.add(hard)
+        box.add(extreme)
+        box.add(UIAnchorWidget(child = back, anchor_x = "left", anchor_y = "bottom"))
 
         # Gerenciador de UI com elemento de ancoragem para centralizar tudo
         self._ui_manager = UIManager()
@@ -91,4 +98,4 @@ class MainMenu(View):
         self._ui_manager.draw()
 
 # Export padrão
-__all__ = ["MainMenu"]
+__all__ = ["PlayMenu"]

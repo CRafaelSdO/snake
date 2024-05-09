@@ -10,8 +10,8 @@ from arcade.gui import UIFlatButton
 from arcade.gui.events import UIOnClickEvent
 
 # Imports de pacotes locais
-from ...scenes import *
-from ...speeds import *
+from ..scenes import *
+from ..speeds import *
 
 class Button(UIFlatButton):
     """ Define um botão """

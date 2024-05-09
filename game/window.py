@@ -10,7 +10,6 @@ from arcade import Window
 from .properties import *
 from .resources import *
 from .scenes import *
-from .scenes.menus import *
 
 class GameWindow(Window):
     """ Define uma janela """
