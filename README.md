@@ -1,2 +1,2 @@
 # snake
- Jogo da cobrinha deito em python
+Jogo da cobrinha feito em python
