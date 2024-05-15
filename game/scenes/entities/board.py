@@ -1,14 +1,18 @@
 """ Módulo do campo de jogo """
 
+# Imports de pacotes BuiltIn
+from random import randrange
+
 # Imports de pacotes locais
 from ...properties import *
 from .cell import *
+from .contents import *
 from .directions import *
 
 class Board():
     """ Define um campo """
 
-    def __init__(self, properties: GameProperties) -> None:
+    def __init__(self, properties: Properties) -> None:
         """ Inicializa um campo """
 
         # Total de linhas e colunas no campo
@@ -52,7 +56,23 @@ class Board():
                 column = (column + 1) % self._columns
                 pass
             case _:
-                pass
+                return None
+
+        return self._cells[row][column]
+    
+    def generate_food(self) -> Cell:
+        """ Gera comida em uma célula vazia """
+
+        # Lógica para asegurar que está escolhendo uma célula vazia
+        row = randrange(self._rows)
+        column = randrange(self._columns)
+
+        while self._cells[row][column].content != Content.EMPTY:
+            row = randrange(self._rows)
+            column = randrange(self._columns)
+
+        # Configura o conteúdo
+        self._cells[row][column].content = Content.FOOD
 
         return self._cells[row][column]
 

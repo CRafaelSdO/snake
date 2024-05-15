@@ -7,7 +7,7 @@ from typing import NamedTuple, Optional
 # Imports de pacotes externos
 from arcade import load_font
 
-class GameResources():
+class Resources():
     """ Define as propriedades """
 
     class Font(NamedTuple):
@@ -27,7 +27,7 @@ class GameResources():
         """ Inicializa os recursos """
 
         # Fontes
-        self._fonts: dict[str, GameResources.Font] = fonts
+        self._fonts: dict[str, Resources.Font] = fonts
 
     @property
     def fonts(self) -> dict[str, Font]:
@@ -48,4 +48,4 @@ class GameResources():
             load_font(self.fonts.get(font).file_path)
 
 # Exportação padrão
-__all__ = ["GameResources"]
+__all__ = ["Resources"]

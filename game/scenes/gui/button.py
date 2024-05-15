@@ -29,7 +29,7 @@ class Button(UIFlatButton):
         border_color_pressed: Optional[Color] = (0, 0, 0)
         bg_color_pressed: Optional[Color] = (170, 170, 170)
 
-    def __init__(self, text: str, style: ButtonStyle, window: Window, scene: GameScene, speed: Optional[GameSpeed] = None) -> None:
+    def __init__(self, text: str, style: ButtonStyle, window: Window, scene: Scene, speed: Optional[Speed] = None) -> None:
         """ Inicializa um botão """
 
         # Imagem de texto para definir largura e altura da área de texto
@@ -42,10 +42,10 @@ class Button(UIFlatButton):
         self._window: Window = window
 
         # Cena para a qual a janela vai ao clicar no botão
-        self._scene: GameScene = scene
+        self._scene: Scene = scene
 
         # Velocidade que sera configurada ao clicar nesse botão
-        self._speed: GameSpeed = speed
+        self._speed: Speed = speed
 
     def on_click(self, event: UIOnClickEvent) -> None:
         """ Chamado ao clicar no botão """

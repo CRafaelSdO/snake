@@ -14,54 +14,55 @@ from .scenes import *
 class GameWindow(Window):
     """ Define uma janela """
 
-    def __init__(self, properties: Optional[GameProperties] = GameProperties(), resources: Optional[GameResources] = GameResources()) -> None:
+    def __init__(self, properties: Optional[Properties] = Properties(), resources: Optional[Resources] = Resources()) -> None:
         """ Inicializa uma janela """
 
         super().__init__(properties.width, properties.height, properties.title, properties.fullscreen, center_window = properties.center_window)
 
         # Propriedades
-        self._properties: GameProperties = properties
+        self._properties: Properties = properties
 
         # Recursos
-        self._resources: GameResources = resources
+        self._resources: Resources = resources
 
         # Última cena e cena atual
-        self._last_scene: GameScene = None
-        self._current_scene: GameScene = None
+        self._last_scene: Scene = None
+        self._current_scene: Scene = None
 
         # Velocidade da cena de jogo
-        self._speed: GameSpeed = None
+        self._speed: Speed = None
 
         # Cenas
         self._main_menu: MainMenu = None
         self._play_menu: PlayMenu = None
+        self._playing: Playing = None
 
     @property
-    def properties(self) -> GameProperties:
+    def properties(self) -> Properties:
         """ As propriedades desta janela """
 
         return self._properties
 
     @property
-    def resources(self) -> GameResources:
+    def resources(self) -> Resources:
         """ Os recursos desta janela """
 
         return self._resources
 
     @property
-    def last_scene(self) -> GameScene:
+    def last_scene(self) -> Scene:
         """ A última cena """
 
         return self._last_scene
 
     @property
-    def speed(self) -> GameSpeed:
+    def speed(self) -> Speed:
         """ A velocidade do jogo """
 
         return self._speed
 
     @speed.setter
-    def speed(self, speed: GameSpeed) -> None:
+    def speed(self, speed: Speed) -> None:
         self._speed = speed
 
     def setup(self) -> None:
@@ -73,11 +74,12 @@ class GameWindow(Window):
         # Inicializa as cenas
         self._main_menu = MainMenu(self)
         self._play_menu = PlayMenu(self)
+        self._playing = Playing(self)
 
         # Inicia o ciclo das cenas
-        self.switch_scene(GameScene.MAIN_MENU)
+        self.switch_scene(Scene.MAIN_MENU)
 
-    def switch_scene(self, next_scene: GameScene) -> None:
+    def switch_scene(self, next_scene: Scene) -> None:
         """ Faz a mudança de cena """
 
         self._last_scene, self._current_scene = self._current_scene, next_scene
@@ -85,22 +87,23 @@ class GameWindow(Window):
         print(f"scene: {self._current_scene}\nspeed: {self._speed}")
 
         match(self._current_scene):
-            case GameScene.MAIN_MENU:
+            case Scene.MAIN_MENU:
                 self._main_menu.setup()
                 self.show_view(self._main_menu)
                 pass
-            case GameScene.PLAY_MENU:
+            case Scene.PLAY_MENU:
                 self._play_menu.setup()
                 self.show_view(self._play_menu)
                 pass
-            case GameScene.RANKING_MENU:
+            case Scene.RANKING_MENU:
                 self._last_scene, self._current_scene = self._current_scene, self._last_scene
                 pass
-            case GameScene.SETTINGS_MENU:
+            case Scene.SETTINGS_MENU:
                 self._last_scene, self._current_scene = self._current_scene, self._last_scene
                 pass
-            case GameScene.PLAYING:
-                self._last_scene, self._current_scene = self._current_scene, self._last_scene
+            case Scene.PLAYING:
+                self._playing.setup()
+                self.show_view(self._playing)
                 pass
             case _:
                 pass

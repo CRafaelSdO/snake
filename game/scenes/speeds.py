@@ -3,7 +3,7 @@
 # Imports de pacotes BuiltIn
 from enum import Enum
 
-class GameSpeed(Enum):
+class Speed(Enum):
     """ Enumera as velocidades do jogo """
 
     VERY_EASY = 2
@@ -13,4 +13,4 @@ class GameSpeed(Enum):
     EXTREME = 10
 
 # Export padrão
-__all__ = ["GameSpeed"]
+__all__ = ["Speed"]

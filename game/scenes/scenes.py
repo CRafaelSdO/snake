@@ -3,7 +3,7 @@
 # Imports de pacotes BuiltIn
 from enum import Enum
 
-class GameScene(Enum):
+class Scene(Enum):
     """ Enumera as cenas do jogo """
     
     MAIN_MENU = 0
@@ -13,4 +13,4 @@ class GameScene(Enum):
     PLAYING = 4
 
 # Export padrão
-__all__ = ["GameScene"]
+__all__ = ["Scene"]

@@ -39,11 +39,11 @@ class PlayMenu(View):
         button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
 
         # Botões
-        very_easy = Button("Muito Fácil", button_style, self.window, GameScene.PLAYING, GameSpeed.VERY_EASY)
-        easy = Button("Fácil", button_style, self.window, GameScene.PLAYING, GameSpeed.EASY)
-        medium = Button("Médio", button_style, self.window, GameScene.PLAYING, GameSpeed.MEDIUM)
-        hard = Button("Difícil", button_style, self.window, GameScene.PLAYING, GameSpeed.HARD)
-        extreme = Button("Extremo", button_style, self.window, GameScene.PLAYING, GameSpeed.EXTREME)
+        very_easy = Button("Muito Fácil", button_style, self.window, Scene.PLAYING, Speed.VERY_EASY)
+        easy = Button("Fácil", button_style, self.window, Scene.PLAYING, Speed.EASY)
+        medium = Button("Médio", button_style, self.window, Scene.PLAYING, Speed.MEDIUM)
+        hard = Button("Difícil", button_style, self.window, Scene.PLAYING, Speed.HARD)
+        extreme = Button("Extremo", button_style, self.window, Scene.PLAYING, Speed.EXTREME)
         back = Button("Voltar", button_style, self.window, self.window.last_scene)
 
         # Box layout para conter os botões
@@ -89,7 +89,7 @@ class PlayMenu(View):
         columns = self.window.properties.width // cell_size
 
         for row in range(rows):
-            start = 1 if row % 2 == 0 else 0
+            start = 1 if not row & 1 else 0
 
             for column in range(start, columns, 2):
                 draw_rectangle_filled(cell_size / 2 + column  * cell_size, cell_size / 2 + row * cell_size, cell_size, cell_size, (172, 215, 86))

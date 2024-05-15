@@ -3,12 +3,14 @@
 # Imports de pacotes BuiltIn
 from enum import Enum
 
-class CellContent(Enum):
+class Content(Enum):
     """ Enumera os conteúdos das células """
 
     EMPTY = 0
     FOOD = 1
-    SNAKE = 2
+    HEAD = 2
+    BODY = 3
+    TAIL = 4
 
 # Export padrão
-__all__ = ["CellContent"]
+__all__ = ["Content"]

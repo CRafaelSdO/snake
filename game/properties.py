@@ -3,7 +3,7 @@
 # Imports de pacotes BuiltIn
 from typing import NamedTuple, Optional
 
-class GameProperties(NamedTuple):
+class Properties(NamedTuple):
     """ Define as propriedades """
 
     title: Optional[str] = 'Snake Game'
@@ -19,4 +19,4 @@ class GameProperties(NamedTuple):
     }
 
 # Exportação padrão
-__all__ = ["GameProperties"]
+__all__ = ["Properties"]

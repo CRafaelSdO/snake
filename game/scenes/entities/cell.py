@@ -1,10 +1,10 @@
 """ Módulo das células do campo """
 
 # Imports de pacotes externos
-#from arcade import draw_circle_filled, draw_rectangle_filled
+from arcade import draw_circle_filled, draw_rectangle_filled
 
 # Imports de pacotes locais
-from .cell_contents import *
+from .contents import *
 
 class Cell():
     """ Define uma célula do campo """
@@ -17,7 +17,7 @@ class Cell():
         self._column: int = column
 
         # Conteúdo desta célula
-        self._content: CellContent = CellContent.EMPTY
+        self._content: Content = Content.EMPTY
 
         # Centro de desenho desta célula
         self._x: float = size / 2 + column * size
@@ -33,14 +33,26 @@ class Cell():
         return self._row, self._column
 
     @property
-    def content(self) -> CellContent:
+    def content(self) -> Content:
         """ O conteúdo desta célula """
 
         return self._content
     
     @content.setter
-    def content(self, content: CellContent) -> None:
+    def content(self, content: Content) -> None:
         self._content = content
+
+    def on_draw(self) -> None:
+        """ Chamada quando está célula deve ser desenhada """
+
+        match(self.content):
+            case Content.EMPTY:
+                pass
+            case Content.FOOD:
+                draw_circle_filled(self._x, self._y, self._size / 2, (255, 0, 0))
+                pass
+            case _:
+                draw_rectangle_filled(self._x, self._y, self._size, self._size, (255, 121, 0))
 
 # Export padrão
 __all__ = ["Cell"]

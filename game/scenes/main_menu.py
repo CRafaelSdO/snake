@@ -38,9 +38,9 @@ class MainMenu(View):
         button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
 
         # Botões
-        play = Button("Jogar", button_style, self.window, GameScene.PLAY_MENU)
-        ranking = Button("Classificação", button_style, self.window, GameScene.RANKING_MENU)
-        settings = Button("Configurações", button_style, self.window, GameScene.SETTINGS_MENU)
+        play = Button("Jogar", button_style, self.window, Scene.PLAY_MENU)
+        ranking = Button("Classificação", button_style, self.window, Scene.RANKING_MENU)
+        settings = Button("Configurações", button_style, self.window, Scene.SETTINGS_MENU)
         
         # Box layout para conter os botões
         box = UIBoxLayout(space_between = 10)
@@ -82,7 +82,7 @@ class MainMenu(View):
         columns = self.window.properties.width // cell_size
 
         for row in range(rows):
-            start = 1 if row % 2 == 0 else 0
+            start = 1 if not row & 1 else 0
 
             for column in range(start, columns, 2):
                 draw_rectangle_filled(cell_size / 2 + column  * cell_size, cell_size / 2 + row * cell_size, cell_size, cell_size, (172, 215, 86))
