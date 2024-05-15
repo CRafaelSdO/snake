@@ -1,15 +1,18 @@
 """ Módulo das direções da cobra """
 
+# Imports de pacotes externos
+from arcade.key import UP, DOWN, LEFT, RIGHT
+
 # Imports de pacotes BuiltIn
 from enum import Enum
 
 class Direction(Enum):
     """ Enumera as direções da cobra """
 
-    UP = 0
-    DOWN = 1
-    LEFT = 2
-    RIGHT = 3
+    UP = UP
+    DOWN = DOWN
+    LEFT = LEFT
+    RIGHT = RIGHT
 
 # Export padrão
 __all__ = ["Direction"]

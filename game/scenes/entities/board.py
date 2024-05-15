@@ -37,6 +37,12 @@ class Board():
 
         return self._cells[row][column]
 
+    @property
+    def cells_count(self) -> int:
+        """ Quantidade total de células neste campo """
+
+        return self._rows * self._columns
+
     def get_next_cell(self, cell: Cell, direcction: Direction) -> Cell:
         """ Retorna a célula vizinha em uma direção"""
 

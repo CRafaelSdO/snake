@@ -8,4 +8,4 @@ from .directions import *
 from .snake import *
 
 # Export padrão
-__all__ = ["Board", "Cell" , "Content", "Snake"]
+__all__ = ["Board", "Cell" , "Content", "Direction", "Snake"]

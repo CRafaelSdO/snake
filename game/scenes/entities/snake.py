@@ -40,6 +40,12 @@ class Snake():
         return self._body[-1]
 
     @property
+    def size(self) -> int:
+        """ O tamanho desta cobra """
+
+        return len(self._body)
+
+    @property
     def direction(self) -> Direction:
         """ A cabeça da cobra """
 

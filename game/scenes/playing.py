@@ -5,6 +5,7 @@ from typing import Optional
 
 # Imports de pacotes externos
 from arcade import draw_rectangle_filled, View, Window
+from arcade.key import ESCAPE
 
 # Imports de pacotes locais
 from .entities import *
@@ -65,16 +66,26 @@ class Playing(View):
         self._delta_time += delta_time
 
         if self._delta_time < 1 / self._speed.value:
-            pass
+            return
 
         self._delta_time = 0
 
-        # Lógica principal da atualização
+        # Lógica principal do jogo
         next_cell = self._board.get_next_cell(self._snake.head, self._snake.direction)
+
+        if not next_cell:
+            return
 
         match(next_cell.content):
             case Content.FOOD:
                 self._snake.grow(next_cell)
+
+                if self._snake.size < self._board.cells_count:
+                    self._food = self._board.generate_food()
+                else:
+                    self._food = None
+                    self._snake.direction = None
+
                 pass
             case Content.BODY:
                 self._snake.direction = None
@@ -84,7 +95,13 @@ class Playing(View):
                 pass
 
     def on_key_press(self, symbol: int, modifiers: int):
-        print(f"{symbol}, {modifiers}")
+        """ Chamada ao pressionar uma tecla """
+
+        if Direction(symbol):
+            self._paused = not self._paused if self._paused else self._paused
+            self._snake.direction = Direction(symbol)
+        elif symbol == ESCAPE:
+            self._paused = self._paused if self._paused else not self._paused
 
     def on_draw(self) -> None:
         """ Chamada sempre ao desenhar """
