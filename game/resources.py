@@ -27,7 +27,13 @@ class GameResources():
         """ Inicializa os recursos """
 
         # Fontes
-        self.fonts = fonts
+        self._fonts: dict[str, GameResources.Font] = fonts
+
+    @property
+    def fonts(self) -> dict[str, Font]:
+        """ As fontes utilizadas """
+
+        return self._fonts
 
     def setup(self) -> None:
         """ Configura todos os recursos """
@@ -37,7 +43,7 @@ class GameResources():
 
     def load_all_fonts(self) -> None:
         """ Carrega todas as fontes """
-        
+
         for font in self.fonts:
             load_font(self.fonts.get(font).file_path)
 

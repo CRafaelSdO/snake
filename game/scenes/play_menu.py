@@ -25,13 +25,13 @@ class PlayMenu(View):
 
         # Controla se os objetos do menu já foram criados
         self._setup: bool = False
-    
+
     def setup(self) -> None:
         """ Configura o menu jogar """
 
         if self._setup:
             return
-        
+
         # Área de texto
         title_text = TextArea(470, 80, "Escolha a dificuldade:", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
 
@@ -45,7 +45,7 @@ class PlayMenu(View):
         hard = Button("Difícil", button_style, self.window, GameScene.PLAYING, GameSpeed.HARD)
         extreme = Button("Extremo", button_style, self.window, GameScene.PLAYING, GameSpeed.EXTREME)
         back = Button("Voltar", button_style, self.window, self.window.last_scene)
-        
+
         # Box layout para conter os botões
         box = UIBoxLayout(space_between = 10)
         box.add(title_text)
@@ -61,23 +61,23 @@ class PlayMenu(View):
         self._ui_manager.add(UIAnchorWidget(child = box))
 
         self._setup = True
-    
-    def on_show_view(self):
+
+    def on_show_view(self) -> None:
         """ Chamada uma vez ao entrar nessa cena """
-        
+
         # Muda a cor de fundo
         self.window.background_color = (148, 202, 73)
 
         # Ativa o gerenciador de UI
         self._ui_manager.enable()
-    
-    def on_hide_view(self):
+
+    def on_hide_view(self) -> None:
         """ Chamada uma vez ao sair dessa cena """
 
         # Desativa o gerenciador de UI
         self._ui_manager.disable()
-    
-    def on_draw(self):
+
+    def on_draw(self) -> None:
         """ Chamada sempre ao desenhar """
 
         # Limpa a tela

@@ -4,8 +4,8 @@
 from enum import Enum
 
 class CellContent(Enum):
-    """ Enumera as cenas do jogo """
-    
+    """ Enumera os conteúdos das células """
+
     EMPTY = 0
     FOOD = 1
     SNAKE = 2

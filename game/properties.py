@@ -5,7 +5,7 @@ from typing import NamedTuple, Optional
 
 class GameProperties(NamedTuple):
     """ Define as propriedades """
-    
+
     title: Optional[str] = 'Snake Game'
     fullscreen: Optional[bool] = False
     width: Optional[int] = 800

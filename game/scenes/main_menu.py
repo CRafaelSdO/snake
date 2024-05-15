@@ -55,7 +55,7 @@ class MainMenu(View):
 
         self._setup = True
     
-    def on_show_view(self):
+    def on_show_view(self) -> None:
         """ Chamada uma vez ao entrar nessa cena """
         
         # Muda a cor de fundo
@@ -64,13 +64,13 @@ class MainMenu(View):
         # Ativa o gerenciador de UI
         self._ui_manager.enable()
     
-    def on_hide_view(self):
+    def on_hide_view(self) -> None:
         """ Chamada uma vez ao sair dessa cena """
 
         # Desativa o gerenciador de UI
         self._ui_manager.disable()
     
-    def on_draw(self):
+    def on_draw(self) -> None:
         """ Chamada sempre ao desenhar """
 
         # Limpa a tela

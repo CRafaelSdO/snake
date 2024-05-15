@@ -5,7 +5,7 @@ from enum import Enum
 
 class GameSpeed(Enum):
     """ Enumera as velocidades do jogo """
-    
+
     VERY_EASY = 2
     EASY = 4
     MEDIUM = 6

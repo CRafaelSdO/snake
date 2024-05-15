@@ -46,7 +46,7 @@ class Button(UIFlatButton):
 
         # Velocidade que sera configurada ao clicar nesse botão
         self._speed: GameSpeed = speed
-    
+
     def on_click(self, event: UIOnClickEvent) -> None:
         """ Chamado ao clicar no botão """
 

@@ -13,15 +13,15 @@ from .scenes import *
 
 class GameWindow(Window):
     """ Define uma janela """
-    
+
     def __init__(self, properties: Optional[GameProperties] = GameProperties(), resources: Optional[GameResources] = GameResources()) -> None:
         """ Inicializa uma janela """
-        
+
         super().__init__(properties.width, properties.height, properties.title, properties.fullscreen, center_window = properties.center_window)
 
         # Propriedades
         self._properties: GameProperties = properties
-        
+
         # Recursos
         self._resources: GameResources = resources
 
@@ -34,28 +34,36 @@ class GameWindow(Window):
 
         # Cenas
         self._main_menu: MainMenu = None
-        self._play_menu: PlayMenu =None
+        self._play_menu: PlayMenu = None
 
     @property
     def properties(self) -> GameProperties:
+        """ As propriedades desta janela """
+
         return self._properties
-    
+
     @property
     def resources(self) -> GameResources:
+        """ Os recursos desta janela """
+
         return self._resources
-    
+
     @property
     def last_scene(self) -> GameScene:
+        """ A última cena """
+
         return self._last_scene
-    
+
     @property
     def speed(self) -> GameSpeed:
+        """ A velocidade do jogo """
+
         return self._speed
-    
+
     @speed.setter
-    def speed(self, speed: GameSpeed):
+    def speed(self, speed: GameSpeed) -> None:
         self._speed = speed
-    
+
     def setup(self) -> None:
         """ Configura a janela """
 
