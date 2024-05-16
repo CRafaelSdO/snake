@@ -11,6 +11,7 @@ class Scene(Enum):
     RANKING_MENU = 2
     SETTINGS_MENU = 3
     PLAYING = 4
+    GAME_OVER_MENU = 5
 
 # Export padrão
 __all__ = ["Scene"]

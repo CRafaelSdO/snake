@@ -50,9 +50,8 @@ class Button(UIFlatButton):
     def on_click(self, event: UIOnClickEvent) -> None:
         """ Chamado ao clicar no botão """
 
-        # Configura a velocidade e muda a cena
-        self._window.speed = self._speed
-        self._window.switch_scene(self._scene)
+        # Configura muda a cena e passando a velocidade escolhida
+        self._window.switch_scene(self._scene, self._speed)
 
 # Export padrão
 __all__ = ["Button"]

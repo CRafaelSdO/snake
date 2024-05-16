@@ -4,7 +4,7 @@
 from typing import Optional
 
 # Imports de pacotes externos
-from arcade import Window
+from arcade import draw_rectangle_filled, Window
 
 # Imports de pacotes locais
 from .properties import *
@@ -29,9 +29,6 @@ class GameWindow(Window):
         self._last_scene: Scene = None
         self._current_scene: Scene = None
 
-        # Velocidade da cena de jogo
-        self._speed: Speed = None
-
         # Cenas
         self._main_menu: MainMenu = None
         self._play_menu: PlayMenu = None
@@ -55,18 +52,11 @@ class GameWindow(Window):
 
         return self._last_scene
 
-    @property
-    def speed(self) -> Speed:
-        """ A velocidade do jogo """
-
-        return self._speed
-
-    @speed.setter
-    def speed(self, speed: Speed) -> None:
-        self._speed = speed
-
     def setup(self) -> None:
         """ Configura a janela """
+
+        # Configura a cor de fundo
+        self.background_color = (148, 202, 73)
 
         # Carrega as fontes
         self._resources.load_all_fonts()
@@ -79,7 +69,7 @@ class GameWindow(Window):
         # Inicia o ciclo das cenas
         self.switch_scene(Scene.MAIN_MENU)
 
-    def switch_scene(self, next_scene: Scene) -> None:
+    def switch_scene(self, next_scene: Scene, speed: Optional[Speed] = None) -> None:
         """ Faz a mudança de cena """
 
         self._last_scene, self._current_scene = self._current_scene, next_scene
@@ -100,11 +90,31 @@ class GameWindow(Window):
                 self._last_scene, self._current_scene = self._current_scene, self._last_scene
                 pass
             case Scene.PLAYING:
-                self._playing.setup()
+                self._playing.setup(speed)
                 self.show_view(self._playing)
+                pass
+            case Scene.GAME_OVER_MENU:
+                self._last_scene, self._current_scene = self._current_scene, self._last_scene
                 pass
             case _:
                 pass
+
+    def draw_background(self) -> None:
+        """ Desenha o plano de fundo da janela """
+
+        # Limpa a tela
+        self.clear()
+
+        # Lógica para desenhar um plano de fundo quadriculado
+        cell_size = self._properties.cell_size
+        rows = self._properties.height // cell_size
+        columns = self._properties.width // cell_size
+
+        for row in range(rows):
+            start = 1 if not row & 1 else 0
+
+            for column in range(start, columns, 2):
+                draw_rectangle_filled(cell_size / 2 + column  * cell_size, cell_size / 2 + row * cell_size, cell_size, cell_size, (172, 215, 86))
 
 # Exportação padrão
 __all__ = ["GameWindow"]

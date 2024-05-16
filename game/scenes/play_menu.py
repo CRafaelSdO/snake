@@ -4,7 +4,7 @@
 from typing import Optional
 
 # Imports de pacotes externos
-from arcade import draw_rectangle_filled, View, Window
+from arcade import View, Window
 from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 
 # Imports de pacotes locais
@@ -65,9 +65,6 @@ class PlayMenu(View):
     def on_show_view(self) -> None:
         """ Chamada uma vez ao entrar nessa cena """
 
-        # Muda a cor de fundo
-        self.window.background_color = (148, 202, 73)
-
         # Ativa o gerenciador de UI
         self._ui_manager.enable()
 
@@ -80,19 +77,8 @@ class PlayMenu(View):
     def on_draw(self) -> None:
         """ Chamada sempre ao desenhar """
 
-        # Limpa a tela
-        self.clear()
-
-        # Lógica para desenhar um plano de fundo quadriculado
-        cell_size = self.window.properties.cell_size
-        rows = self.window.properties.height // cell_size
-        columns = self.window.properties.width // cell_size
-
-        for row in range(rows):
-            start = 1 if not row & 1 else 0
-
-            for column in range(start, columns, 2):
-                draw_rectangle_filled(cell_size / 2 + column  * cell_size, cell_size / 2 + row * cell_size, cell_size, cell_size, (172, 215, 86))
+        # Desenha o plano de fundo
+        self.window.draw_background()
 
         # Desenha a UI
         self._ui_manager.draw()
