@@ -78,17 +78,18 @@ class Playing(View):
 
         match(next_cell.content):
             case Content.FOOD:
-                self._snake.grow(next_cell)
+                self._snake.eat(next_cell)
 
                 if self._snake.size < self._board.cells_count:
                     self._food = self._board.generate_food()
                 else:
                     self._food = None
-                    self._snake.direction = None
+                    self._paused = True
 
                 pass
             case Content.BODY:
-                self._snake.direction = None
+                self._paused = True
+                self._snake._lock_direction = False # Gambiarra, retirar
                 pass
             case _:
                 self._snake.move(next_cell)
@@ -97,11 +98,12 @@ class Playing(View):
     def on_key_press(self, symbol: int, modifiers: int):
         """ Chamada ao pressionar uma tecla """
 
-        if Direction(symbol):
-            self._paused = not self._paused if self._paused else self._paused
+        try:
             self._snake.direction = Direction(symbol)
-        elif symbol == ESCAPE:
-            self._paused = self._paused if self._paused else not self._paused
+            self._paused = False
+        except:
+            if symbol == ESCAPE:
+                self._paused = False if self._paused else True
 
     def on_draw(self) -> None:
         """ Chamada sempre ao desenhar """
@@ -123,6 +125,11 @@ class Playing(View):
         # Desenha a comida e a cobra
         self._food.on_draw()
         self._snake.on_draw()
+
+        # Desenha o menu de pausa
+        if self._paused:
+            # Pendênte
+            pass
 
 
 # Export padrão

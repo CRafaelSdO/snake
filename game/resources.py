@@ -44,8 +44,8 @@ class Resources():
     def load_all_fonts(self) -> None:
         """ Carrega todas as fontes """
 
-        for font in self.fonts:
-            load_font(self.fonts.get(font).file_path)
+        for font in self._fonts:
+            load_font(self._fonts.get(font).file_path)
 
 # Exportação padrão
 __all__ = ["Resources"]

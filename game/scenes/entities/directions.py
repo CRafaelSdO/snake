@@ -14,5 +14,18 @@ class Direction(Enum):
     LEFT = LEFT
     RIGHT = RIGHT
 
+def opposite(direction: Direction) -> Direction:
+    match(direction):
+        case Direction.UP:
+            return Direction.DOWN
+        case Direction.DOWN:
+            return Direction.UP
+        case Direction.LEFT:
+            return Direction.RIGHT
+        case Direction.RIGHT:
+            return Direction.LEFT
+        case _:
+            return None
+
 # Export padrão
-__all__ = ["Direction"]
+__all__ = ["Direction", "opposite"]

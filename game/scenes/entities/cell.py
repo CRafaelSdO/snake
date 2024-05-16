@@ -45,7 +45,7 @@ class Cell():
     def on_draw(self) -> None:
         """ Chamada quando está célula deve ser desenhada """
 
-        match(self.content):
+        match(self._content):
             case Content.EMPTY:
                 pass
             case Content.FOOD:

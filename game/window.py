@@ -84,8 +84,6 @@ class GameWindow(Window):
 
         self._last_scene, self._current_scene = self._current_scene, next_scene
 
-        print(f"scene: {self._current_scene}\nspeed: {self._speed}")
-
         match(self._current_scene):
             case Scene.MAIN_MENU:
                 self._main_menu.setup()

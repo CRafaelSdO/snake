@@ -27,6 +27,9 @@ class Snake():
         # Direção do movimento da cobrinha
         self._direction: Direction = None
 
+        # Controle se pode mudar a direção do movimento
+        self._lock_direction: bool = False
+
     @property
     def head(self) -> Cell:
         """ A cabeça da cobra """
@@ -53,15 +56,24 @@ class Snake():
 
     @direction.setter
     def direction(self, direction: Direction) -> None:
+        if self._lock_direction or direction == opposite(self._direction):
+            return
+        
         self._direction = direction
 
-    def grow(self, food: Cell) -> None:
+        # Não podemos mudar de direção antes de se mover ou comer
+        self._lock_direction = True
+
+    def eat(self, food: Cell) -> None:
         """ Chamada quando a cobra deve crescer (comer) """
 
         # Incorpora a célula com comida como cabeça
         self.head.content = Content.BODY
         food.content = Content.HEAD
         self._body.insert(0, food)
+
+        # Agora podemos mudar de direção novamente
+        self._lock_direction = False
 
     def move(self, next_cell: Cell) -> None:
         """ Chamada quando a cobra deve se mover """
@@ -72,9 +84,12 @@ class Snake():
         self._body.insert(0, next_cell)
 
         # Move a cauda
-        self.tail.content = Content.EMPTY
+        self.tail.content = Content.EMPTY if self.tail.content == Content.TAIL else self.tail.content
         self._body.pop()
         self.tail.content = Content.TAIL
+
+        # Agora podemos mudar de direção novamente
+        self._lock_direction = False
 
     def on_draw(self) -> None:
         """ Chamada quando está cobra deve ser desenhada """
