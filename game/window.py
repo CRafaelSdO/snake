@@ -61,6 +61,9 @@ class GameWindow(Window):
         # Carrega as fontes
         self._resources.load_all_fonts()
 
+        # Atualiza as propriedades
+        self._properties = self._properties.update(self)
+
         # Inicializa as cenas
         self._main_menu = MainMenu(self)
         self._play_menu = PlayMenu(self)
@@ -95,6 +98,9 @@ class GameWindow(Window):
                 pass
             case Scene.GAME_OVER_MENU:
                 self._last_scene, self._current_scene = self._current_scene, self._last_scene
+                pass
+            case Scene.CLOSE:
+                self.close()
                 pass
             case _:
                 pass

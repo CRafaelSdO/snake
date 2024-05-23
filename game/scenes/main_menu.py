@@ -32,7 +32,7 @@ class MainMenu(View):
             return
         
         # Área de texto
-        title_text = TextArea(550, 230, "Snake", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
+        title_text = TextArea("Snake", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
 
         # Estilo dos botões
         button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
@@ -41,6 +41,7 @@ class MainMenu(View):
         play = Button("Jogar", button_style, self.window, Scene.PLAY_MENU)
         ranking = Button("Classificação", button_style, self.window, Scene.RANKING_MENU)
         settings = Button("Configurações", button_style, self.window, Scene.SETTINGS_MENU)
+        close = Button("Fechar", button_style, self.window, Scene.CLOSE)
         
         # Box layout para conter os botões
         box = UIBoxLayout(space_between = 10)
@@ -48,6 +49,7 @@ class MainMenu(View):
         box.add(play)
         box.add(ranking)
         box.add(settings)
+        box.add(close)
 
         # Gerenciador de UI com elemento de ancoragem para centralizar tudo
         self._ui_manager = UIManager()

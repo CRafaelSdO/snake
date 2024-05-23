@@ -12,6 +12,7 @@ from arcade.gui.events import UIOnClickEvent
 # Imports de pacotes locais
 from ..scenes import *
 from ..speeds import *
+from .text_area import *
 
 class Button(UIFlatButton):
     """ Define um botão """
@@ -33,10 +34,11 @@ class Button(UIFlatButton):
         """ Inicializa um botão """
 
         # Imagem de texto para definir largura e altura da área de texto
-        _ = create_text_image(text, (0, 0, 0), style.font_size, font_name = style.font_name)
+        _ = TextArea(text, style.font_name, style.font_size)
         width, height = _.size
+        margin = window.properties.cell_size
 
-        super().__init__(width = width * 2, height = height * 2, text = text, style = style._asdict())
+        super().__init__(width = width + margin, height = height + margin, text = text, style = style._asdict())
 
         # Janela deste botão
         self._window: Window = window

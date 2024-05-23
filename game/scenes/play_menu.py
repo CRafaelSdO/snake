@@ -33,7 +33,7 @@ class PlayMenu(View):
             return
 
         # Área de texto
-        title_text = TextArea(470, 80, "Escolha a dificuldade:", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
+        title_text = TextArea("Escolha a dificuldade:", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
 
         # Estilo dos botões
         button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
