@@ -4,7 +4,7 @@
 from typing import Optional
 
 # Imports de pacotes externos
-from arcade import draw_rectangle_filled, Window
+from arcade import draw_rectangle_filled, draw_rectangle_outline, Window
 
 # Imports de pacotes locais
 from .properties import *
@@ -105,7 +105,7 @@ class GameWindow(Window):
             case _:
                 pass
 
-    def draw_background(self) -> None:
+    def draw_background(self, with_margin: Optional[bool] = False) -> None:
         """ Desenha o plano de fundo da janela """
 
         # Limpa a tela
@@ -113,14 +113,30 @@ class GameWindow(Window):
 
         # Lógica para desenhar um plano de fundo quadriculado
         cell_size = self._properties.cell_size
-        rows = self._properties.height // cell_size
-        columns = self._properties.width // cell_size
+        margin = self._properties.margin
+
+        rows = 30 if with_margin else self._properties.height // cell_size + 1
+        columns = 30 if with_margin else self._properties.width // cell_size + 1
+
+        horizontal_offset = (self._properties.width - columns * cell_size) / 2
+        vertivcal_offset = (self._properties.height - rows * cell_size) / 2
 
         for row in range(rows):
             start = 1 if not row & 1 else 0
 
             for column in range(start, columns, 2):
-                draw_rectangle_filled(cell_size / 2 + column  * cell_size, cell_size / 2 + row * cell_size, cell_size, cell_size, (172, 215, 86))
+                center_x = cell_size / 2 + column  * cell_size + (margin if with_margin else horizontal_offset)
+                center_y = cell_size / 2 + row * cell_size + (cell_size / 2 if with_margin else vertivcal_offset)
+
+                draw_rectangle_filled(center_x, center_y, cell_size, cell_size, (172, 215, 86))
+
+        if with_margin:
+            center_x = columns * cell_size / 2 + margin
+            center_y = rows * cell_size / 2 + cell_size / 2
+            width = columns * cell_size
+            height = rows * cell_size
+
+            draw_rectangle_outline(center_x, center_y, width, height, (172, 215, 86))
 
 # Exportação padrão
 __all__ = ["GameWindow"]

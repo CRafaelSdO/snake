@@ -9,7 +9,7 @@ from .contents import *
 class Cell():
     """ Define uma célula do campo """
 
-    def __init__(self, row: int, column: int, size: int) -> None:
+    def __init__(self, row: int, column: int, size: int, margin: float) -> None:
         """ Inicializa uma célula """
 
         # Posição desta célula no campo
@@ -20,8 +20,8 @@ class Cell():
         self._content: Content = Content.EMPTY
 
         # Centro de desenho desta célula
-        self._x: float = size / 2 + column * size
-        self._y: float = size / 2 + row * size
+        self._x: float = size / 2 + column * size + margin
+        self._y: float = size / 2 + row * size + (size / 2 if margin != 0 else 0)
 
         # Tamanho de desenho da célula
         self._size: float = size

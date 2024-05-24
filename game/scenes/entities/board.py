@@ -16,11 +16,14 @@ class Board():
         """ Inicializa um campo """
 
         # Total de linhas e colunas no campo
-        self._rows: int = properties.height // properties.cell_size
-        self._columns: int = properties.width // properties.cell_size
+        self._rows: int = 30
+        self._columns: int = 30
+
+        cell_size = properties.cell_size
+        margin = properties.margin
 
         # Células do campo
-        self._cells: list[list[Cell]] = [[Cell(row, column, properties.cell_size) for column in range(self._columns)] for row in range(self._rows)]
+        self._cells: list[list[Cell]] = [[Cell(row, column, cell_size, margin) for column in range(self._columns)] for row in range(self._rows)]
 
     @property
     def center_cell(self) -> Cell:

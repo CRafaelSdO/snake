@@ -102,7 +102,7 @@ class Playing(View):
         """ Chamada sempre ao desenhar """
 
         # Desenha o plano de fundo
-        self.window.draw_background()
+        self.window.draw_background(True)
 
         # Desenha a comida e a cobra
         self._food.on_draw()
