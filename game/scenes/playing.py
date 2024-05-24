@@ -4,11 +4,13 @@
 from typing import Optional
 
 # Imports de pacotes externos
-from arcade import View, Window
+from arcade import Sprite, View, Window
+from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 from arcade.key import ESCAPE
 
 # Imports de pacotes locais
 from .entities import *
+from .gui import *
 from .scenes import *
 from .speeds import *
 
@@ -38,6 +40,12 @@ class Playing(View):
         # Tempo decorrido desde a última atualização
         self._delta_time: float = 0
 
+        # Gerenciador de UI
+        self._ui_manager: UIManager = None
+
+        # Controla se os objetos do menu já foram criados
+        self._setup: bool = False
+
     def setup(self, speed: Speed) -> None:
         """ Configura a tela de jogo"""
 
@@ -48,6 +56,40 @@ class Playing(View):
 
         # Configura a velocidade da cobra
         self._speed = speed if speed else self._speed
+
+        if self._setup:
+            return
+
+        # Texto das instruções
+        use = TextArea("Use", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
+        to_move = TextArea("para se mover", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
+
+        # Imagem
+        directional = Sprite(self.window.resources.images.get("directional"))
+
+        # Box layout para conter os objetos
+        box = UIBoxLayout(space_between = 10)
+        box.add(use)
+        #box.add(directional)
+        box.add(to_move)
+
+        # Gerenciador de UI com elemento de ancoragem para centralizar tudo
+        self._ui_manager = UIManager()
+        self._ui_manager.add(UIAnchorWidget(child = box))
+
+        self._setup = True
+
+    def on_show_view(self) -> None:
+        """ Chamada uma vez ao entrar nessa cena """
+
+        # Ativa o gerenciador de UI
+        self._ui_manager.enable()
+
+    def on_hide_view(self) -> None:
+        """ Chamada uma vez ao sair dessa cena """
+
+        # Desativa o gerenciador de UI
+        self._ui_manager.disable()
 
     def on_update(self, delta_time: float):
         """ Chama da ao atualizar """
@@ -110,7 +152,7 @@ class Playing(View):
 
         # Desenha o menu de pausa
         if self._paused:
-            # Pendênte
+            self._ui_manager.draw()
             pass
 
 

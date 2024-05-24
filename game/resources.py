@@ -1,7 +1,8 @@
 """ Módulo dos recursos """
 
 # Imports de pacotes BuiltIn
-from os.path import normpath
+from os import getcwd
+from os.path import join, normpath
 from typing import NamedTuple, Optional
 
 # Imports de pacotes externos
@@ -9,6 +10,8 @@ from arcade import load_font
 
 class Resources():
     """ Define as propriedades """
+
+    RESOURCES_DIR = join(getcwd(), "game/resources")
 
     class Font(NamedTuple):
         """ Define uma fonte """
@@ -18,22 +21,35 @@ class Resources():
 
     # Fontes padrão
     DEFAULT_FONTS: dict[str, Font] = {
-        "title": Font("Dimitri Swank", "game\\resources\\fonts\\Dimitri Swank.ttf"),
-        "body": Font("Type Machine", "game\\resources\\fonts\\Type Machine.ttf"),
-        "button": Font("Retro Gaming", "game\\resources\\fonts\\Retro Gaming.ttf")
+        "title": Font("Dimitri Swank", join(RESOURCES_DIR, "fonts/Dimitri Swank.ttf")),
+        "body": Font("Type Machine", join(RESOURCES_DIR, "fonts/Type Machine.ttf")),
+        "button": Font("Retro Gaming", join(RESOURCES_DIR, "fonts/Retro Gaming.ttf"))
     }
 
-    def __init__(self, fonts: Optional[dict[str, Font]] = DEFAULT_FONTS) -> None:
+    DEFAULT_IMAGES: dict[str, str] = {
+        "snake": join(RESOURCES_DIR, "images/snake.png"),
+        "directional": join(RESOURCES_DIR, "images/directional.png"),
+        "esc": join(RESOURCES_DIR, "images/esc.png")
+    }
+
+    def __init__(self, fonts: Optional[dict[str, Font]] = DEFAULT_FONTS, images: Optional[dict[str, str]] = DEFAULT_IMAGES) -> None:
         """ Inicializa os recursos """
 
         # Fontes
         self._fonts: dict[str, Resources.Font] = fonts
+        self._images: dict[str, str] = images
 
     @property
     def fonts(self) -> dict[str, Font]:
         """ As fontes utilizadas """
 
         return self._fonts
+
+    @property
+    def images(self) -> dict[str, str]:
+        """ As imagens utilizadas """
+
+        return self._images
 
     def setup(self) -> None:
         """ Configura todos os recursos """
