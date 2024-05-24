@@ -11,7 +11,7 @@ class Properties(NamedTuple):
 
     title: Optional[str] = 'Snake Game'
     fullscreen: Optional[bool] = False
-    center_window: Optional[bool] = False
+    center_window: Optional[bool] = True
     width: Optional[int] = 900
     height: Optional[int] = 960
     cell_size: Optional[int] = 30

@@ -118,21 +118,21 @@ class GameWindow(Window):
         rows = 30 if with_margin else self._properties.height // cell_size + 1
         columns = 30 if with_margin else self._properties.width // cell_size + 1
 
-        horizontal_offset = (self._properties.width - columns * cell_size) / 2
-        vertivcal_offset = (self._properties.height - rows * cell_size) / 2
+        horizontal_offset = margin if with_margin else (self._properties.width - columns * cell_size) / 2
+        vertical_offset = (cell_size / 2 if margin != 0 else 0) if with_margin else (self._properties.height - rows * cell_size) / 2
 
         for row in range(rows):
             start = 1 if not row & 1 else 0
 
             for column in range(start, columns, 2):
-                center_x = cell_size / 2 + column  * cell_size + (margin if with_margin else horizontal_offset)
-                center_y = cell_size / 2 + row * cell_size + (cell_size / 2 if with_margin else vertivcal_offset)
+                center_x = cell_size / 2 + column  * cell_size + horizontal_offset
+                center_y = cell_size / 2 + row * cell_size + vertical_offset
 
                 draw_rectangle_filled(center_x, center_y, cell_size, cell_size, (172, 215, 86))
 
         if with_margin:
-            center_x = columns * cell_size / 2 + margin
-            center_y = rows * cell_size / 2 + cell_size / 2
+            center_x = columns * cell_size / 2 + horizontal_offset
+            center_y = rows * cell_size / 2 + vertical_offset
             width = columns * cell_size
             height = rows * cell_size
 
