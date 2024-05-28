@@ -1,8 +1,5 @@
 """ Módulo do menu jogar """
 
-# Imports de pacotes BuiltIn
-from typing import Optional
-
 # Imports de pacotes externos
 from arcade import View, Window
 from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
@@ -15,7 +12,7 @@ from .speeds import *
 class PlayMenu(View):
     """ Define um menu jogar """
 
-    def __init__(self, window: Optional[Window]) -> None:
+    def __init__(self, window: Window) -> None:
         """ Inicializa um menu jogar """
 
         super().__init__(window)
@@ -46,7 +43,7 @@ class PlayMenu(View):
         extreme = Button("Extremo", button_style, self.window, Scene.PLAYING, Speed.EXTREME)
         back = Button("Voltar", button_style, self.window, self.window.last_scene)
 
-        # Box layout para conter os botões
+        # Box layout para conter o texto e os botões
         box = UIBoxLayout(space_between = 10)
         box.add(title_text)
         box.add(very_easy)

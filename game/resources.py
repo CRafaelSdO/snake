@@ -27,8 +27,8 @@ class Resources():
     }
 
     DEFAULT_IMAGES: dict[str, str] = {
-        "snake": join(RESOURCES_DIR, "images/snake.png"),
-        "directional": join(RESOURCES_DIR, "images/directional.png"),
+        "sprites": join(RESOURCES_DIR, "images/sprites.png"),
+        "seta": join(RESOURCES_DIR, "images/seta.png"),
         "esc": join(RESOURCES_DIR, "images/esc.png")
     }
 

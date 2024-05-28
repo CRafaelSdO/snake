@@ -39,8 +39,8 @@ class Properties(NamedTuple):
 
         # Tamanhos das fontes
         self.fonts_sizes["title"] = size * 2 / 9
-        self.fonts_sizes["body"] = size * 1 / 18
-        self.fonts_sizes["button"] = size * 1 / 30
+        self.fonts_sizes["body"] = size / 18
+        self.fonts_sizes["button"] = size / 30
 
         return self._replace(width = width, height = height, cell_size = cell_size, margin = margin)
 

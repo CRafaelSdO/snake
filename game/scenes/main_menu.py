@@ -1,8 +1,5 @@
 """ Módulo do menu principal """
 
-# Imports de pacotes BuiltIn
-from typing import Optional
-
 # Imports de pacotes externos
 from arcade import View, Window
 from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
@@ -14,7 +11,7 @@ from .scenes import *
 class MainMenu(View):
     """ Define um menu principal """
 
-    def __init__(self, window: Optional[Window]) -> None:
+    def __init__(self, window: Window) -> None:
         """ Inicializa um menu principal """
 
         super().__init__(window)
@@ -43,7 +40,7 @@ class MainMenu(View):
         settings = Button("Configurações", button_style, self.window, Scene.SETTINGS_MENU)
         close = Button("Fechar", button_style, self.window, Scene.CLOSE)
         
-        # Box layout para conter os botões
+        # Box layout para conter o texto e os botões
         box = UIBoxLayout(space_between = 10)
         box.add(title_text)
         box.add(play)
