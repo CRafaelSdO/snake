@@ -72,7 +72,7 @@ class Playing(View):
         self._paused = False
 
         if self._setup:
-            self._score_text.text = f" Score: {self._snake.size - 2}00"
+            self._score_text.text = f" Pontuação: {self._snake.size - 2}00"
             self._score_text.fit_content()
             return
         
@@ -97,7 +97,7 @@ class Playing(View):
         self._images.append(escape)
 
         # Área de texto do score
-        self._score_text = TextArea(" Score: 000", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("button"))
+        self._score_text = TextArea(" Pontuação: 000", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("button"))
 
         # Box layout para conter o score
         box = UIBoxLayout()
@@ -175,10 +175,10 @@ class Playing(View):
                     self._food = self._board.generate_food()
                 else:
                     self._food = None
-                    self._paused = True
+                    self._paused = True # Gambiarra, retirar
                 pass
             case Content.BODY:
-                self._paused = True
+                self._paused = True # Gambiarra, retirar
                 self._snake._lock_direction = False # Gambiarra, retirar
                 pass
             case _:
