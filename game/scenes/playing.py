@@ -72,7 +72,7 @@ class Playing(View):
         self._paused = False
 
         if self._setup:
-            self._score_text.text = f" Pontuação: {self._snake.size - 2}00"
+            self._score_text.text = f"000"
             self._score_text.fit_content()
             return
         
@@ -97,7 +97,7 @@ class Playing(View):
         self._images.append(escape)
 
         # Área de texto do score
-        self._score_text = TextArea(" Pontuação: 000", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("button"))
+        self._score_text = TextArea("000", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("button"))
 
         # Box layout para conter o score
         box = UIBoxLayout()
@@ -105,7 +105,7 @@ class Playing(View):
 
         # Gerenciador de UI com elemento de ancoragem alinha a esquerda e acima
         self._ui_manager = UIManager()
-        self._ui_manager.add(UIAnchorWidget(child = box, anchor_x = "left", anchor_y = "top"))
+        self._ui_manager.add(UIAnchorWidget(child = box, anchor_x = "center", anchor_y = "top"))
 
         # Areas de texto do menu de pausa
         game = TextArea("Jogo", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
@@ -118,12 +118,16 @@ class Playing(View):
         main_menu = Button("Menu Principal", button_style, self.window, Scene.MAIN_MENU)
         restart = Button("Reiniciar", button_style, self.window, Scene.PLAYING)
 
+        # Box layout para conter os botões
+        horizontal_box = UIBoxLayout(vertical = False, space_between = 10)
+        horizontal_box.add(main_menu)
+        horizontal_box.add(restart)
+
         # Box layout para conter o texto e os botões
         box = UIBoxLayout(space_between = 10)
         box.add(game)
         box.add(paused)
-        box.add(UIAnchorWidget(child = main_menu, anchor_x = "left", anchor_y = "bottom"))
-        box.add(UIAnchorWidget(child = restart, anchor_x = "right", anchor_y = "bottom"))
+        box.add(horizontal_box)
 
         # Gerenciador de UI com elemento de ancoragem para centralizar tudo
         self._pause_ui_manager = UIManager()
@@ -168,7 +172,7 @@ class Playing(View):
             case Content.FOOD:
                 self._snake.eat(next_cell)
 
-                self._score_text.text = f" Score: {self._snake.size - 2}00"
+                self._score_text.text = f"{self._snake.size - 2}00"
                 self._score_text.fit_content()
 
                 if self._snake.size < self._board.cells_count:
