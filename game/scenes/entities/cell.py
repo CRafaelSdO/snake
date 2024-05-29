@@ -37,7 +37,7 @@ class Cell():
         """ O conteúdo desta célula """
 
         return self._content
-    
+
     @content.setter
     def content(self, content: Content) -> None:
         self._content = content

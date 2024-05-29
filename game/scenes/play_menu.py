@@ -20,7 +20,7 @@ class PlayMenu(View):
         # Gerenciador de UI
         self._ui_manager: UIManager = None
 
-        # Controla se os objetos do menu já foram criados
+        # Controla se os objetos da UI já foram criados
         self._setup: bool = False
 
     def setup(self) -> None:
@@ -43,7 +43,7 @@ class PlayMenu(View):
         extreme = Button("Extremo", button_style, self.window, Scene.PLAYING, Speed.EXTREME)
         back = Button("Voltar", button_style, self.window, self.window.last_scene)
 
-        # Box layout para conter o texto e os botões
+        # Box layout para conter e alinhar o texto e os botões
         box = UIBoxLayout(space_between = 10)
         box.add(title_text)
         box.add(very_easy)
@@ -51,12 +51,15 @@ class PlayMenu(View):
         box.add(medium)
         box.add(hard)
         box.add(extreme)
+
+        # Botão de voltar ficará alinhado no canto inferior esquerdo
         box.add(UIAnchorWidget(child = back, anchor_x = "left", anchor_y = "bottom"))
 
         # Gerenciador de UI com elemento de ancoragem para centralizar tudo
         self._ui_manager = UIManager()
         self._ui_manager.add(UIAnchorWidget(child = box))
 
+        # Define que os objetos de UI foram criados
         self._setup = True
 
     def on_show_view(self) -> None:

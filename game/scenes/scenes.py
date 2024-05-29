@@ -5,7 +5,7 @@ from enum import Enum
 
 class Scene(Enum):
     """ Enumera as cenas do jogo """
-    
+
     MAIN_MENU = 0
     PLAY_MENU = 1
     RANKING_MENU = 2

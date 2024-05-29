@@ -4,7 +4,7 @@
 from typing import NamedTuple, Optional
 
 # Imports de pacotes externos
-from arcade import create_text_image, Window
+from arcade import Window
 from arcade.arcade_types import Color
 from arcade.gui import UIFlatButton
 from arcade.gui.events import UIOnClickEvent
@@ -33,9 +33,9 @@ class Button(UIFlatButton):
     def __init__(self, text: str, style: ButtonStyle, window: Window, scene: Scene, speed: Optional[Speed] = None) -> None:
         """ Inicializa um botão """
 
-        # Imagem de texto para definir largura e altura da área de texto
-        _ = TextArea(text, style.font_name, style.font_size)
-        width, height = _.size
+        # Área de texto para definir largura e altura do botão
+        aux = TextArea(text, style.font_name, style.font_size)
+        width, height = aux.size
         margin = window.properties.cell_size
 
         super().__init__(width = width + margin, height = height + margin, text = text, style = style._asdict())

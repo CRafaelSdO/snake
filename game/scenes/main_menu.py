@@ -19,15 +19,15 @@ class MainMenu(View):
         # Gerenciador de UI
         self._ui_manager: UIManager = None
 
-        # Controla se os objetos do menu já foram criados
+        # Controla se os objetos da UI já foram criados
         self._setup: bool = False
-    
+
     def setup(self) -> None:
         """ Configura o menu principal """
 
         if self._setup:
             return
-        
+
         # Área de texto
         title_text = TextArea("Snake", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
 
@@ -39,8 +39,8 @@ class MainMenu(View):
         ranking = Button("Classificação", button_style, self.window, Scene.RANKING_MENU)
         settings = Button("Configurações", button_style, self.window, Scene.SETTINGS_MENU)
         close = Button("Fechar", button_style, self.window, Scene.CLOSE)
-        
-        # Box layout para conter o texto e os botões
+
+        # Box layout para conter e alinhar o texto e os botões
         box = UIBoxLayout(space_between = 10)
         box.add(title_text)
         box.add(play)
@@ -52,20 +52,21 @@ class MainMenu(View):
         self._ui_manager = UIManager()
         self._ui_manager.add(UIAnchorWidget(child = box))
 
+        # Define que os objetos de UI foram criados
         self._setup = True
-    
+
     def on_show_view(self) -> None:
         """ Chamada uma vez ao entrar nessa cena """
 
         # Ativa o gerenciador de UI
         self._ui_manager.enable()
-    
+
     def on_hide_view(self) -> None:
         """ Chamada uma vez ao sair dessa cena """
 
         # Desativa o gerenciador de UI
         self._ui_manager.disable()
-    
+
     def on_draw(self) -> None:
         """ Chamada sempre ao desenhar """
 

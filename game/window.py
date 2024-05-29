@@ -58,8 +58,8 @@ class GameWindow(Window):
         # Configura a cor de fundo
         self.background_color = (148, 202, 73)
 
-        # Carrega as fontes
-        self._resources.load_all_fonts()
+        # Carrega os resursos
+        self._resources.setup()
 
         # Atualiza as propriedades
         self._properties = self._properties.update(self)

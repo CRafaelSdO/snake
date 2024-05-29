@@ -2,7 +2,7 @@
 
 # Imports de pacotes BuiltIn
 from os import getcwd
-from os.path import join, normpath
+from os.path import join
 from typing import NamedTuple, Optional
 
 # Imports de pacotes externos
@@ -26,6 +26,7 @@ class Resources():
         "button": Font("Retro Gaming", join(RESOURCES_DIR, "fonts/Retro Gaming.ttf"))
     }
 
+    # Imagens padrão
     DEFAULT_IMAGES: dict[str, str] = {
         "sprites": join(RESOURCES_DIR, "images/sprites.png"),
         "seta": join(RESOURCES_DIR, "images/seta.png"),

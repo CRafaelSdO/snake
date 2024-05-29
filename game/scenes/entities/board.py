@@ -68,7 +68,7 @@ class Board():
                 return None
 
         return self._cells[row][column]
-    
+
     def generate_food(self) -> Cell:
         """ Gera comida em uma célula vazia """
 

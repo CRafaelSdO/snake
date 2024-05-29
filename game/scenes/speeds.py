@@ -4,7 +4,7 @@
 from enum import Enum
 
 class Speed(Enum):
-    """ Enumera as velocidades do jogo """
+    """ Enumera as velocidades (dificuldades) do jogo """
 
     VERY_EASY = 2
     EASY = 4

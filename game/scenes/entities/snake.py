@@ -32,13 +32,13 @@ class Snake():
 
     @property
     def head(self) -> Cell:
-        """ A cabeça da cobra """
+        """ A cabeça desta cobra """
 
         return self._body[0]
-    
+
     @property
     def tail(self) -> Cell:
-        """ A cabeça da cobra """
+        """ A cauda desta cobra """
 
         return self._body[-1]
 
@@ -50,7 +50,7 @@ class Snake():
 
     @property
     def direction(self) -> Direction:
-        """ A cabeça da cobra """
+        """ A direção do movimento desta cobra """
 
         return self._direction
 
@@ -58,7 +58,8 @@ class Snake():
     def direction(self, direction: Direction) -> None:
         if self._lock_direction or direction == opposite(self._direction):
             return
-        
+
+        # Muda a direção do movimento
         self._direction = direction
 
         # Não podemos mudar de direção antes de se mover ou comer
