@@ -106,7 +106,7 @@ class Playing(View):
         self._ui_manager.add(UIAnchorWidget(child = self._score_text, anchor_x = "center", anchor_y = "top"))
 
         # Menu de pausa
-        ## Areas de texto
+        ## Áreas de texto
         game = TextArea("Jogo", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
         paused = TextArea("Pausado", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
 
@@ -178,12 +178,10 @@ class Playing(View):
                 if self._snake.size < self._board.cells_count:
                     self._food = self._board.generate_food()
                 else:
-                    self._food = None
-                    self._paused = True # Gambiarra, retirar
+                    self.window.switch_scene(Scene.GAME_OVER_MENU, score = self._snake.size - 2)
                 pass
             case Content.BODY:
-                self._paused = True # Gambiarra, retirar
-                self._snake._lock_direction = False # Gambiarra, retirar
+                self.window.switch_scene(Scene.GAME_OVER_MENU, score = self._snake.size - 2)
                 pass
             case _:
                 self._snake.move(next_cell)

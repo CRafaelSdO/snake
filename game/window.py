@@ -33,6 +33,7 @@ class GameWindow(Window):
         self._main_menu: MainMenu = None
         self._play_menu: PlayMenu = None
         self._playing: Playing = None
+        self._game_over_menu: GameOverMenu = None
 
     @property
     def properties(self) -> Properties:
@@ -68,11 +69,12 @@ class GameWindow(Window):
         self._main_menu = MainMenu(self)
         self._play_menu = PlayMenu(self)
         self._playing = Playing(self)
+        self._game_over_menu = GameOverMenu(self)
 
         # Inicia o ciclo das cenas
         self.switch_scene(Scene.MAIN_MENU)
 
-    def switch_scene(self, next_scene: Scene, speed: Optional[Speed] = None) -> None:
+    def switch_scene(self, next_scene: Scene, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Faz a mudança de cena """
 
         self._last_scene, self._current_scene = self._current_scene, next_scene
@@ -97,7 +99,8 @@ class GameWindow(Window):
                 self.show_view(self._playing)
                 pass
             case Scene.GAME_OVER_MENU:
-                self._last_scene, self._current_scene = self._current_scene, self._last_scene
+                self._game_over_menu.setup(score)
+                self.show_view(self._game_over_menu)
                 pass
             case Scene.CLOSE:
                 self.close()
