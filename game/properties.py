@@ -35,7 +35,7 @@ class Properties(NamedTuple):
             margin = 0
         else:
             cell_size = size // 32
-            margin = (width - cell_size * 30) / 2
+            margin = (width - cell_size * 30) * 0.5
 
         # Tamanhos das fontes
         self.fonts_sizes["title"] = size * 2 / 9

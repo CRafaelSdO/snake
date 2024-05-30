@@ -11,7 +11,7 @@ from arcade import load_font
 class Resources():
     """ Define as propriedades """
 
-    RESOURCES_DIR = join(getcwd(), "game/resources")
+    RESOURCES_DIR = join(getcwd(), "resources")
 
     class Font(NamedTuple):
         """ Define uma fonte """

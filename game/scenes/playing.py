@@ -1,10 +1,11 @@
 """ Módulo da tela de jogo """
 
 # Imports de pacotes BuiltIn
+from math import floor
 from typing import Optional
 
 # Imports de pacotes externos
-from arcade import draw_text, Sprite, SpriteList, View, Window
+from arcade import draw_rectangle_filled, draw_text, Sprite, SpriteList, View, Window
 from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 from arcade.key import ESCAPE
 
@@ -35,13 +36,19 @@ class Playing(View):
         self._speed: Speed = None
 
         # Controla se o jogo já começou
-        self._started: bool = None
+        self._started: bool = False
 
         # Controla se o jogo está pausado
-        self._paused: bool = None
+        self._paused: bool = False
+
+        # Controla se conseguiu a pontuação máxima
+        self._max_score: bool = False
 
         # Tempo decorrido desde a última atualização
         self._delta_time: float = 0
+
+        # Tempo com a pontuação máxima
+        self._max_score_time: float = 0
 
         # Gerenciadores de UI
         self._ui_manager: UIManager = None
@@ -70,9 +77,14 @@ class Playing(View):
         # Configura os campos de controle
         self._started = False
         self._paused = False
+        self._max_score = False
+
+        # Zera os contadoires de tempo
+        self._delta_time = 0
+        self._max_score_time = 0
 
         if self._setup:
-            self._score_text.text = f"000"
+            self._score_text.text = f"0"
             self._score_text.fit_content()
             return
 
@@ -99,7 +111,7 @@ class Playing(View):
 
         # UI do jogo
         ## Área de texto do score
-        self._score_text = TextArea("000", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("button"))
+        self._score_text = TextArea("0", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("button"))
 
         ## Gerenciador de UI com elemento de ancoragem para centralizar no centro e acima
         self._ui_manager = UIManager()
@@ -157,6 +169,12 @@ class Playing(View):
         # Lógica para testar se já deu o tempo de atualizar
         self._delta_time += delta_time
 
+        if self._max_score:
+            self._max_score_time += delta_time
+
+            self._score_text.text = f"{floor((self._snake.size - 2 + self._max_score_time) * self._speed.value * 10):_}".replace("_", ".")
+            self._score_text.fit_content()
+
         if self._delta_time < 1 / self._speed.value:
             return
 
@@ -172,16 +190,16 @@ class Playing(View):
             case Content.FOOD:
                 self._snake.eat(next_cell)
 
-                self._score_text.text = f"{self._snake.size - 2}00"
+                self._score_text.text = f"{(self._snake.size - 2) * self._speed.value * 10:_}".replace("_", ".")
                 self._score_text.fit_content()
 
                 if self._snake.size < self._board.cells_count:
                     self._food = self._board.generate_food()
                 else:
-                    self.window.switch_scene(Scene.GAME_OVER_MENU, score = self._snake.size - 2)
+                    self._max_score = True
                 pass
             case Content.BODY:
-                self.window.switch_scene(Scene.GAME_OVER_MENU, score = self._snake.size - 2)
+                self.window.switch_scene(Scene.GAME_OVER_MENU, score = floor((self._snake.size - 2 + self._max_score_time) * self._speed.value * 10))
                 pass
             case _:
                 self._snake.move(next_cell)
@@ -238,6 +256,11 @@ class Playing(View):
 
         # Desenha o menu de pausa
         if self._paused:
+            width = self.window.properties.width
+            height = self.window.properties.height
+
+            # UI de pausa com fundo acinzentado
+            draw_rectangle_filled(width * 0.5, height * 0.5, width, height, (127, 127, 127, 127))
             self._pause_ui_manager.draw()
             pass
 

@@ -7,6 +7,7 @@ from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 # Imports de pacotes locais
 from .gui import *
 from .scenes import *
+from .speeds import *
 
 class GameOverMenu(View):
     """ Define um menu de fim de jogo """
@@ -16,21 +17,35 @@ class GameOverMenu(View):
 
         super().__init__(window)
 
+        # Pontuação do jogo finalizado
+        self._score: int = 0
+
         # Gerenciador de UI
         self._ui_manager: UIManager = None
+
+        # Texto do score
+        self._score_text: TextArea = None
 
         # Controla se os objetos da UI já foram criados
         self._setup: bool = False
 
-    def setup(self, score: int = 0) -> None:
+    def setup(self, score: int) -> None:
         """ Configura o menu de fim de jogo """
 
+        # Configura a velocidade jogada e a pontuação
+        self._score = score
+
+        score_text = f"{score:_}".replace("_", ".")
+
         if self._setup:
+            self._score_text.text = f"Você fez {score_text} pontos"
+            self._score_text.fit_content()
             return
 
         # Áreas de texto
-        game = TextArea("Fim de", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
-        over = TextArea("Jogo", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
+        game = TextArea("Fim de", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
+        over = TextArea("Jogo", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
+        self._score_text = TextArea(f"Você fez {score_text} pontos", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
 
         # Estilo dos botões
         button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
@@ -48,6 +63,7 @@ class GameOverMenu(View):
         box = UIBoxLayout(space_between = 10)
         box.add(game)
         box.add(over)
+        box.add(self._score_text)
         box.add(buttons_box)
 
         # Gerenciador de UI com elemento de ancoragem para centralizar tudo
