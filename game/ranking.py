@@ -1,16 +1,17 @@
 """ Módulo do ranking """
 
 # Imports de pacotes BuiltIn
+from collections.abc import Iterator
 from dataclasses import dataclass
 from math import floor, log
 from os import getcwd
 from os.path import join
 from typing import Optional, Union
 
-class Ranking():
+class Ranking(Iterator):
     """ Define o ranking """
 
-    RANKING_FILE = join(getcwd(), "ranking")
+    RANKING_FILE = join(getcwd(), "data/ranking")
     ENCODING = "ascii"
 
     @dataclass
@@ -33,6 +34,7 @@ class Ranking():
         self._ranking_file: str = ranking_file
         self._encoding: str = encoding
         self._ranking_list: list[self.Score] = []
+        self._current_index = -1
 
         # Carrega o ranking salvo anteriormente, cria o arquivo caso não exista
         try:
@@ -42,6 +44,19 @@ class Ranking():
         except:
             with open(ranking_file, "wb") as file:
                 pass
+
+    def __iter__(self) -> Iterator:
+        self._current_index = -1
+
+        return self
+
+    def __next__(self) -> Score:
+        self._current_index += 1
+
+        if self._current_index >= len(self._ranking_list):
+            raise StopIteration
+
+        return self._ranking_list[self._current_index]
 
     def add(self, *args: Union[bytes, tuple[str, int], tuple[str, str]]) -> None:
         """ Adiciona um score ao ranking"""

@@ -35,6 +35,7 @@ class GameWindow(Window):
         self._play_menu: PlayMenu = None
         self._playing: Playing = None
         self._game_over_menu: GameOverMenu = None
+        self._ranking_menu: RankingMenu = None
 
         # Ranking
         self._ranking: Ranking = None
@@ -57,6 +58,12 @@ class GameWindow(Window):
 
         return self._last_scene
 
+    @property
+    def ranking(self) -> Ranking:
+        """ O ranking atual """
+
+        return self._ranking
+
     def setup(self) -> None:
         """ Configura a janela """
 
@@ -74,6 +81,7 @@ class GameWindow(Window):
         self._play_menu = PlayMenu(self)
         self._playing = Playing(self)
         self._game_over_menu = GameOverMenu(self)
+        self._ranking_menu = RankingMenu(self)
 
         # Carrega o Ranking
         self._ranking = Ranking()
@@ -96,7 +104,8 @@ class GameWindow(Window):
                 self.show_view(self._play_menu)
                 pass
             case Scene.RANKING_MENU:
-                self._last_scene, self._current_scene = self._current_scene, self._last_scene
+                self._ranking_menu.setup()
+                self.show_view(self._ranking_menu)
                 pass
             case Scene.SETTINGS_MENU:
                 self._last_scene, self._current_scene = self._current_scene, self._last_scene

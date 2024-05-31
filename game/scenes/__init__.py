@@ -5,8 +5,9 @@ from .game_over_menu import *
 from .main_menu import *
 from .play_menu import *
 from .playing import *
+from .ranking_menu import *
 from .scenes import *
 from .speeds import *
 
 # Export padrão
-__all__ = ["GameOverMenu", "MainMenu", "PlayMenu", "Playing", "Scene", "Speed"]
+__all__ = ["GameOverMenu", "MainMenu", "PlayMenu", "Playing", "RankingMenu", "Scene", "Speed"]
