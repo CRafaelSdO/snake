@@ -79,7 +79,7 @@ class Playing(View):
         self._paused = False
         self._max_score = False
 
-        # Zera os contadoires de tempo
+        # Zera os contadores de tempo
         self._delta_time = 0
         self._max_score_time = 0
 
@@ -94,55 +94,62 @@ class Playing(View):
         cell_size = self.window.properties.cell_size
         scale = cell_size * 2 / 512
 
-        ## Imagens
-        up_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 + cell_size * 1.05)
-        down_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 - cell_size * 1.05, angle = 180)
-        left_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 1.4, center_y = height * 0.75 - cell_size * 1.05, angle = 90)
-        right_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 5.6, center_y = height * 0.75 - cell_size * 1.05, angle = -90)
-        escape = Sprite(self.window.resources.images.get("esc"), scale = scale, center_x = width * 0.5 + cell_size * 1.5, center_y = height * 0.25)
-
         ## Lista de imagens
         self._images = SpriteList()
+
+        ## Imagens
+        up_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 + cell_size * 1.05)
         self._images.append(up_arrow)
+
+        down_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 - cell_size * 1.05, angle = 180)
         self._images.append(down_arrow)
+
+        left_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 1.4, center_y = height * 0.75 - cell_size * 1.05, angle = 90)
         self._images.append(left_arrow)
+
+        right_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 5.6, center_y = height * 0.75 - cell_size * 1.05, angle = -90)
         self._images.append(right_arrow)
+
+        escape = Sprite(self.window.resources.images.get("esc"), scale = scale, center_x = width * 0.5 + cell_size * 1.5, center_y = height * 0.25)
         self._images.append(escape)
 
         # UI do jogo
-        ## Área de texto do score
-        self._score_text = TextArea("0", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("button"))
-
-        ## Gerenciador de UI com elemento de ancoragem para centralizar no centro e acima
+        ## Gerenciador de UI
         self._ui_manager = UIManager()
-        self._ui_manager.add(UIAnchorWidget(child = self._score_text, anchor_x = "center", anchor_y = "top"))
 
-        # Menu de pausa
-        ## Áreas de texto
+        ## Texto da pontuação
+        self._score_text = TextArea("0", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("button"))
+        self._ui_manager.add(UIAnchorWidget(child = self._score_text, anchor_y = "top"))
+
+        # UI do menu de pausa
+        ## Gerenciador de UI
+        self._pause_ui_manager = UIManager()
+
+        ## Box layout para alinhar e centralizar tudo
+        box = UIBoxLayout(space_between = 10)
+        self._pause_ui_manager.add(UIAnchorWidget(child = box))
+
+        ## Título
         game = TextArea("Jogo", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
-        paused = TextArea("Pausado", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
+        box.add(game)
 
-        ## Estilo dos botões
-        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+        paused = TextArea("Pausado", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
+        box.add(paused)
+
+        ## Box layout para alinhar e centralizar os botões
+        buttons_box = UIBoxLayout(vertical = False, space_between = 10)
+        box.add(buttons_box)
 
         ## Botões
+        ### Estilo
+        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+
+        ### Instâncias
         main_menu = Button("Menu Principal", button_style, self.window, Scene.MAIN_MENU)
+        buttons_box.add(main_menu)
+
         restart = Button("Reiniciar", button_style, self.window, Scene.PLAYING)
-
-        ## Box layout para conter e alinhar os botões na horizontal
-        horizontal_box = UIBoxLayout(vertical = False, space_between = 10)
-        horizontal_box.add(main_menu)
-        horizontal_box.add(restart)
-
-        ## Box layout para conter e alinhar o texto e os botões na vertical
-        box = UIBoxLayout(space_between = 10)
-        box.add(game)
-        box.add(paused)
-        box.add(horizontal_box)
-
-        ## Gerenciador de UI com elemento de ancoragem para centralizar tudo
-        self._pause_ui_manager = UIManager()
-        self._pause_ui_manager.add(UIAnchorWidget(child = box))
+        buttons_box.add(restart)
 
         # Define que os objetos de UI foram criados
         self._setup = True
@@ -159,7 +166,7 @@ class Playing(View):
         # Desativa o gerenciador de UI
         self._ui_manager.disable()
 
-    def on_update(self, delta_time: float):
+    def on_update(self, delta_time: float) -> None:
         """ Chama da ao atualizar """
 
         # Verifica se está pausado
@@ -205,7 +212,7 @@ class Playing(View):
                 self._snake.move(next_cell)
                 pass
 
-    def on_key_press(self, symbol: int, modifiers: int):
+    def on_key_press(self, symbol: int, modifiers: int) -> None:
         """ Chamada ao pressionar uma tecla """
 
         # Lógica para pausar

@@ -29,35 +29,39 @@ class PlayMenu(View):
         if self._setup:
             return
 
-        # Área de texto
-        title_text = TextArea("Escolha a dificuldade:", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
+        # Gerenciador de UI
+        self._ui_manager = UIManager()
 
-        # Estilo dos botões
-        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+        # Box layout para alinhar e centralizar tudo
+        box = UIBoxLayout(space_between = 10)
+        self._ui_manager.add(UIAnchorWidget(child = box))
+
+        # Título
+        title_text = TextArea("Escolha a dificuldade:", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
+        box.add(UIAnchorWidget(child = title_text, anchor_y = "top"))
 
         # Botões
-        very_easy = Button("Muito Fácil", button_style, self.window, Scene.PLAYING, Speed.VERY_EASY)
-        easy = Button("Fácil", button_style, self.window, Scene.PLAYING, Speed.EASY)
-        medium = Button("Médio", button_style, self.window, Scene.PLAYING, Speed.MEDIUM)
-        hard = Button("Difícil", button_style, self.window, Scene.PLAYING, Speed.HARD)
-        extreme = Button("Extremo", button_style, self.window, Scene.PLAYING, Speed.EXTREME)
-        back = Button("Voltar", button_style, self.window, self.window.last_scene)
+        ## Estilo
+        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
 
-        # Box layout para conter e alinhar o texto e os botões
-        box = UIBoxLayout(space_between = 10)
-        box.add(title_text)
+        ## Instâncias
+        very_easy = Button("Muito Fácil", button_style, self.window, Scene.PLAYING, Speed.VERY_EASY)
         box.add(very_easy)
+
+        easy = Button("Fácil", button_style, self.window, Scene.PLAYING, Speed.EASY)
         box.add(easy)
+
+        medium = Button("Médio", button_style, self.window, Scene.PLAYING, Speed.MEDIUM)
         box.add(medium)
+
+        hard = Button("Difícil", button_style, self.window, Scene.PLAYING, Speed.HARD)
         box.add(hard)
+
+        extreme = Button("Extremo", button_style, self.window, Scene.PLAYING, Speed.EXTREME)
         box.add(extreme)
 
-        # Botão de voltar ficará alinhado no canto inferior esquerdo
+        back = Button("Voltar", button_style, self.window, self.window.last_scene)
         box.add(UIAnchorWidget(child = back, anchor_x = "left", anchor_y = "bottom"))
-
-        # Gerenciador de UI com elemento de ancoragem para centralizar tudo
-        self._ui_manager = UIManager()
-        self._ui_manager.add(UIAnchorWidget(child = box))
 
         # Define que os objetos de UI foram criados
         self._setup = True

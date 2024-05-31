@@ -28,29 +28,33 @@ class MainMenu(View):
         if self._setup:
             return
 
-        # Área de texto
-        title_text = TextArea("Snake", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
+        # Gerenciador de UI
+        self._ui_manager = UIManager()
 
-        # Estilo dos botões
-        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+        # Box layout para alinhar e centralizar tudo
+        box = UIBoxLayout(space_between = 10)
+        self._ui_manager.add(UIAnchorWidget(child = box))
+
+        # Título
+        title_text = TextArea("Snake", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
+        box.add(title_text)
 
         # Botões
+        ## Estilo
+        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+
+        ## Instâncias
         play = Button("Jogar", button_style, self.window, Scene.PLAY_MENU)
-        ranking = Button("Classificação", button_style, self.window, Scene.RANKING_MENU)
-        settings = Button("Configurações", button_style, self.window, Scene.SETTINGS_MENU)
-        close = Button("Fechar", button_style, self.window, Scene.CLOSE)
-
-        # Box layout para conter e alinhar o texto e os botões
-        box = UIBoxLayout(space_between = 10)
-        box.add(title_text)
         box.add(play)
-        box.add(ranking)
-        box.add(settings)
-        box.add(close)
 
-        # Gerenciador de UI com elemento de ancoragem para centralizar tudo
-        self._ui_manager = UIManager()
-        self._ui_manager.add(UIAnchorWidget(child = box))
+        ranking = Button("Classificação", button_style, self.window, Scene.RANKING_MENU)
+        box.add(ranking)
+
+        settings = Button("Configurações", button_style, self.window, Scene.SETTINGS_MENU)
+        box.add(settings)
+
+        close = Button("Fechar", button_style, self.window, Scene.CLOSE)
+        box.add(close)
 
         # Define que os objetos de UI foram criados
         self._setup = True

@@ -45,6 +45,15 @@ class Ranking(Iterator):
             with open(ranking_file, "wb") as file:
                 pass
 
+    def __len__(self) -> int:
+        return len(self._ranking_list)
+
+    def __getitem__(self, index) -> Score:
+        if index >= len(self._ranking_list):
+            raise IndexError
+
+        return self._ranking_list[index]
+
     def __iter__(self) -> Iterator:
         self._current_index = -1
 
@@ -85,7 +94,7 @@ class Ranking(Iterator):
                 score = args[1]
         else:
             raise TypeError(f"Ranking.add() aceita Union[bytes, tuple[str, int], tuple[str, str]] mas foi fornecido {type(args)}")
-        
+
         new = self.Score(name, score)
 
         # Salva o score novo e organiza a lista
