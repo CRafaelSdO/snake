@@ -8,6 +8,7 @@ from arcade import draw_rectangle_filled, draw_rectangle_outline, Window
 
 # Imports de pacotes locais
 from .properties import *
+from .ranking import *
 from .resources import *
 from .scenes import *
 
@@ -34,6 +35,9 @@ class GameWindow(Window):
         self._play_menu: PlayMenu = None
         self._playing: Playing = None
         self._game_over_menu: GameOverMenu = None
+
+        # Ranking
+        self._ranking: Ranking = None
 
     @property
     def properties(self) -> Properties:
@@ -71,10 +75,13 @@ class GameWindow(Window):
         self._playing = Playing(self)
         self._game_over_menu = GameOverMenu(self)
 
+        # Carrega o Ranking
+        self._ranking = Ranking()
+
         # Inicia o ciclo das cenas
         self.switch_scene(Scene.MAIN_MENU)
 
-    def switch_scene(self, next_scene: Scene, speed: Optional[Speed] = None, score: Optional[int] = 0) -> None:
+    def switch_scene(self, next_scene: Scene, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Faz a mudança de cena """
 
         self._last_scene, self._current_scene = self._current_scene, next_scene
@@ -102,7 +109,18 @@ class GameWindow(Window):
                 self._game_over_menu.setup(score)
                 self.show_view(self._game_over_menu)
                 pass
+            case Scene.SAVE_SCORE:
+                if not self._game_over_menu.saved:
+                    name, score = self._game_over_menu.score
+
+                    if name != "":
+                        self._ranking.add(name, score)
+                        self._game_over_menu.saved = True
+                
+                self.switch_scene(Scene.GAME_OVER_MENU)
+                pass
             case Scene.CLOSE:
+                self._ranking.save()
                 self.close()
                 pass
             case _:
