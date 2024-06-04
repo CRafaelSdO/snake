@@ -9,7 +9,7 @@ class Scene(Enum):
     MAIN_MENU = 0
     PLAY_MENU = 1
     RANKING_MENU = 2
-    SETTINGS_MENU = 3
+    SWITCH_FULL_SCREEN = 3
     PLAYING = 4
     GAME_OVER_MENU = 5
     SAVE_SCORE = 6

@@ -19,13 +19,19 @@ class MainMenu(View):
         # Gerenciador de UI
         self._ui_manager: UIManager = None
 
+        # Botão para mudar entre tela cheia e janela
+        self._switch_full_screen: Button = None
+
         # Controla se os objetos da UI já foram criados
         self._setup: bool = False
 
     def setup(self) -> None:
         """ Configura o menu principal """
 
+        switch_full_screen_text = "Janela" if self.window.fullscreen else "Tela Cheia"
+
         if self._setup:
+            self._switch_full_screen.set_text(switch_full_screen_text)
             return
 
         # Gerenciador de UI
@@ -50,8 +56,8 @@ class MainMenu(View):
         ranking = Button("Classificação", button_style, self.window, Scene.RANKING_MENU)
         box.add(ranking)
 
-        settings = Button("Configurações", button_style, self.window, Scene.SETTINGS_MENU)
-        box.add(settings)
+        self._switch_full_screen = Button(switch_full_screen_text, button_style, self.window, Scene.SWITCH_FULL_SCREEN)
+        box.add(self._switch_full_screen)
 
         close = Button("Fechar", button_style, self.window, Scene.CLOSE)
         box.add(close)

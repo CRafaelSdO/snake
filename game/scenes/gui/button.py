@@ -21,7 +21,7 @@ class Button(UIFlatButton):
         """ Define o estilo de um botão """
 
         font_name: str
-        font_size: str
+        font_size: int
         font_color: Optional[Color] = (0, 0, 0)
         border_color: Optional[Color] = (127, 127, 127)
         border_width: Optional[float] = 2.5
@@ -54,6 +54,17 @@ class Button(UIFlatButton):
 
         # Configura muda a cena e passando a velocidade escolhida
         self._window.switch_scene(self._scene, self._speed)
+
+    def set_text(self, text: str):
+        """ Redefine o texto desse botão """
+
+        # Área de texto para definir largura e altura do botão
+        aux = TextArea(text, self._style.get("font_name"), self._style.get("font_size"))
+        width, height = aux.size
+        margin = self._window.properties.cell_size
+
+        self.text = text
+        self.rect = self.rect.resize(width + margin, height + margin)
 
 # Export padrão
 __all__ = ["Button"]

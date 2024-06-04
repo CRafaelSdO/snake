@@ -107,8 +107,10 @@ class GameWindow(Window):
                 self._ranking_menu.setup()
                 self.show_view(self._ranking_menu)
                 pass
-            case Scene.SETTINGS_MENU:
-                self._last_scene, self._current_scene = self._current_scene, self._last_scene
+            case Scene.SWITCH_FULL_SCREEN:
+                self.set_fullscreen(not self.fullscreen)
+                self._properties = self._properties.update(self)
+                self.switch_scene(self._last_scene)
                 pass
             case Scene.PLAYING:
                 self._playing.setup(speed)
