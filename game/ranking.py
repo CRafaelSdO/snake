@@ -6,12 +6,14 @@ from dataclasses import dataclass
 from math import floor, log
 from os import getcwd
 from os.path import join
+from pathlib import Path
 from typing import Optional, Union
 
 class Ranking(Iterator):
     """ Define o ranking """
 
-    RANKING_FILE = join(getcwd(), "data/ranking")
+    RANKING_PATH = join(getcwd(), "data")
+    RANKING_FILE = "ranking"
     ENCODING = "ascii"
 
     @dataclass
@@ -28,9 +30,10 @@ class Ranking(Iterator):
 
             return self.name.encode(encoding) + ",".encode(encoding) + self.score.to_bytes(score_byte_count) + ",".encode(encoding)
 
-    def __init__(self, ranking_file: Optional[str] = RANKING_FILE, encoding: Optional[str] = ENCODING) -> None:
+    def __init__(self, ranking_path: Optional[str] = RANKING_PATH, ranking_file: Optional[str] = RANKING_FILE, encoding: Optional[str] = ENCODING) -> None:
         """ Inicializa um ranking """
 
+        self._ranking_path: str = ranking_path
         self._ranking_file: str = ranking_file
         self._encoding: str = encoding
         self._ranking_list: list[self.Score] = []
@@ -38,11 +41,13 @@ class Ranking(Iterator):
 
         # Carrega o ranking salvo anteriormente, cria o arquivo caso não exista
         try:
-            with open(ranking_file, "rb") as file:
+            with open(join(ranking_path, ranking_file), "rb") as file:
                 for line in file.readlines():
                     self.add(line)
         except:
-            with open(ranking_file, "wb") as file:
+            Path(ranking_path).mkdir(parents = True, exist_ok = True)
+
+            with open(join(ranking_path, ranking_file), "wb"):
                 pass
 
     def __len__(self) -> int:
@@ -113,7 +118,7 @@ class Ranking(Iterator):
         for item in self._ranking_list:
             content += item.encode(self._encoding) + "\n".encode(self._encoding)
 
-        with open(self._ranking_file, "wb") as file:
+        with open(join(self._ranking_path, self._ranking_file), "wb") as file:
             file.write(content)
 
 # Export padrão
