@@ -1,6 +1,7 @@
 """ Pacote das cenas do jogo """
 
 # Imports dos módulos
+from .base_scene import *
 from .game_over_menu import *
 from .main_menu import *
 from .play_menu import *

@@ -88,6 +88,17 @@ class GameWindow(Window):
 
         # Inicia o ciclo das cenas
         self.switch_scene(Scene.MAIN_MENU)
+    
+
+    def set_scenes_full_screen(self, full_screen: bool):
+        """ Passa para as cenas se a janela está em tela cheia """
+
+        self._main_menu.set_full_screen(full_screen)
+        self._play_menu.set_full_screen(full_screen)
+        self._ranking_menu.set_full_screen(full_screen)
+        self._playing.set_full_screen(full_screen)
+        self._game_over_menu.set_full_screen(full_screen)
+
 
     def switch_scene(self, next_scene: Scene, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Faz a mudança de cena """
@@ -108,7 +119,7 @@ class GameWindow(Window):
                 self.show_view(self._ranking_menu)
                 pass
             case Scene.SWITCH_FULL_SCREEN:
-                self.set_fullscreen(not self.fullscreen)
+                self.set_scenes_full_screen(not self.fullscreen)
                 self._properties = self._properties.update(self)
                 self.switch_scene(self._last_scene)
                 pass

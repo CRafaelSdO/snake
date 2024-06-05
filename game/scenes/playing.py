@@ -5,23 +5,24 @@ from math import floor
 from typing import Optional
 
 # Imports de pacotes externos
-from arcade import draw_rectangle_filled, draw_text, Sprite, SpriteList, View, Window
+from arcade import draw_rectangle_filled, draw_text, Sprite, SpriteList, Window
 from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 from arcade.key import ESCAPE
 
 # Imports de pacotes locais
+from .base_scene import *
 from .entities import *
 from .gui import *
 from .scenes import *
 from .speeds import *
 
-class Playing(View):
+class Playing(BaseScene):
     """ Define uma tela de jogo """
 
     def __init__(self, window: Window) -> None:
         """ Inicializa a tela de jogo """
 
-        super().__init__(window)
+        super().__init__(window, True)
 
         # Campo
         self._board: Board = None
@@ -50,18 +51,14 @@ class Playing(View):
         # Tempo com a pontuação máxima
         self._max_score_time: float = 0
 
-        # Gerenciadores de UI
-        self._ui_manager: UIManager = None
-        self._pause_ui_manager: UIManager = None
-
         # Texto do Score
         self._score_text: TextArea = None
 
         # Lista de imagens
-        self._images: SpriteList = None
+        self._images: SpriteList = SpriteList()
 
-        # Controla se os objetos da UI já foram criados
-        self._setup: bool = False
+        # Gerenciador da UI de pausa
+        self._pause_ui_manager: UIManager = UIManager()
 
     def setup(self, speed: Optional[Speed] = None) -> None:
         """ Configura a tela de jogo"""
@@ -83,19 +80,20 @@ class Playing(View):
         self._delta_time = 0
         self._max_score_time = 0
 
-        if self._setup:
+        if self.full_screen == self.window.fullscreen:
             self._score_text.text = f"0"
             self._score_text.fit_content()
             return
+        else:
+            self.ui_manager.clear()
+            self._pause_ui_manager.clear()
+            self._images.clear()
 
         # Intruções iniciais
         width = self.window.properties.width
         height = self.window.properties.height
         cell_size = self.window.properties.cell_size
         scale = cell_size * 2 / 512
-
-        ## Lista de imagens
-        self._images = SpriteList()
 
         ## Imagens
         up_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 + cell_size * 1.05)
@@ -114,17 +112,11 @@ class Playing(View):
         self._images.append(escape)
 
         # UI do jogo
-        ## Gerenciador de UI
-        self._ui_manager = UIManager()
-
         ## Texto da pontuação
         self._score_text = TextArea("0", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("button"))
-        self._ui_manager.add(UIAnchorWidget(child = self._score_text, anchor_y = "top"))
+        self.ui_manager.add(UIAnchorWidget(child = self._score_text, anchor_y = "top"))
 
         # UI do menu de pausa
-        ## Gerenciador de UI
-        self._pause_ui_manager = UIManager()
-
         ## Box layout para alinhar e centralizar tudo
         box = UIBoxLayout(space_between = 10)
         self._pause_ui_manager.add(UIAnchorWidget(child = box))
@@ -152,19 +144,7 @@ class Playing(View):
         buttons_box.add(restart)
 
         # Define que os objetos de UI foram criados
-        self._setup = True
-
-    def on_show_view(self) -> None:
-        """ Chamada uma vez ao entrar nessa cena """
-
-        # Ativa o gerenciador de UI
-        self._ui_manager.enable()
-
-    def on_hide_view(self) -> None:
-        """ Chamada uma vez ao sair dessa cena """
-
-        # Desativa o gerenciador de UI
-        self._ui_manager.disable()
+        self.full_screen = self.window.fullscreen
 
     def on_update(self, delta_time: float) -> None:
         """ Chama da ao atualizar """
@@ -234,15 +214,11 @@ class Playing(View):
     def on_draw(self) -> None:
         """ Chamada sempre ao desenhar """
 
-        # Desenha o plano de fundo
-        self.window.draw_background(True)
+        super().on_draw()
 
         # Desenha a comida e a cobra
         self._food.on_draw()
         self._snake.on_draw()
-
-        # Denhea a UI na tela
-        self._ui_manager.draw()
 
         # Desenha as intruções iniciais
         if not self._started:

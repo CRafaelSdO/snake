@@ -4,15 +4,16 @@
 from typing import Optional
 
 # Imports de pacotes externos
-from arcade import draw_rectangle_filled, draw_text, View, Window
-from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
+from arcade import draw_rectangle_filled, draw_text, Window
+from arcade.gui import UIAnchorWidget, UIBoxLayout
 
 # Imports de pacotes locais
+from .base_scene import *
 from .gui import *
 from .scenes import *
 from .speeds import *
 
-class GameOverMenu(View):
+class GameOverMenu(BaseScene):
     """ Define um menu de fim de jogo """
 
     def __init__(self, window: Window) -> None:
@@ -23,9 +24,6 @@ class GameOverMenu(View):
         # Pontuação do jogo finalizado
         self._score: int = 0
 
-        # Gerenciador de UI
-        self._ui_manager: UIManager = None
-
         # Texto do score
         self._score_text: TextArea = None
 
@@ -34,9 +32,6 @@ class GameOverMenu(View):
 
         # Controla se o score foi salvo
         self._saved: bool = False
-
-        # Controla se os objetos da UI já foram criados
-        self._setup: bool = False
 
     @property
     def score(self) -> tuple[str, int]:
@@ -66,19 +61,18 @@ class GameOverMenu(View):
         # Formata o texto do score
         score_text = f"{self._score:_}".replace("_", ".")
 
-        if self._setup:
+        if self.full_screen == self.window.fullscreen:
             self._score_text.text = f"Você fez {score_text} pontos"
             self._score_text.fit_content()
 
             self._input_text.text = ""
             return
-
-        # Gerenciador de UI
-        self._ui_manager = UIManager()
+        else:
+            self.ui_manager.clear()
 
         # Box layout para alinhar e centralizar tudo
         box = UIBoxLayout(space_between = 10)
-        self._ui_manager.add(UIAnchorWidget(child = box))
+        self.ui_manager.add(UIAnchorWidget(child = box))
 
         # Título
         game = TextArea("Fim de", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
@@ -123,25 +117,12 @@ class GameOverMenu(View):
         buttons_box.add(restart)
 
         # Define que os objetos de UI foram criados
-        self._setup = True
-
-    def on_show_view(self) -> None:
-        """ Chamada uma vez ao entrar nessa cena """
-
-        # Ativa o gerenciador de UI
-        self._ui_manager.enable()
-
-    def on_hide_view(self) -> None:
-        """ Chamada uma vez ao sair dessa cena """
-
-        # Desativa o gerenciador de UI
-        self._ui_manager.disable()
+        self.full_screen = self.window.fullscreen
 
     def on_draw(self) -> None:
         """ Chamada sempre ao desenhar """
 
-        # Desenha o plano de fundo
-        self.window.draw_background()
+        super().on_draw()
 
         x = self._input_text.center_x
         y = self._input_text.center_y
@@ -153,9 +134,6 @@ class GameOverMenu(View):
 
         # Texto do input de texto
         draw_text(self._input_text.text, x - width / 2, y, (0, 0, 0), self.window.properties.fonts_sizes.get("body") * 0.75, font_name = self.window.resources.fonts.get("body").name, anchor_y = "center")
-
-        # Desenha a UI
-        self._ui_manager.draw()
 
 # Export padrão
 __all__ = ["GameOverMenu"]

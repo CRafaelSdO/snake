@@ -1,14 +1,15 @@
 """ Módulo do menu principal """
 
 # Imports de pacotes externos
-from arcade import View, Window
-from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
+from arcade import Window
+from arcade.gui import UIAnchorWidget, UIBoxLayout
 
 # Imports de pacotes locais
+from .base_scene import *
 from .gui import *
 from .scenes import *
 
-class MainMenu(View):
+class MainMenu(BaseScene):
     """ Define um menu principal """
 
     def __init__(self, window: Window) -> None:
@@ -16,30 +17,20 @@ class MainMenu(View):
 
         super().__init__(window)
 
-        # Gerenciador de UI
-        self._ui_manager: UIManager = None
-
         # Botão para mudar entre tela cheia e janela
         self._switch_full_screen: Button = None
-
-        # Controla se os objetos da UI já foram criados
-        self._setup: bool = False
 
     def setup(self) -> None:
         """ Configura o menu principal """
 
-        switch_full_screen_text = "Janela" if self.window.fullscreen else "Tela Cheia"
-
-        if self._setup:
-            self._switch_full_screen.set_text(switch_full_screen_text)
+        if self.full_screen == self.window.fullscreen:
             return
-
-        # Gerenciador de UI
-        self._ui_manager = UIManager()
+        else:
+            self.ui_manager.clear()
 
         # Box layout para alinhar e centralizar tudo
         box = UIBoxLayout(space_between = 10)
-        self._ui_manager.add(UIAnchorWidget(child = box))
+        self.ui_manager.add(UIAnchorWidget(child = box))
 
         # Título
         title_text = TextArea("Snake", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
@@ -56,6 +47,8 @@ class MainMenu(View):
         ranking = Button("Classificação", button_style, self.window, Scene.RANKING_MENU)
         box.add(ranking)
 
+        switch_full_screen_text = "Janela" if self.window.fullscreen else "Tela Cheia"
+
         self._switch_full_screen = Button(switch_full_screen_text, button_style, self.window, Scene.SWITCH_FULL_SCREEN)
         box.add(self._switch_full_screen)
 
@@ -63,28 +56,7 @@ class MainMenu(View):
         box.add(close)
 
         # Define que os objetos de UI foram criados
-        self._setup = True
-
-    def on_show_view(self) -> None:
-        """ Chamada uma vez ao entrar nessa cena """
-
-        # Ativa o gerenciador de UI
-        self._ui_manager.enable()
-
-    def on_hide_view(self) -> None:
-        """ Chamada uma vez ao sair dessa cena """
-
-        # Desativa o gerenciador de UI
-        self._ui_manager.disable()
-
-    def on_draw(self) -> None:
-        """ Chamada sempre ao desenhar """
-
-        # Desenha o plano de fundo
-        self.window.draw_background()
-
-        # Desenha a UI
-        self._ui_manager.draw()
+        self.full_screen = self.window.fullscreen
 
 # Export padrão
 __all__ = ["MainMenu"]

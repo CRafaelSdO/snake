@@ -1,16 +1,17 @@
 """ Módulo do menu de ranking """
 
 # Imports de pacotes externos
-from arcade import View, Window
-from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
+from arcade import Window
+from arcade.gui import UIAnchorWidget, UIBoxLayout
 
 # Imports de pacotes locais
+from .base_scene import *
 from ..ranking import *
 from .gui import *
 from .scenes import *
 from .speeds import *
 
-class RankingMenu(View):
+class RankingMenu(BaseScene):
     """ Define um menu de ranking """
 
     def __init__(self, window: Window) -> None:
@@ -18,30 +19,24 @@ class RankingMenu(View):
 
         super().__init__(window)
 
-        # Gerenciador de UI
-        self._ui_manager: UIManager = None
-
         # Textos do ranking
         self._ranking_text: list[tuple[TextArea, TextArea]] = None
-
-        # Controla se os objetos da UI já foram criados
-        self._setup: bool = False
 
     def setup(self) -> None:
         """ Configura o menu jogar """
 
-        if self._setup:
+        if self.full_screen == self.window.fullscreen:
             for i in range(len(self.window.ranking)):
                 self._ranking_text[i][0].text = self.window.ranking[i].name
                 self._ranking_text[i][1].text = str(self.window.ranking[i].score)
+                self._ranking_text.fit_content()
             return
-
-        # Gerenciador de UI
-        self._ui_manager = UIManager()
+        else:
+            self.ui_manager.clear()
 
         # Box layout para alinhar e centralizar tudo
         box = UIBoxLayout(space_between = 10)
-        self._ui_manager.add(UIAnchorWidget(child = box))
+        self.ui_manager.add(UIAnchorWidget(child = box))
 
         # Título
         best_players = TextArea("Melhores Jogadores", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("body") * 1.25)
@@ -117,28 +112,7 @@ class RankingMenu(View):
         box.add(UIAnchorWidget(child = back, anchor_x = "left", anchor_y = "bottom"))
 
         # Define que os objetos de UI foram criados
-        self._setup = True
-
-    def on_show_view(self) -> None:
-        """ Chamada uma vez ao entrar nessa cena """
-
-        # Ativa o gerenciador de UI
-        self._ui_manager.enable()
-
-    def on_hide_view(self) -> None:
-        """ Chamada uma vez ao sair dessa cena """
-
-        # Desativa o gerenciador de UI
-        self._ui_manager.disable()
-
-    def on_draw(self) -> None:
-        """ Chamada sempre ao desenhar """
-
-        # Desenha o plano de fundo
-        self.window.draw_background()
-
-        # Desenha a UI
-        self._ui_manager.draw()
+        self.full_screen = self.window.fullscreen
 
 # Export padrão
 __all__ = ["RankingMenu"]
