@@ -1,28 +1,79 @@
 """ Módulo das propriedadedes """
 
 # Imports de pacotes BuiltIn
-from typing import NamedTuple, Optional
+from collections.abc import Iterator
+from dataclasses import dataclass
+from math import floor, log
+from os import getcwd
+from os.path import join
+from pathlib import Path
+from typing import Optional, Union
 
 # Imports de pacotes externos
 from arcade import Window
 
-class Properties(NamedTuple):
-    """ Define as propriedades """
+class Properties(Iterator):
+    """ Define o conjunto das propriedades """
 
-    title: Optional[str] = 'Snake Game'
-    fullscreen: Optional[bool] = False
-    center_window: Optional[bool] = True
-    width: Optional[int] = 900
-    height: Optional[int] = 960
-    cell_size: Optional[int] = 30
-    margin: Optional[float] = 0
-    fonts_sizes: Optional[dict[str, float]] = {
-        "title": 200,
-        "body": 50,
-        "button": 30
+    DEFAULT_PROPERTIES_PATH = join(getcwd(), "data")
+    DEFAULT_PROPERTIES_FILE = "ranking"
+    DEFAULT_ENCODING = "ascii"
+
+    @dataclass
+    class Propertie:
+        """ Define uma propriedade """
+
+        name: str
+        value: Union[bool, int, str, dict[str, int]]
+
+        def encode(self, encoding: str) -> bytes:
+            """ Transfoma essa propriedade em bytes """
+
+            encoded = self.name.encode(encoding) + ",".encode(encoding)
+
+            if isinstance(self.value, bool):
+                encoded += self.value.to_bytes() + ",".encode(encoding)
+            elif isinstance(self.value, int):
+                byte_count = floor(log(self.value, 256)) + 1
+                encoded += self.value.to_bytes(byte_count) + ",".encode(encoding)
+            elif isinstance(self.value, str):
+                encoded += self.value.encode(encoding) + ",".encode(encoding)
+            elif isinstance(self.value, dict[str, int]):
+                for key in self.value:
+                    prefix = encoded + ".".encode(encoding)
+                    value = self.value.get(key)
+
+                    byte_count = floor(log(value, 256)) + 1
+
+                    encoded += prefix + key.encode(encoding) + ",".encode(encoding) + value.to_bytes(byte_count) + ",\n".encode(encoding)
+
+            return encoded
+
+    DEFAULT_PROPERTIES: dict[str, Union[bool, int, str, dict[str, int]]] = {
+        "title": "Snake Game",
+        "fullscreen": False,
+        "width": 900,
+        "height": 960,
+        "cell_size": 30,
+        "margin": 0,
+        "fonts_sizes": {
+            "title": 200,
+            "body": 50,
+            "button": 30
+        }
     }
 
-    def update(self, window: Window) -> NamedTuple:
+    def __init__(self, /, properties: Optional[dict[str, Union[bool, int, str, dict[str, int]]]] = DEFAULT_PROPERTIES, propesties_path: Optional[str] = DEFAULT_PROPERTIES_PATH, propesties_file: Optional[str] = DEFAULT_PROPERTIES_FILE, encoding: Optional[str] = DEFAULT_ENCODING) -> None:
+        """ Inicializa o conjunto de propriedades """
+
+        self._properties_path: str = propesties_path
+        self._propesties_file: str = propesties_file
+        self._encoding: str = encoding
+        self._properties: dict[str, Union[bool, int, str, dict[str, int]]] = properties
+
+        pass
+
+    def update(self, window: Window) -> Iterator:
         """ Atualiza width, height e cell_size de forma proporcional aos atuais caso fullscreen de window seja true"""
 
         # Novas largura e altura

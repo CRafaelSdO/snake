@@ -1,6 +1,7 @@
 """ Módulo dos recursos """
 
 # Imports de pacotes BuiltIn
+from dataclasses import dataclass
 from os import getcwd
 from os.path import join
 from typing import NamedTuple, Optional
@@ -11,9 +12,10 @@ from arcade import load_font
 class Resources():
     """ Define as propriedades """
 
-    RESOURCES_DIR = join(getcwd(), "resources")
+    DEFAULT_RESOURCES_PATH: str = join(getcwd(), "resources")
 
-    class Font(NamedTuple):
+    @dataclass
+    class Font():
         """ Define uma fonte """
 
         name: str
@@ -21,16 +23,16 @@ class Resources():
 
     # Fontes padrão
     DEFAULT_FONTS: dict[str, Font] = {
-        "title": Font("Dimitri Swank", join(RESOURCES_DIR, "fonts/Dimitri Swank.ttf")),
-        "body": Font("Type Machine", join(RESOURCES_DIR, "fonts/Type Machine.ttf")),
-        "button": Font("Retro Gaming", join(RESOURCES_DIR, "fonts/Retro Gaming.ttf"))
+        "title": Font("Dimitri Swank", join(DEFAULT_RESOURCES_PATH, "fonts/Dimitri Swank.ttf")),
+        "body": Font("Type Machine", join(DEFAULT_RESOURCES_PATH, "fonts/Type Machine.ttf")),
+        "button": Font("Retro Gaming", join(DEFAULT_RESOURCES_PATH, "fonts/Retro Gaming.ttf"))
     }
 
     # Imagens padrão
     DEFAULT_IMAGES: dict[str, str] = {
-        "sprites": join(RESOURCES_DIR, "images/sprites.png"),
-        "seta": join(RESOURCES_DIR, "images/seta.png"),
-        "esc": join(RESOURCES_DIR, "images/esc.png")
+        "sprites": join(DEFAULT_RESOURCES_PATH, "images/sprites.png"),
+        "seta": join(DEFAULT_RESOURCES_PATH, "images/seta.png"),
+        "esc": join(DEFAULT_RESOURCES_PATH, "images/esc.png")
     }
 
     def __init__(self, fonts: Optional[dict[str, Font]] = DEFAULT_FONTS, images: Optional[dict[str, str]] = DEFAULT_IMAGES) -> None:

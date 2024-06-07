@@ -12,9 +12,9 @@ from typing import Optional, Union
 class Ranking(Iterator):
     """ Define o ranking """
 
-    RANKING_PATH = join(getcwd(), "data")
-    RANKING_FILE = "ranking"
-    ENCODING = "ascii"
+    DEFAULT_RANKING_PATH = join(getcwd(), "data")
+    DEFAULT_RANKING_FILE = "ranking"
+    DEFAULT_ENCODING = "ascii"
 
     @dataclass
     class Score:
@@ -24,13 +24,13 @@ class Ranking(Iterator):
         score: int
 
         def encode(self, encoding: str) -> bytes:
-            """ Transforma esse Score em bytes """
+            """ Transforma esse score em bytes """
 
-            score_byte_count = floor(log(self.score, 256)) + 1
+            byte_count = floor(log(self.score, 256)) + 1
 
-            return self.name.encode(encoding) + ",".encode(encoding) + self.score.to_bytes(score_byte_count) + ",".encode(encoding)
+            return self.name.encode(encoding) + ",".encode(encoding) + self.score.to_bytes(byte_count) + ",".encode(encoding)
 
-    def __init__(self, ranking_path: Optional[str] = RANKING_PATH, ranking_file: Optional[str] = RANKING_FILE, encoding: Optional[str] = ENCODING) -> None:
+    def __init__(self, ranking_path: Optional[str] = DEFAULT_RANKING_PATH, ranking_file: Optional[str] = DEFAULT_RANKING_FILE, encoding: Optional[str] = DEFAULT_ENCODING) -> None:
         """ Inicializa um ranking """
 
         self._ranking_path: str = ranking_path
