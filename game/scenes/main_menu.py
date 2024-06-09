@@ -33,12 +33,12 @@ class MainMenu(BaseScene):
         self.ui_manager.add(UIAnchorWidget(child = box))
 
         # Título
-        title_text = TextArea("Snake", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title"))
+        title_text = TextArea("Snake", self.window.resources.fonts["title"], self.window.properties.fonts_sizes["title"])
         box.add(title_text)
 
         # Botões
         ## Estilo
-        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+        button_style = Button.ButtonStyle(self.window.resources.fonts["button"], self.window.properties.fonts_sizes["button"])
 
         ## Instâncias
         play = Button("Jogar", button_style, self.window, Scene.PLAY_MENU)

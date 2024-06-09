@@ -9,12 +9,13 @@ from os.path import join
 from pathlib import Path
 from typing import Optional, Union
 
+# Pasta, arquivo e codificação padrão
+DEFAULT_RANKING_PATH: str = join(getcwd(), "data")
+DEFAULT_RANKING_FILE: str = "ranking"
+DEFAULT_ENCODING: str = "ascii"
+
 class Ranking(Iterator):
     """ Define o ranking """
-
-    DEFAULT_RANKING_PATH = join(getcwd(), "data")
-    DEFAULT_RANKING_FILE = "ranking"
-    DEFAULT_ENCODING = "ascii"
 
     @dataclass
     class Score:
@@ -27,8 +28,9 @@ class Ranking(Iterator):
             """ Transforma esse score em bytes """
 
             byte_count = floor(log(self.score, 256)) + 1
+            separator = ",".encode(encoding)
 
-            return self.name.encode(encoding) + ",".encode(encoding) + self.score.to_bytes(byte_count) + ",".encode(encoding)
+            return self.name.encode(encoding) + separator + self.score.to_bytes(byte_count) + separator
 
     def __init__(self, ranking_path: Optional[str] = DEFAULT_RANKING_PATH, ranking_file: Optional[str] = DEFAULT_RANKING_FILE, encoding: Optional[str] = DEFAULT_ENCODING) -> None:
         """ Inicializa um ranking """
@@ -72,7 +74,7 @@ class Ranking(Iterator):
 
         return self._ranking_list[self._current_index]
 
-    def add(self, *args: Union[bytes, tuple[str, int], tuple[str, str]]) -> None:
+    def add(self, *args: Union[bytes, tuple[str, int]]) -> None:
         """ Adiciona um score ao ranking"""
 
         # Lógica para garantir que os argumentos estão corretos
@@ -82,28 +84,22 @@ class Ranking(Iterator):
         if isinstance(args, bytes):
             splitted = args.split(",".encode(self._encoding))
 
-            if len(splitted) >= 2:
-                name = splitted[0].decode(self._encoding)
-                score = int.from_bytes(splitted[1])
-            else:
-                raise TypeError(f"Os bytes {args} não estão no formato 'name,score' como esperado")
+            if len(splitted) < 2:
+                raise TypeError(f"Os bytes {args} não estão no formato 'name,score,' como esperado")
+
+            name = splitted[0].decode(self._encoding)
+            score = int.from_bytes(splitted[1])
         elif len(args) == 2:
-            if not isinstance(args[0], str):
-                name = str(args[0])
-            else:
-                name = args[0]
+            if not isinstance(args[0], str) or not isinstance(args[1], int):
+                raise TypeError(f"Ranking.add() aceita Union[bytes, tuple[str, int]] mas foi fornecido {type(args).__name__}")
 
-            if not isinstance(args[1], int):
-                score = int(args[1])
-            else:
-                score = args[1]
+            name = args[0]
+            score = args[1]
         else:
-            raise TypeError(f"Ranking.add() aceita Union[bytes, tuple[str, int], tuple[str, str]] mas foi fornecido {type(args)}")
-
-        new = self.Score(name, score)
+            raise TypeError(f"Ranking.add() aceita Union[bytes, tuple[str, int]] mas foi fornecido {type(args).__name__}")
 
         # Salva o score novo e organiza a lista
-        self._ranking_list.append(new)
+        self._ranking_list.append(self.Score(name, score))
         self._ranking_list.sort(key = lambda item: item.score, reverse = True)
 
         # Se tiver mais que 10 scores no ranking retira o último

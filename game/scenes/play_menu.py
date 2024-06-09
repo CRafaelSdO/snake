@@ -31,12 +31,12 @@ class PlayMenu(BaseScene):
         self.ui_manager.add(UIAnchorWidget(child = box))
 
         # Título
-        title_text = TextArea("Escolha a dificuldade:", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
+        title_text = TextArea("Escolha a dificuldade:", self.window.resources.fonts["body"], self.window.properties.fonts_sizes["body"])
         box.add(title_text)
 
         # Botões
         ## Estilo
-        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+        button_style = Button.ButtonStyle(self.window.resources.fonts["button"], self.window.properties.fonts_sizes["button"])
 
         ## Instâncias
         very_easy = Button("Muito Fácil", button_style, self.window, Scene.PLAYING, Speed.VERY_EASY)

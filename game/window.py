@@ -12,13 +12,17 @@ from .ranking import *
 from .resources import *
 from .scenes import *
 
+# Propriedades e recursos padrão
+DEFAULT_PROPERTIES = Properties()
+DEFAULT_RESOURCES = Resources()
+
 class GameWindow(Window):
     """ Define uma janela """
 
-    def __init__(self, properties: Optional[Properties] = Properties(), resources: Optional[Resources] = Resources()) -> None:
+    def __init__(self, properties: Optional[Properties] = DEFAULT_PROPERTIES, resources: Optional[Resources] = DEFAULT_RESOURCES) -> None:
         """ Inicializa uma janela """
 
-        super().__init__(properties.width, properties.height, properties.title, properties.fullscreen, center_window = properties.center_window)
+        super().__init__(properties.windowed_width, properties.windowed_height, "Sanke Game", properties.fullscreen, center_window = True)
 
         # Propriedades
         self._properties: Properties = properties
@@ -74,7 +78,7 @@ class GameWindow(Window):
         self._resources.setup()
 
         # Atualiza as propriedades
-        self._properties = self._properties.update(self)
+        self._properties.update(self)
 
         # Inicializa as cenas
         self._main_menu = MainMenu(self)
@@ -120,7 +124,11 @@ class GameWindow(Window):
                 pass
             case Scene.SWITCH_FULL_SCREEN:
                 self.set_scenes_full_screen(not self.fullscreen)
-                self._properties = self._properties.update(self)
+                self._properties.update(self)
+
+                if not self.fullscreen:
+                    self.center_window()
+
                 self.switch_scene(self._last_scene)
                 pass
             case Scene.PLAYING:
@@ -143,6 +151,7 @@ class GameWindow(Window):
                 pass
             case Scene.CLOSE:
                 self._ranking.save()
+                self._properties.save()
                 self.close()
                 pass
             case _:

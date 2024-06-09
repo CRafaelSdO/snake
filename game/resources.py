@@ -1,58 +1,44 @@
 """ Módulo dos recursos """
 
 # Imports de pacotes BuiltIn
-from dataclasses import dataclass
 from os import getcwd
 from os.path import join
-from typing import NamedTuple, Optional
 
 # Imports de pacotes externos
 from arcade import load_font
 
+# Pastas padrão
+RESOURCES_PATH: str = join(getcwd(), "resources")
+FONTS_PATH: str = join(RESOURCES_PATH, "fonts")
+IMAGES_PATH: str = join(RESOURCES_PATH, "images")
+
+# Fontes padrão
+FONTS: dict[str, str] = {
+    "title": "Dimitri Swank",
+    "body": "Type Machine",
+    "button": "Retro Gaming"
+}
+
 class Resources():
     """ Define as propriedades """
 
-    DEFAULT_RESOURCES_PATH: str = join(getcwd(), "resources")
-
-    @dataclass
-    class Font():
-        """ Define uma fonte """
-
-        name: str
-        file_path: str
-
-    # Fontes padrão
-    DEFAULT_FONTS: dict[str, Font] = {
-        "title": Font("Dimitri Swank", join(DEFAULT_RESOURCES_PATH, "fonts/Dimitri Swank.ttf")),
-        "body": Font("Type Machine", join(DEFAULT_RESOURCES_PATH, "fonts/Type Machine.ttf")),
-        "button": Font("Retro Gaming", join(DEFAULT_RESOURCES_PATH, "fonts/Retro Gaming.ttf"))
-    }
-
-    # Imagens padrão
-    DEFAULT_IMAGES: dict[str, str] = {
-        "sprites": join(DEFAULT_RESOURCES_PATH, "images/sprites.png"),
-        "seta": join(DEFAULT_RESOURCES_PATH, "images/seta.png"),
-        "esc": join(DEFAULT_RESOURCES_PATH, "images/esc.png")
-    }
-
-    def __init__(self, fonts: Optional[dict[str, Font]] = DEFAULT_FONTS, images: Optional[dict[str, str]] = DEFAULT_IMAGES) -> None:
+    def __init__(self) -> None:
         """ Inicializa os recursos """
 
         # Fontes
-        self._fonts: dict[str, Resources.Font] = fonts
-        self._images: dict[str, str] = images
+        self._fonts: dict[str, str] = FONTS
+        self._images_path: str = IMAGES_PATH
 
     @property
-    def fonts(self) -> dict[str, Font]:
+    def fonts(self) -> dict[str, str]:
         """ As fontes utilizadas """
 
         return self._fonts
 
-    @property
-    def images(self) -> dict[str, str]:
+    def images(self, name: str) -> str:
         """ As imagens utilizadas """
 
-        return self._images
+        return join(self._images_path, name + ".png")
 
     def setup(self) -> None:
         """ Configura todos os recursos """
@@ -64,7 +50,7 @@ class Resources():
         """ Carrega todas as fontes """
 
         for font in self._fonts:
-            load_font(self._fonts.get(font).file_path)
+            load_font(join(FONTS_PATH, self._fonts[font] + ".ttf"))
 
 # Exportação padrão
 __all__ = ["Resources"]

@@ -75,14 +75,14 @@ class GameOverMenu(BaseScene):
         self.ui_manager.add(UIAnchorWidget(child = box))
 
         # Título
-        game = TextArea("Fim de", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
+        game = TextArea("Fim de", self.window.resources.fonts["title"], self.window.properties.fonts_sizes["title"] * 0.75)
         box.add(game)
 
-        over = TextArea("Jogo", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
+        over = TextArea("Jogo", self.window.resources.fonts["title"], self.window.properties.fonts_sizes["title"] * 0.75)
         box.add(over)
 
         # Corpo
-        self._score_text = TextArea(f"Você fez {score_text} pontos", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body"))
+        self._score_text = TextArea(f"Você fez {score_text} pontos", self.window.resources.fonts["body"], self.window.properties.fonts_sizes["body"])
         box.add(self._score_text)
 
         # Input
@@ -91,16 +91,16 @@ class GameOverMenu(BaseScene):
         box.add(input_box)
 
         ## Título
-        digit_name = TextArea("Nome:", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body") * 0.75)
+        digit_name = TextArea("Nome:", self.window.resources.fonts["body"], self.window.properties.fonts_sizes["body"] * 0.75)
         input_box.add(digit_name)
 
         ## Caixa de texto
-        self._input_text = InputText(self.window, self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("body") * 0.75)
+        self._input_text = InputText(self.window, self.window.resources.fonts["body"], self.window.properties.fonts_sizes["body"] * 0.75)
         input_box.add(self._input_text)
 
         # Botões
         ## Estilo
-        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+        button_style = Button.ButtonStyle(self.window.resources.fonts["button"], self.window.properties.fonts_sizes["button"])
 
         ## Instâncias
         confirm = Button("Confirmar", button_style, self.window, Scene.SAVE_SCORE)
@@ -133,7 +133,7 @@ class GameOverMenu(BaseScene):
         draw_rectangle_filled(x, y, width, height, (127, 127, 127, 127))
 
         # Texto do input de texto
-        draw_text(self._input_text.text, x - width / 2, y, (0, 0, 0), self.window.properties.fonts_sizes.get("body") * 0.75, font_name = self.window.resources.fonts.get("body").name, anchor_y = "center")
+        draw_text(self._input_text.text, x - width / 2, y, (0, 0, 0), self.window.properties.fonts_sizes["body"] * 0.75, font_name = self.window.resources.fonts["body"], anchor_y = "center")
 
 # Export padrão
 __all__ = ["GameOverMenu"]

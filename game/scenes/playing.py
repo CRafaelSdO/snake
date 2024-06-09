@@ -96,24 +96,24 @@ class Playing(BaseScene):
         scale = cell_size * 2 / 512
 
         ## Imagens
-        up_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 + cell_size * 1.05)
+        up_arrow = Sprite(self.window.resources.images("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 + cell_size * 1.05)
         self._images.append(up_arrow)
 
-        down_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 - cell_size * 1.05, angle = 180)
+        down_arrow = Sprite(self.window.resources.images("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 - cell_size * 1.05, angle = 180)
         self._images.append(down_arrow)
 
-        left_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 1.4, center_y = height * 0.75 - cell_size * 1.05, angle = 90)
+        left_arrow = Sprite(self.window.resources.images("seta"), scale = scale, center_x = width * 0.5 + cell_size * 1.4, center_y = height * 0.75 - cell_size * 1.05, angle = 90)
         self._images.append(left_arrow)
 
-        right_arrow = Sprite(self.window.resources.images.get("seta"), scale = scale, center_x = width * 0.5 + cell_size * 5.6, center_y = height * 0.75 - cell_size * 1.05, angle = -90)
+        right_arrow = Sprite(self.window.resources.images("seta"), scale = scale, center_x = width * 0.5 + cell_size * 5.6, center_y = height * 0.75 - cell_size * 1.05, angle = -90)
         self._images.append(right_arrow)
 
-        escape = Sprite(self.window.resources.images.get("esc"), scale = scale, center_x = width * 0.5 + cell_size * 1.5, center_y = height * 0.25)
+        escape = Sprite(self.window.resources.images("esc"), scale = scale, center_x = width * 0.5 + cell_size * 1.5, center_y = height * 0.25)
         self._images.append(escape)
 
         # UI do jogo
         ## Texto da pontuação
-        self._score_text = TextArea("0", self.window.resources.fonts.get("body").name, self.window.properties.fonts_sizes.get("button"))
+        self._score_text = TextArea("0", self.window.resources.fonts["body"], self.window.properties.fonts_sizes["button"])
         self.ui_manager.add(UIAnchorWidget(child = self._score_text, anchor_y = "top"))
 
         # UI do menu de pausa
@@ -122,10 +122,10 @@ class Playing(BaseScene):
         self._pause_ui_manager.add(UIAnchorWidget(child = box))
 
         ## Título
-        game = TextArea("Jogo", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
+        game = TextArea("Jogo", self.window.resources.fonts["title"], self.window.properties.fonts_sizes["title"] * 0.75)
         box.add(game)
 
-        paused = TextArea("Pausado", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("title") * 0.75)
+        paused = TextArea("Pausado", self.window.resources.fonts["title"], self.window.properties.fonts_sizes["title"] * 0.75)
         box.add(paused)
 
         ## Box layout para alinhar e centralizar os botões
@@ -134,7 +134,7 @@ class Playing(BaseScene):
 
         ## Botões
         ### Estilo
-        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+        button_style = Button.ButtonStyle(self.window.resources.fonts["button"], self.window.properties.fonts_sizes["button"])
 
         ### Instâncias
         main_menu = Button("Menu Principal", button_style, self.window, Scene.MAIN_MENU)
@@ -196,20 +196,20 @@ class Playing(BaseScene):
         """ Chamada ao pressionar uma tecla """
 
         # Lógica para pausar
-        if self._started and symbol == ESCAPE:
+        if symbol == ESCAPE:
             self._paused = False if self._paused else True
 
             if self._paused:
                 self._pause_ui_manager.enable()
             else:
                 self._pause_ui_manager.disable()
-
-        # Lógica para mudar a direção de movimento
-        try:
-            self._snake.direction = Direction(symbol) if not self._paused else self._snake.direction
-            self._started = True
-        except:
-            pass
+        elif not self._paused:
+            # Lógica para mudar a direção de movimento
+            try:
+                self._snake.direction = Direction(symbol) if not self._paused else self._snake.direction
+                self._started = True
+            except:
+                pass
 
     def on_draw(self) -> None:
         """ Chamada sempre ao desenhar """
@@ -221,18 +221,18 @@ class Playing(BaseScene):
         self._snake.on_draw()
 
         # Desenha as intruções iniciais
-        if not self._started:
+        if not self._started and not self._paused:
             width = self.window.properties.width
             height = self.window.properties.height
             cell_size = self.window.properties.cell_size
 
             # Instruções para movimento
-            draw_text("Use", width * 0.5 - cell_size * 3, height * 0.75, (0, 0, 0), self.window.properties.fonts_sizes.get("body"), font_name = self.window.resources.fonts.get("body").name, anchor_x = "center", anchor_y = "center")
-            draw_text("para se mover", width * 0.5, height * 0.75 - cell_size * 3, (0, 0, 0), self.window.properties.fonts_sizes.get("body"), font_name = self.window.resources.fonts.get("body").name, anchor_x = "center", anchor_y = "center")
+            draw_text("Use", width * 0.5 - cell_size * 3, height * 0.75, (0, 0, 0), self.window.properties.fonts_sizes["body"], font_name = self.window.resources.fonts["body"], anchor_x = "center", anchor_y = "center")
+            draw_text("para se mover", width * 0.5, height * 0.75 - cell_size * 3, (0, 0, 0), self.window.properties.fonts_sizes["body"], font_name = self.window.resources.fonts["body"], anchor_x = "center", anchor_y = "center")
 
             # Instruções para pausar
-            draw_text("Use", width * 0.5 - cell_size * 3, height * 0.25, (0, 0, 0), self.window.properties.fonts_sizes.get("body"), font_name = self.window.resources.fonts.get("body").name, anchor_x = "center", anchor_y = "center")
-            draw_text("para pausar o jogo", width * 0.5, height * 0.25 - cell_size * 3, (0, 0, 0), self.window.properties.fonts_sizes.get("body"), font_name = self.window.resources.fonts.get("body").name, anchor_x = "center", anchor_y = "center")
+            draw_text("Use", width * 0.5 - cell_size * 3, height * 0.25, (0, 0, 0), self.window.properties.fonts_sizes["body"], font_name = self.window.resources.fonts["body"], anchor_x = "center", anchor_y = "center")
+            draw_text("para pausar o jogo", width * 0.5, height * 0.25 - cell_size * 3, (0, 0, 0), self.window.properties.fonts_sizes["body"], font_name = self.window.resources.fonts["body"], anchor_x = "center", anchor_y = "center")
 
             # Imagens
             self._images.draw()

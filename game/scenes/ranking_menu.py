@@ -39,7 +39,7 @@ class RankingMenu(BaseScene):
         self.ui_manager.add(UIAnchorWidget(child = box))
 
         # Título
-        best_players = TextArea("Melhores Jogadores", self.window.resources.fonts.get("title").name, self.window.properties.fonts_sizes.get("body") * 1.25)
+        best_players = TextArea("Melhores Jogadores", self.window.resources.fonts["title"], self.window.properties.fonts_sizes["body"] * 1.25)
         box.add(best_players)
 
         # Ranking
@@ -56,8 +56,8 @@ class RankingMenu(BaseScene):
         rigth_box = UIBoxLayout(space_between = 10)
         ranking_box.add(rigth_box)
 
-        font_name = self.window.resources.fonts.get("body").name
-        font_size = self.window.properties.fonts_sizes.get("body") * 0.5
+        font_name = self.window.resources.fonts["body"]
+        font_size = self.window.properties.fonts_sizes["body"] * 0.5
 
         ## Cabeçalho
         position_text = TextArea("#", font_name, font_size)
@@ -105,7 +105,7 @@ class RankingMenu(BaseScene):
 
         # Botão
         ## Estilo
-        button_style = Button.ButtonStyle(self.window.resources.fonts.get("button").name, self.window.properties.fonts_sizes.get("button"))
+        button_style = Button.ButtonStyle(self.window.resources.fonts["button"], self.window.properties.fonts_sizes["button"])
 
         # Instância
         back = Button("Voltar", button_style, self.window, self.window.last_scene)
