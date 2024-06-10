@@ -1,10 +1,10 @@
 """ Módulo da cobra """
 
 # Imports de pacotes locais
-from .board import *
-from .cell import *
-from .contents import *
-from .directions import *
+from .board import Board
+from .cell import Cell
+from .contents import Content
+from .directions import Direction, opposite
 
 class Snake():
     """ Define um campo """
@@ -97,6 +97,3 @@ class Snake():
 
         for cell in self._body:
             cell.on_draw()
-
-# Export padrão
-__all__ = ["Snake"]

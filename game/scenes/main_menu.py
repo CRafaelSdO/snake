@@ -1,13 +1,17 @@
 """ Módulo do menu principal """
 
+# Imports de pacotes BuiltIn
+from typing import Optional
+
 # Imports de pacotes externos
 from arcade import Window
 from arcade.gui import UIAnchorWidget, UIBoxLayout
 
 # Imports de pacotes locais
-from .base_scene import *
-from .gui import *
-from .scenes import *
+from .base_scene import BaseScene
+from .gui import TextArea, Button
+from .scenes import Scene
+from .speeds import Speed
 
 class MainMenu(BaseScene):
     """ Define um menu principal """
@@ -20,13 +24,15 @@ class MainMenu(BaseScene):
         # Botão para mudar entre tela cheia e janela
         self._switch_full_screen: Button = None
 
-    def setup(self) -> None:
+    def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura o menu principal """
 
+        # Verifica se o modo de janela desta cena é o mesmo que o da janela
         if self.full_screen == self.window.fullscreen:
             return
-        else:
-            self.ui_manager.clear()
+
+        # Reinicia o gerenciador de UI
+        self.ui_manager.clear()
 
         # Box layout para alinhar e centralizar tudo
         box = UIBoxLayout(space_between = 10)
@@ -55,8 +61,5 @@ class MainMenu(BaseScene):
         close = Button("Fechar", button_style, self.window, Scene.CLOSE)
         box.add(close)
 
-        # Define que os objetos de UI foram criados
+        # Configura o modo de janela desta cena
         self.full_screen = self.window.fullscreen
-
-# Export padrão
-__all__ = ["MainMenu"]

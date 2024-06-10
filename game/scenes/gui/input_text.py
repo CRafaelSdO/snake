@@ -5,7 +5,7 @@ from arcade import Window
 from arcade.gui import UIInputText
 
 # Imports de pacotes locais
-from .text_area import *
+from .text_area import TextArea
 
 class InputText(UIInputText):
     """ Define um input de texto """
@@ -20,6 +20,3 @@ class InputText(UIInputText):
         width = window.properties.cell_size * 10
 
         super().__init__(width = width, height = height, font_name = font_name, font_size = font_size)
-
-# Export padrão
-__all__ = ["InputText"]

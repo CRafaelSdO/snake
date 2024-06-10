@@ -1,15 +1,16 @@
 """ Módulo do menu de ranking """
 
+# Imports de pacotes BuiltIn
+from typing import Optional
+
 # Imports de pacotes externos
 from arcade import Window
 from arcade.gui import UIAnchorWidget, UIBoxLayout
 
 # Imports de pacotes locais
-from .base_scene import *
-from ..ranking import *
-from .gui import *
-from .scenes import *
-from .speeds import *
+from .base_scene import BaseScene
+from .gui import TextArea, Button
+from .speeds import Speed
 
 class RankingMenu(BaseScene):
     """ Define um menu de ranking """
@@ -22,17 +23,22 @@ class RankingMenu(BaseScene):
         # Textos do ranking
         self._ranking_text: list[tuple[TextArea, TextArea]] = None
 
-    def setup(self) -> None:
+    def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura o menu jogar """
 
+        # Verifica se o modo de janela desta cena é o mesmo que o da janela
         if self.full_screen == self.window.fullscreen:
             for i in range(len(self.window.ranking)):
                 self._ranking_text[i][0].text = self.window.ranking[i].name
+                self._ranking_text[i][0].fit_content()
+
                 self._ranking_text[i][1].text = str(self.window.ranking[i].score)
-                self._ranking_text.fit_content()
+                self._ranking_text[i][1].fit_content()
+
             return
-        else:
-            self.ui_manager.clear()
+
+        # Reinicia o gerenciador de UI
+        self.ui_manager.clear()
 
         # Box layout para alinhar e centralizar tudo
         box = UIBoxLayout(space_between = 10)
@@ -75,7 +81,7 @@ class RankingMenu(BaseScene):
 
         ## Itens do ranking
         for score in self.window.ranking:
-            i = i + 1
+            i += 1
 
             position_text = TextArea(f"{i}º", font_name, font_size)
             left_box.add(position_text)
@@ -90,7 +96,7 @@ class RankingMenu(BaseScene):
 
         ## Posições vazias
         while len(self._ranking_text) < 10:
-            i = i + 1
+            i += 1
 
             position_text = TextArea(f"{i}º", font_name, font_size)
             left_box.add(position_text)
@@ -111,8 +117,5 @@ class RankingMenu(BaseScene):
         back = Button("Voltar", button_style, self.window, self.window.last_scene)
         box.add(UIAnchorWidget(child = back, anchor_x = "left", anchor_y = "bottom"))
 
-        # Define que os objetos de UI foram criados
+        # Configura o modo de janela desta cena
         self.full_screen = self.window.fullscreen
-
-# Export padrão
-__all__ = ["RankingMenu"]

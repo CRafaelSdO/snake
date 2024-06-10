@@ -9,35 +9,17 @@ class PropertiesDataTypes(Enum):
     BOOL = 0
     INT = 1
 
-    def to_bytes(self) -> bytes:
+    def to_bytes(self, name: bytes, value: bytes, separator: bytes) -> bytes:
         """ O tipo de dados em bytes """
 
-        return self.value.to_bytes()
+        return name + separator + value + separator + self.value.to_bytes() + separator
 
-    def from_bytes(bytes: bytes) -> Enum:
-        """ Instancia PropertiesDataTypes a partir de bytes """
+def from_bytes(bytes: bytes) -> PropertiesDataTypes:
+    """ Instancia PropertiesDataTypes a partir de bytes """
 
-        try:
-            propertie_data_type = PropertiesDataTypes(int.from_bytes(bytes))
-        except:
-            raise TypeError(f"Não é possível instanciar PropertiesDataTypes com {bytes}")
+    return PropertiesDataTypes(int.from_bytes(bytes))
 
-        return propertie_data_type
+def from_str(type: str) -> PropertiesDataTypes:
+    """ Instancia PropertiesDataTypes a partir de str """
 
-    def from_str(string: str) -> Enum:
-        """ Instancia PropertiesDataTypes a partir de str """
-
-        match(string):
-            case "bool":
-                new = PropertiesDataTypes.BOOL
-                pass
-            case "int":
-                new = PropertiesDataTypes.INT
-                pass
-            case _:
-                raise TypeError(f"Não é possível instanciar PropertiesDataTypes com {string}")
-
-        return new
-
-# Export padrão
-__all__ = ["PropertiesDataTypes"]
+    return PropertiesDataTypes[type.upper()]

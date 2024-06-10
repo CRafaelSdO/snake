@@ -9,8 +9,7 @@ from arcade import View, Window
 from arcade.gui import UIManager
 
 # Imports de pacotes locais
-from .gui import *
-from .scenes import *
+from .speeds import Speed
 
 class BaseScene(View):
     """ Define uma cena """
@@ -46,7 +45,7 @@ class BaseScene(View):
         self._full_screen = value
 
     @abstractmethod
-    def setup(self) -> None:
+    def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura a cena """
 
     def set_full_screen(self, full_screen: bool) -> None:
@@ -77,6 +76,3 @@ class BaseScene(View):
 
         # Desenha a UI
         self._ui_manager.draw()
-
-# Export padrão
-__all__ = ["BaseScene"]

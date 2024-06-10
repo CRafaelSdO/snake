@@ -4,7 +4,7 @@
 from arcade import draw_circle_filled, draw_rectangle_filled
 
 # Imports de pacotes locais
-from .contents import *
+from .contents import Content
 
 class Cell():
     """ Define uma célula do campo """
@@ -48,11 +48,10 @@ class Cell():
         match(self._content):
             case Content.EMPTY:
                 pass
+
             case Content.FOOD:
                 draw_circle_filled(self._x, self._y, self._size / 2, (255, 0, 0))
                 pass
+
             case _:
                 draw_rectangle_filled(self._x, self._y, self._size, self._size, (255, 121, 0))
-
-# Export padrão
-__all__ = ["Cell"]

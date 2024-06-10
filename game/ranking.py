@@ -89,12 +89,14 @@ class Ranking(Iterator):
 
             name = splitted[0].decode(self._encoding)
             score = int.from_bytes(splitted[1])
+
         elif len(args) == 2:
             if not isinstance(args[0], str) or not isinstance(args[1], int):
                 raise TypeError(f"Ranking.add() aceita Union[bytes, tuple[str, int]] mas foi fornecido {type(args).__name__}")
 
             name = args[0]
             score = args[1]
+
         else:
             raise TypeError(f"Ranking.add() aceita Union[bytes, tuple[str, int]] mas foi fornecido {type(args).__name__}")
 
@@ -116,6 +118,3 @@ class Ranking(Iterator):
 
         with open(join(self._ranking_path, self._ranking_file), "wb") as file:
             file.write(content)
-
-# Export padrão
-__all__ = ["Ranking"]

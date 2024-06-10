@@ -10,9 +10,9 @@ from arcade.gui import UIFlatButton
 from arcade.gui.events import UIOnClickEvent
 
 # Imports de pacotes locais
-from ..scenes import *
-from ..speeds import *
-from .text_area import *
+from ..scenes import Scene
+from ..speeds import Speed
+from .text_area import TextArea
 
 class Button(UIFlatButton):
     """ Define um botão """
@@ -65,6 +65,3 @@ class Button(UIFlatButton):
 
         self.text = text
         self.rect = self.rect.resize(width + margin, height + margin)
-
-# Export padrão
-__all__ = ["Button"]

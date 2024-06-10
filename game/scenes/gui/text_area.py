@@ -12,6 +12,3 @@ class TextArea(UITextArea):
         super().__init__(text = text, font_name = font_name, font_size = font_size, text_color = (0, 0, 0), multiline = False)
 
         self.fit_content()
-
-# Export padrão
-__all__ = ["TextArea"]

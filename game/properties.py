@@ -6,13 +6,13 @@ from math import floor, log
 from os import getcwd
 from os.path import join
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
 # Imports de pacotes externos
 from arcade import Window
 
 # Imports de pacotes locais
-from .properties_data_types import PropertiesDataTypes
+from .properties_data_types import from_bytes, from_str, PropertiesDataTypes
 
 # Pasta, arquivo e codificação padrão
 DEFAULT_PROPERTIES_PATH: str = join(getcwd(), "data")
@@ -33,23 +33,18 @@ class Properties():
     class Property:
         """ Define uma propriedade """
 
-        value: Union[bool, int]
+        value: Union[int, bool]
 
         def encode(self, name: str, encoding: str) -> bytes:
             """ Transfoma essa propriedade em bytes """
 
-            separator = ",".encode(encoding)
+            # Define a quantidade de bytes a serem usados para o valor desta propriedade
+            byte_count = 1
 
-            encoded = name.encode(encoding) + separator
+            if isinstance(self.value, int) and not isinstance(self.value, bool):
+                byte_count += floor(log(self.value, 256))
 
-            if isinstance(self.value, bool):
-                encoded += self.value.to_bytes() + separator + PropertiesDataTypes.BOOL.to_bytes() + separator
-            elif isinstance(self.value, int):
-                byte_count = floor(log(self.value, 256)) + 1 if self.value > 0 else 1
-
-                encoded += self.value.to_bytes(byte_count) + separator + PropertiesDataTypes.INT.to_bytes() + separator
-
-            return encoded
+            return from_str(type(self.value).__name__).to_bytes(name.encode(encoding), self.value.to_bytes(byte_count), ",".encode(encoding))
 
     def __init__(self, properties_path: Optional[str] = DEFAULT_PROPERTIES_PATH, properties_file: Optional[str] = DEFAULT_PROPERTIES_FILE, encoding: Optional[str] = DEFAULT_ENCODING) -> None:
         """ Inicializa o conjunto de propriedades """
@@ -63,7 +58,7 @@ class Properties():
             with open(join(properties_path, properties_file), "rb") as file:
                 for line in file.readlines():
                     self.add(line)
-        except Exception as e:
+        except:
             Path(properties_path).mkdir(parents = True, exist_ok = True)
 
             with open(join(properties_path, properties_file), "wb"):
@@ -72,13 +67,13 @@ class Properties():
             for item in DEFAULT_PROPERTIES:
                 self.add(item, DEFAULT_PROPERTIES[item])
 
-    def __getattr__(self, name: str) -> Any:
+    def __getattr__(self, name: str) -> Optional[Union[int, bool]]:
         if name not in self._properties:
             return None
 
         return self._properties[name].value
 
-    def add(self, *args: Union[bytes, tuple[str, bool], tuple[str, int]]) -> None:
+    def add(self, *args: Union[bytes, tuple[str, int], tuple[str, bool]]) -> None:
         """ Adiciona uma propriedade ao conjunto de propriedades """
 
         # Lógica para garantir que os parametros estão corretos
@@ -89,25 +84,27 @@ class Properties():
             splitted = args.split(",".encode(self._encoding))
 
             if len(splitted) < 3:
-                raise TypeError(f"Os bytes {args} não estão no formato 'name,value,value_type,' como esperado")
+                raise TypeError(f"Os bytes {args} não estão no formato 'name,value,data_type,' como esperado")
 
             name = splitted[0].decode(self._encoding)
-            value_type = PropertiesDataTypes.from_bytes(splitted[2])
+            data_type = from_bytes(splitted[2])
 
-            if value_type == PropertiesDataTypes.BOOL:
+            if data_type == PropertiesDataTypes.BOOL:
                 value = bool.from_bytes(splitted[1])
             else:
                 value = int.from_bytes(splitted[1])
-        elif len(args) == 2 and isinstance(args[0], str):
+
+        elif len(args) >= 2 and isinstance(args[0], str):
             try:
-                value_type = PropertiesDataTypes.from_str(type(args[1]).__name__)
+                data_type = from_str(type(args[1]).__name__)
             except:
-                raise TypeError(f"Properties.add() aceita Union[bytes, tuple[str, bool], tuple[str, int]] mas foi fornecido {type(args).__name__}")
+                raise TypeError(f"Properties.add() aceita Union[bytes, tuple[str, int], tuple[str, bool]] mas foi fornecido tuple[str, {type(args[1]).__name__}]")
 
             name = args[0]
             value = args[1]
+
         else:
-            raise TypeError(f"Properties.add() aceita Union[bytes, tuple[str, bool], tuple[str, int]] mas foi fornecido {type(args).__name__}")
+            raise TypeError(f"Properties.add() aceita Union[bytes, tuple[str, int], tuple[str, bool]] mas foi fornecido {type(args).__name__}")
 
         # Adiciona a propriedade
         self._properties[name] = self.Property(value)
@@ -120,7 +117,7 @@ class Properties():
         content += self._properties["fullscreen"].encode("fullscreen", self._encoding) + "\n".encode(self._encoding)
         content += self._properties["windowed_width"].encode("windowed_width", self._encoding) + "\n".encode(self._encoding)
         content += self._properties["windowed_height"].encode("windowed_height", self._encoding) + "\n".encode(self._encoding)
-        
+
         with open(join(self._properties_path, self._properties_file), "wb") as file:
             file.write(content)
 
@@ -152,7 +149,7 @@ class Properties():
             self._properties["cell_size"].value = cell_size
         else:
             self._properties["cell_size"] = self.Property(cell_size)
-        
+
         if "margin" in self._properties:
             self._properties["margin"].value = margin
         else:
@@ -169,6 +166,3 @@ class Properties():
                 "body": size / 18,
                 "button": size / 30
             })
-
-# Exportação padrão
-__all__ = ["Properties"]

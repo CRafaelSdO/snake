@@ -4,10 +4,10 @@
 from random import randrange
 
 # Imports de pacotes locais
-from ...properties import *
-from .cell import *
-from .contents import *
-from .directions import *
+from ...properties import Properties
+from .cell import Cell
+from .contents import Content
+from .directions import Direction
 
 class Board():
     """ Define um campo """
@@ -32,6 +32,7 @@ class Board():
         row = self._rows // 2
         column = self._columns // 2
 
+        # Caso não exista uma célula central será escolhida a célula a esquerda e abaixo
         if not self._rows & 1:
             row -= 1
 
@@ -55,15 +56,19 @@ class Board():
             case Direction.UP:
                 row = (row + 1) % self._rows
                 pass
+
             case Direction.DOWN:
                 row = self._rows - 1 if row - 1 < 0 else row - 1
                 pass
+
             case Direction.LEFT:
                 column = self._columns - 1 if column - 1 < 0 else column - 1
                 pass
+
             case Direction.RIGHT:
                 column = (column + 1) % self._columns
                 pass
+
             case _:
                 return None
 
@@ -84,6 +89,3 @@ class Board():
         self._cells[row][column].content = Content.FOOD
 
         return self._cells[row][column]
-
-# Export padrão
-__all__ = ["Board"]

@@ -11,6 +11,3 @@ class Content(Enum):
     HEAD = 2
     BODY = 3
     TAIL = 4
-
-# Export padrão
-__all__ = ["Content"]

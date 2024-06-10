@@ -51,6 +51,3 @@ class Resources():
 
         for font in self._fonts:
             load_font(join(FONTS_PATH, self._fonts[font] + ".ttf"))
-
-# Exportação padrão
-__all__ = ["Resources"]

@@ -10,11 +10,11 @@ from arcade.gui import UIAnchorWidget, UIBoxLayout, UIManager
 from arcade.key import ESCAPE
 
 # Imports de pacotes locais
-from .base_scene import *
+from .base_scene import BaseScene
 from .entities import *
-from .gui import *
-from .scenes import *
-from .speeds import *
+from .gui import TextArea, Button
+from .scenes import Scene
+from .speeds import Speed
 
 class Playing(BaseScene):
     """ Define uma tela de jogo """
@@ -37,19 +37,22 @@ class Playing(BaseScene):
         self._speed: Speed = None
 
         # Controla se o jogo já começou
-        self._started: bool = False
+        self._started: bool = None
 
         # Controla se o jogo está pausado
-        self._paused: bool = False
+        self._paused: bool = None
 
         # Controla se conseguiu a pontuação máxima
-        self._max_score: bool = False
+        self._max_score: bool = None
 
         # Tempo decorrido desde a última atualização
-        self._delta_time: float = 0
+        self._delta_time: float = None
 
         # Tempo com a pontuação máxima
-        self._max_score_time: float = 0
+        self._max_score_time: float = None
+
+        # Gerenciador da UI de pausa
+        self._pause_ui_manager: UIManager = UIManager()
 
         # Texto do Score
         self._score_text: TextArea = None
@@ -57,10 +60,7 @@ class Playing(BaseScene):
         # Lista de imagens
         self._images: SpriteList = SpriteList()
 
-        # Gerenciador da UI de pausa
-        self._pause_ui_manager: UIManager = UIManager()
-
-    def setup(self, speed: Optional[Speed] = None) -> None:
+    def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura a tela de jogo"""
 
         # Configura o campo, a cobra e a primeira comida
@@ -80,14 +80,16 @@ class Playing(BaseScene):
         self._delta_time = 0
         self._max_score_time = 0
 
+        # Verifica se o modo de janela desta cena é o mesmo que o da janela
         if self.full_screen == self.window.fullscreen:
             self._score_text.text = f"0"
             self._score_text.fit_content()
             return
-        else:
-            self.ui_manager.clear()
-            self._pause_ui_manager.clear()
-            self._images.clear()
+
+        # Reinicia os gerenciadores de UI e a lista de sprites
+        self.ui_manager.clear()
+        self._pause_ui_manager.clear()
+        self._images.clear()
 
         # Intruções iniciais
         width = self.window.properties.width
@@ -143,7 +145,7 @@ class Playing(BaseScene):
         restart = Button("Reiniciar", button_style, self.window, Scene.PLAYING)
         buttons_box.add(restart)
 
-        # Define que os objetos de UI foram criados
+        # Configura o modo de janela desta cena
         self.full_screen = self.window.fullscreen
 
     def on_update(self, delta_time: float) -> None:
@@ -153,7 +155,7 @@ class Playing(BaseScene):
         if not self._started or self._paused:
             return
 
-        # Lógica para testar se já deu o tempo de atualizar
+        # Lógica para controlar a frequencia de atualização e a pontuação após preencher todo o campo
         self._delta_time += delta_time
 
         if self._max_score:
@@ -183,11 +185,14 @@ class Playing(BaseScene):
                 if self._snake.size < self._board.cells_count:
                     self._food = self._board.generate_food()
                 else:
+                    self._food = None
                     self._max_score = True
                 pass
+
             case Content.BODY:
                 self.window.switch_scene(Scene.GAME_OVER_MENU, score = floor((self._snake.size - 2 + self._max_score_time) * self._speed.value * 10))
                 pass
+
             case _:
                 self._snake.move(next_cell)
                 pass
@@ -195,7 +200,7 @@ class Playing(BaseScene):
     def on_key_press(self, symbol: int, modifiers: int) -> None:
         """ Chamada ao pressionar uma tecla """
 
-        # Lógica para pausar
+        # Lógica para pausar e despausar
         if symbol == ESCAPE:
             self._paused = False if self._paused else True
 
@@ -203,11 +208,14 @@ class Playing(BaseScene):
                 self._pause_ui_manager.enable()
             else:
                 self._pause_ui_manager.disable()
+
         elif not self._paused:
             # Lógica para mudar a direção de movimento
             try:
-                self._snake.direction = Direction(symbol) if not self._paused else self._snake.direction
-                self._started = True
+                self._snake.direction = Direction(symbol)
+
+                if not self._started:
+                    self._started = True
             except:
                 pass
 
@@ -244,8 +252,6 @@ class Playing(BaseScene):
 
             # UI de pausa com fundo acinzentado
             draw_rectangle_filled(width * 0.5, height * 0.5, width, height, (127, 127, 127, 127))
+
             self._pause_ui_manager.draw()
             pass
-
-# Export padrão
-__all__ = ["Playing"]

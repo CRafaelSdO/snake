@@ -7,14 +7,14 @@ from typing import Optional
 from arcade import draw_rectangle_filled, draw_rectangle_outline, Window
 
 # Imports de pacotes locais
-from .properties import *
-from .ranking import *
-from .resources import *
+from .properties import Properties
+from .ranking import Ranking
+from .resources import Resources
 from .scenes import *
 
 # Propriedades e recursos padrão
-DEFAULT_PROPERTIES = Properties()
-DEFAULT_RESOURCES = Resources()
+DEFAULT_PROPERTIES: Properties = Properties()
+DEFAULT_RESOURCES: Resources = Resources()
 
 class GameWindow(Window):
     """ Define uma janela """
@@ -35,11 +35,7 @@ class GameWindow(Window):
         self._current_scene: Scene = None
 
         # Cenas
-        self._main_menu: MainMenu = None
-        self._play_menu: PlayMenu = None
-        self._playing: Playing = None
-        self._game_over_menu: GameOverMenu = None
-        self._ranking_menu: RankingMenu = None
+        self._scenes: dict[str, BaseScene] = None
 
         # Ranking
         self._ranking: Ranking = None
@@ -74,35 +70,26 @@ class GameWindow(Window):
         # Configura a cor de fundo
         self.background_color = (148, 202, 73)
 
-        # Carrega os resursos
-        self._resources.setup()
-
         # Atualiza as propriedades
         self._properties.update(self)
 
+        # Carrega os resursos
+        self._resources.setup()
+
         # Inicializa as cenas
-        self._main_menu = MainMenu(self)
-        self._play_menu = PlayMenu(self)
-        self._playing = Playing(self)
-        self._game_over_menu = GameOverMenu(self)
-        self._ranking_menu = RankingMenu(self)
+        self._scenes = dict()
+
+        for scene in Scene:
+            scene_class = get_scene_class(scene)
+
+            if scene_class:
+                self._scenes[scene] = scene_class(self)
 
         # Carrega o Ranking
         self._ranking = Ranking()
 
         # Inicia o ciclo das cenas
         self.switch_scene(Scene.MAIN_MENU)
-    
-
-    def set_scenes_full_screen(self, full_screen: bool):
-        """ Passa para as cenas se a janela está em tela cheia """
-
-        self._main_menu.set_full_screen(full_screen)
-        self._play_menu.set_full_screen(full_screen)
-        self._ranking_menu.set_full_screen(full_screen)
-        self._playing.set_full_screen(full_screen)
-        self._game_over_menu.set_full_screen(full_screen)
-
 
     def switch_scene(self, next_scene: Scene, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Faz a mudança de cena """
@@ -110,20 +97,30 @@ class GameWindow(Window):
         self._last_scene, self._current_scene = self._current_scene, next_scene
 
         match(self._current_scene):
-            case Scene.MAIN_MENU:
-                self._main_menu.setup()
-                self.show_view(self._main_menu)
+            case Scene.CLOSE:
+                self._ranking.save()
+                self._properties.save()
+                self.close()
                 pass
-            case Scene.PLAY_MENU:
-                self._play_menu.setup()
-                self.show_view(self._play_menu)
+
+            case Scene.SAVE_SCORE:
+                if not self._scenes[Scene.GAME_OVER_MENU].saved:
+                    name, points = self._scenes[Scene.GAME_OVER_MENU].score
+
+                    if name != "":
+                        self._ranking.add(name, points)
+                        self._scenes[Scene.GAME_OVER_MENU].saved = True
+
+                self.switch_scene(Scene.GAME_OVER_MENU)
                 pass
-            case Scene.RANKING_MENU:
-                self._ranking_menu.setup()
-                self.show_view(self._ranking_menu)
-                pass
+
             case Scene.SWITCH_FULL_SCREEN:
-                self.set_scenes_full_screen(not self.fullscreen)
+                self._scenes[self._last_scene].set_full_screen(not self.fullscreen)
+
+                for scene in self._scenes:
+                    if scene != self._last_scene:
+                        self._scenes[scene].set_full_screen(not self.fullscreen)
+
                 self._properties.update(self)
 
                 if not self.fullscreen:
@@ -131,30 +128,11 @@ class GameWindow(Window):
 
                 self.switch_scene(self._last_scene)
                 pass
-            case Scene.PLAYING:
-                self._playing.setup(speed)
-                self.show_view(self._playing)
-                pass
-            case Scene.GAME_OVER_MENU:
-                self._game_over_menu.setup(score)
-                self.show_view(self._game_over_menu)
-                pass
-            case Scene.SAVE_SCORE:
-                if not self._game_over_menu.saved:
-                    name, score = self._game_over_menu.score
 
-                    if name != "":
-                        self._ranking.add(name, score)
-                        self._game_over_menu.saved = True
-                
-                self.switch_scene(Scene.GAME_OVER_MENU)
-                pass
-            case Scene.CLOSE:
-                self._ranking.save()
-                self._properties.save()
-                self.close()
-                pass
             case _:
+                if self._current_scene in self._scenes:
+                    self._scenes[self._current_scene].setup(speed, score)
+                    self.show_view(self._scenes[self._current_scene])
                 pass
 
     def draw_background(self, with_margin: Optional[bool] = False) -> None:
@@ -189,6 +167,3 @@ class GameWindow(Window):
             height = rows * cell_size
 
             draw_rectangle_outline(center_x, center_y, width, height, (172, 215, 86))
-
-# Exportação padrão
-__all__ = ["GameWindow"]

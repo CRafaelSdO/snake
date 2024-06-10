@@ -26,6 +26,3 @@ def opposite(direction: Direction) -> Direction:
             return Direction.LEFT
         case _:
             return None
-
-# Export padrão
-__all__ = ["Direction", "opposite"]

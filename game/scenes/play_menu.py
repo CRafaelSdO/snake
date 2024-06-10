@@ -1,14 +1,17 @@
 """ Módulo do menu jogar """
 
+# Imports de pacotes BuiltIn
+from typing import Optional
+
 # Imports de pacotes externos
 from arcade import Window
 from arcade.gui import UIAnchorWidget, UIBoxLayout
 
 # Imports de pacotes locais
-from .base_scene import *
-from .gui import *
-from .scenes import *
-from .speeds import *
+from .base_scene import BaseScene
+from .gui import TextArea, Button
+from .scenes import Scene
+from .speeds import Speed
 
 class PlayMenu(BaseScene):
     """ Define um menu jogar """
@@ -18,13 +21,15 @@ class PlayMenu(BaseScene):
 
         super().__init__(window)
 
-    def setup(self) -> None:
+    def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura o menu jogar """
 
+        # Verifica se o modo de janela desta cena é o mesmo que o da janela
         if self.full_screen == self.window.fullscreen:
             return
-        else:
-            self.ui_manager.clear()
+
+        # Reinicia o gerenciador de UI
+        self.ui_manager.clear()
 
         # Box layout para alinhar e centralizar tudo
         box = UIBoxLayout(space_between = 10)
@@ -57,8 +62,5 @@ class PlayMenu(BaseScene):
         back = Button("Voltar", button_style, self.window, self.window.last_scene)
         box.add(UIAnchorWidget(child = back, anchor_x = "left", anchor_y = "bottom"))
 
-        # Define que os objetos de UI foram criados
+        # Configura o modo de janela desta cena
         self.full_screen = self.window.fullscreen
-
-# Export padrão
-__all__ = ["PlayMenu"]

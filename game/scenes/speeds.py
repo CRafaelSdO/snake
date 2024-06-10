@@ -11,6 +11,3 @@ class Speed(Enum):
     MEDIUM = 6
     HARD = 8
     EXTREME = 10
-
-# Export padrão
-__all__ = ["Speed"]
