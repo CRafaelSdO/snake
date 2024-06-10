@@ -48,12 +48,10 @@ class BaseScene(View):
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura a cena """
 
-    def set_full_screen(self, full_screen: bool) -> None:
-        """ Configura se esta cena está em tela cheia """
-
-        self.window.show_view(self)
-        self.window.set_fullscreen(not full_screen)
-        self.window.set_fullscreen(full_screen)
+        if self._full_screen != self.window.fullscreen:
+            self.window.show_view(self)
+            self.window.set_fullscreen(not self.window.fullscreen)
+            self.window.set_fullscreen(not self.window.fullscreen)
 
     def on_show_view(self) -> None:
         """ Chamada uma vez ao entrar nessa cena """

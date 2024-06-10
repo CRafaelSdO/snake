@@ -52,6 +52,8 @@ class GameOverMenu(BaseScene):
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura o menu de fim de jogo """
 
+        super().setup()
+
         # Define a pontuação
         self._score = score if score else self._score
 

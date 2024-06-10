@@ -115,12 +115,7 @@ class GameWindow(Window):
                 pass
 
             case Scene.SWITCH_FULL_SCREEN:
-                self._scenes[self._last_scene].set_full_screen(not self.fullscreen)
-
-                for scene in self._scenes:
-                    if scene != self._last_scene:
-                        self._scenes[scene].set_full_screen(not self.fullscreen)
-
+                self.set_fullscreen(not self._fullscreen)
                 self._properties.update(self)
 
                 if not self.fullscreen:

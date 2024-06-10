@@ -63,6 +63,8 @@ class Playing(BaseScene):
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura a tela de jogo"""
 
+        super().setup()
+
         # Configura o campo, a cobra e a primeira comida
         self._board = Board(self.window.properties)
         self._snake = Snake(self._board)

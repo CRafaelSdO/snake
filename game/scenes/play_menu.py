@@ -24,6 +24,8 @@ class PlayMenu(BaseScene):
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura o menu jogar """
 
+        super().setup()
+
         # Verifica se o modo de janela desta cena é o mesmo que o da janela
         if self.full_screen == self.window.fullscreen:
             return
