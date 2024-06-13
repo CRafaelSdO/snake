@@ -58,7 +58,10 @@ class Playing(BaseScene):
         self._score_text: TextArea = None
 
         # Lista de imagens
-        self._images: SpriteList = SpriteList()
+        self._instructions_images: SpriteList = SpriteList()
+
+        # Lista de sprites
+        self._sprites: SpriteList = SpriteList()
 
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura a tela de jogo"""
@@ -67,6 +70,13 @@ class Playing(BaseScene):
         self._board = Board(self.window.properties)
         self._snake = Snake(self._board)
         self._food = self._board.generate_food()
+
+        # Sprites
+        ## Reinicia a lista de sprites
+        self._sprites.clear()
+
+        ## Carrega as sprites na lista
+        self._board.setup(self._sprites, self.window.resources.images("sprites"))
 
         # Configura a velocidade de movimento da cobra
         self._speed = speed if speed else self._speed
@@ -86,10 +96,10 @@ class Playing(BaseScene):
             self._score_text.fit_content()
             return
 
-        # Reinicia os gerenciadores de UI e a lista de sprites
+        # Reinicia os gerenciadores de UI e a lista de imagens
         self.ui_manager.clear()
         self._pause_ui_manager.clear()
-        self._images.clear()
+        self._instructions_images.clear()
 
         # Intruções iniciais
         width = self.window.properties.width
@@ -99,19 +109,19 @@ class Playing(BaseScene):
 
         ## Imagens
         up_arrow = Sprite(self.window.resources.images("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 + cell_size * 1.05)
-        self._images.append(up_arrow)
+        self._instructions_images.append(up_arrow)
 
         down_arrow = Sprite(self.window.resources.images("seta"), scale = scale, center_x = width * 0.5 + cell_size * 3.5, center_y = height * 0.75 - cell_size * 1.05, angle = 180)
-        self._images.append(down_arrow)
+        self._instructions_images.append(down_arrow)
 
         left_arrow = Sprite(self.window.resources.images("seta"), scale = scale, center_x = width * 0.5 + cell_size * 1.4, center_y = height * 0.75 - cell_size * 1.05, angle = 90)
-        self._images.append(left_arrow)
+        self._instructions_images.append(left_arrow)
 
         right_arrow = Sprite(self.window.resources.images("seta"), scale = scale, center_x = width * 0.5 + cell_size * 5.6, center_y = height * 0.75 - cell_size * 1.05, angle = -90)
-        self._images.append(right_arrow)
+        self._instructions_images.append(right_arrow)
 
         escape = Sprite(self.window.resources.images("esc"), scale = scale, center_x = width * 0.5 + cell_size * 1.5, center_y = height * 0.25)
-        self._images.append(escape)
+        self._instructions_images.append(escape)
 
         # UI do jogo
         ## Texto da pontuação
@@ -243,7 +253,7 @@ class Playing(BaseScene):
             draw_text("para pausar o jogo", width * 0.5, height * 0.25 - cell_size * 3, (0, 0, 0), self.window.properties.fonts_sizes["body"], font_name = self.window.resources.fonts["body"], anchor_x = "center", anchor_y = "center")
 
             # Imagens
-            self._images.draw()
+            self._instructions_images.draw()
 
         # Desenha o menu de pausa
         if self._paused:

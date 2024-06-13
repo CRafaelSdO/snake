@@ -1,10 +1,11 @@
 """ Módulo das células do campo """
 
 # Imports de pacotes externos
-from arcade import draw_circle_filled, draw_rectangle_filled
+from arcade import draw_circle_filled, draw_rectangle_filled, SpriteList
 
 # Imports de pacotes locais
 from .contents import Content
+from .game_sprite import GameSprite
 
 class Cell():
     """ Define uma célula do campo """
@@ -26,6 +27,9 @@ class Cell():
         # Tamanho de desenho da célula
         self._size: float = size
 
+        # Sprite desta célula
+        self._sprite: GameSprite = None
+
     @property
     def position(self) -> tuple[int, int]:
         """ Posição desta célula no campo """
@@ -41,6 +45,14 @@ class Cell():
     @content.setter
     def content(self, content: Content) -> None:
         self._content = content
+
+    def setup(self, sprite_list: SpriteList, sprites_file: str) -> None:
+        """ Carrega a sprite para esta célula """
+
+        self._sprite = GameSprite(sprites_file, self._size, self._x, self._y)
+
+        sprite_list.append(self._sprite)
+        pass
 
     def on_draw(self) -> None:
         """ Chamada quando está célula deve ser desenhada """

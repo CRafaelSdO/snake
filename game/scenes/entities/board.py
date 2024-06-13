@@ -1,10 +1,14 @@
 """ Módulo do campo de jogo """
 
+# Imports de pacotes externos
+from arcade import Sprite, SpriteList
+
 # Imports de pacotes BuiltIn
 from random import randrange
 
 # Imports de pacotes locais
 from ...properties import Properties
+from ...resources import Resources
 from .cell import Cell
 from .contents import Content
 from .directions import Direction
@@ -46,6 +50,13 @@ class Board():
         """ Quantidade total de células neste campo """
 
         return self._rows * self._columns
+
+    def setup(self, sprite_list: SpriteList, sprites_file: str) -> None:
+        """ Carrega as sprites para cada celula do campo """
+
+        for row in self._cells:
+            for cell in row:
+                cell.setup(sprite_list, sprites_file)
 
     def get_next_cell(self, cell: Cell, direcction: Direction) -> Cell:
         """ Retorna a célula vizinha em uma direção"""
