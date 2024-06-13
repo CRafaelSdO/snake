@@ -63,8 +63,6 @@ class Playing(BaseScene):
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura a tela de jogo"""
 
-        super().setup()
-
         # Configura o campo, a cobra e a primeira comida
         self._board = Board(self.window.properties)
         self._snake = Snake(self._board)
@@ -82,8 +80,8 @@ class Playing(BaseScene):
         self._delta_time = 0
         self._max_score_time = 0
 
-        # Verifica se o modo de janela desta cena é o mesmo que o da janela
-        if self.full_screen == self.window.fullscreen:
+        # Verifica se esta cena já foi configurada
+        if self.setted:
             self._score_text.text = f"0"
             self._score_text.fit_content()
             return
@@ -147,8 +145,8 @@ class Playing(BaseScene):
         restart = Button("Reiniciar", button_style, self.window, Scene.PLAYING)
         buttons_box.add(restart)
 
-        # Configura o modo de janela desta cena
-        self.full_screen = self.window.fullscreen
+        # Define que esta cena foi configurada
+        self.setted = True
 
     def on_update(self, delta_time: float) -> None:
         """ Chama da ao atualizar """

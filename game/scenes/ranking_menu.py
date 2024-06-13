@@ -26,10 +26,8 @@ class RankingMenu(BaseScene):
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura o menu jogar """
 
-        super().setup()
-
-        # Verifica se o modo de janela desta cena é o mesmo que o da janela
-        if self.full_screen == self.window.fullscreen:
+        # Verifica se esta cena já foi configurada
+        if self.setted:
             for i in range(len(self.window.ranking)):
                 self._ranking_text[i][0].text = self.window.ranking[i].name
                 self._ranking_text[i][0].fit_content()
@@ -119,5 +117,5 @@ class RankingMenu(BaseScene):
         back = Button("Voltar", button_style, self.window, self.window.last_scene)
         box.add(UIAnchorWidget(child = back, anchor_x = "left", anchor_y = "bottom"))
 
-        # Configura o modo de janela desta cena
-        self.full_screen = self.window.fullscreen
+        # Define que esta cena foi configurada
+        self.setted = True

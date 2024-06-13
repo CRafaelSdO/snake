@@ -64,6 +64,18 @@ class GameWindow(Window):
 
         return self._ranking
 
+    def _create_scenes(self):
+        """ Cria as cenas desta janela """
+
+        # Inicializa as cenas
+        self._scenes = dict()
+
+        for scene in Scene:
+            scene_class = get_scene_class(scene)
+
+            if scene_class:
+                self._scenes[scene] = scene_class(self)
+
     def setup(self) -> None:
         """ Configura a janela """
 
@@ -76,17 +88,11 @@ class GameWindow(Window):
         # Carrega os resursos
         self._resources.setup()
 
-        # Inicializa as cenas
-        self._scenes = dict()
-
-        for scene in Scene:
-            scene_class = get_scene_class(scene)
-
-            if scene_class:
-                self._scenes[scene] = scene_class(self)
-
         # Carrega o Ranking
         self._ranking = Ranking()
+
+        # Cria as cenas desta janela
+        self._create_scenes()
 
         # Inicia o ciclo das cenas
         self.switch_scene(Scene.MAIN_MENU)
@@ -116,10 +122,12 @@ class GameWindow(Window):
 
             case Scene.SWITCH_FULL_SCREEN:
                 self.set_fullscreen(not self._fullscreen)
-                self._properties.update(self)
 
                 if not self.fullscreen:
                     self.center_window()
+
+                self._properties.update(self)
+                self._create_scenes()
 
                 self.switch_scene(self._last_scene)
                 pass

@@ -27,10 +27,8 @@ class MainMenu(BaseScene):
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura o menu principal """
 
-        super().setup()
-
-        # Verifica se o modo de janela desta cena é o mesmo que o da janela
-        if self.full_screen == self.window.fullscreen:
+        # Verifica se esta cena já foi configurada
+        if self.setted:
             return
 
         # Reinicia o gerenciador de UI
@@ -63,5 +61,5 @@ class MainMenu(BaseScene):
         close = Button("Fechar", button_style, self.window, Scene.CLOSE)
         box.add(close)
 
-        # Configura o modo de janela desta cena
-        self.full_screen = self.window.fullscreen
+        # Define que esta cena foi configurada
+        self.setted = True

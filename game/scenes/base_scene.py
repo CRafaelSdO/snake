@@ -25,8 +25,8 @@ class BaseScene(View):
         # Gerenciador de UI
         self._ui_manager: UIManager = UIManager()
 
-        # Controla se essa cena está em tela cheia
-        self._full_screen: bool = None
+        # Controla se essa cena foi configurada
+        self._setted: bool = None
 
     @property
     def ui_manager(self) -> UIManager:
@@ -35,23 +35,18 @@ class BaseScene(View):
         return self._ui_manager
 
     @property
-    def full_screen(self) -> bool:
-        """ O estado de tela cheia desta cena"""
+    def setted(self) -> bool:
+        """ Informa se esta cena já foi configurada """
 
-        return self._full_screen
+        return self._setted
 
-    @full_screen.setter
-    def full_screen(self, value: bool) -> None:
-        self._full_screen = value
+    @setted.setter
+    def setted(self, value: bool) -> None:
+        self._setted = value
 
     @abstractmethod
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura a cena """
-
-        if self._full_screen != self.window.fullscreen:
-            self.window.show_view(self)
-            self.window.set_fullscreen(not self.window.fullscreen)
-            self.window.set_fullscreen(not self.window.fullscreen)
 
     def on_show_view(self) -> None:
         """ Chamada uma vez ao entrar nessa cena """

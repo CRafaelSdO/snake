@@ -52,8 +52,6 @@ class GameOverMenu(BaseScene):
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura o menu de fim de jogo """
 
-        super().setup()
-
         # Define a pontuação
         self._score = score if score else self._score
 
@@ -63,8 +61,8 @@ class GameOverMenu(BaseScene):
         # Formata o texto do score
         score_text = f"{self._score:_}".replace("_", ".")
 
-        # Verifica se o modo de janela desta cena é o mesmo que o da janela
-        if self.full_screen == self.window.fullscreen:
+        # Verifica se esta cena já foi configurada
+        if self.setted:
             self._score_text.text = f"Você fez {score_text} pontos"
             self._score_text.fit_content()
 
@@ -120,8 +118,8 @@ class GameOverMenu(BaseScene):
         restart = Button("Reiniciar", button_style, self.window, Scene.PLAYING)
         buttons_box.add(restart)
 
-        # Configura o modo de janela desta cena
-        self.full_screen = self.window.fullscreen
+        # Define que esta cena foi configurada
+        self.setted = True
 
     def on_draw(self) -> None:
         """ Chamada sempre ao desenhar """
