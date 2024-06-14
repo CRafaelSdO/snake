@@ -66,18 +66,6 @@ class Playing(BaseScene):
     def setup(self, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Configura a tela de jogo"""
 
-        # Configura o campo, a cobra e a primeira comida
-        self._board = Board(self.window.properties)
-        self._snake = Snake(self._board)
-        self._food = self._board.generate_food()
-
-        # Sprites
-        ## Reinicia a lista de sprites
-        self._sprites.clear()
-
-        ## Carrega as sprites na lista
-        self._board.setup(self._sprites, self.window.resources.images("sprites"))
-
         # Configura a velocidade de movimento da cobra
         self._speed = speed if speed else self._speed
 
@@ -92,9 +80,31 @@ class Playing(BaseScene):
 
         # Verifica se esta cena já foi configurada
         if self.setted:
+            # Reseta o testo do score
             self._score_text.text = f"0"
             self._score_text.fit_content()
+
+            # Reseta o campo, configura a cobrinha gera e a comida
+            self._board.clear()
+            self._snake.setup(self._board)
+            self._food = self._board.generate_food()
             return
+
+        # Cria o campo
+        self._board = Board(self.window.properties)
+
+        # Reinicia a lista de sprites
+        self._sprites.clear()
+
+        # Configura o campo colocando as sprites na lista
+        self._board.setup(self._sprites, self.window.resources.images("sprites"))
+
+        # Cria e configura a cobra
+        self._snake = Snake()
+        self._snake.setup(self._board)
+
+        # Gera a comida
+        self._food = self._board.generate_food()
 
         # Reinicia os gerenciadores de UI e a lista de imagens
         self.ui_manager.clear()
@@ -234,9 +244,8 @@ class Playing(BaseScene):
 
         super().on_draw()
 
-        # Desenha a comida e a cobra
-        self._food.on_draw()
-        self._snake.on_draw()
+        # Desenha as sprites do campo
+        self._sprites.draw()
 
         # Desenha as intruções iniciais
         if not self._started and not self._paused:
