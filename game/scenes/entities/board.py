@@ -62,6 +62,7 @@ class Board():
 
         for row in self._cells:
             for cell in row:
+                cell.clear_directions()
                 cell.content = Content.EMPTY
 
     def get_next_cell(self, cell: Cell, direcction: Direction) -> Cell:

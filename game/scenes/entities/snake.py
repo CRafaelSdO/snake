@@ -58,6 +58,7 @@ class Snake():
 
         # Muda a direção do movimento
         self._direction = direction
+        self._set_head_directions()
 
         # Não podemos mudar de direção antes de se mover ou comer
         self._lock_direction = True
@@ -85,6 +86,9 @@ class Snake():
         # Corpo da cobrinha
         self._body = [head, tail]
 
+        # Define que não está indo em nenhuma direção
+        self._direction = None
+
         # Define que pode mudar a direção do movimento
         self._lock_direction: bool = False
 
@@ -110,7 +114,9 @@ class Snake():
         # Lógica para incluir a próxima celúla no corpo
         ## Transforma a cabeça atual em corpo
         self._set_head_directions()
-        self.head.content = Content.BODY
+
+        if len(self._body) > 2:
+            self.head.content = Content.BODY
 
         # Insere e configura a próxima célula na frente da cabeça
         self._body.insert(0, next_cell)

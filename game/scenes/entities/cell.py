@@ -1,7 +1,7 @@
 """ Módulo das células do campo """
 
 # Imports de pacotes externos
-from arcade import draw_circle_filled, draw_rectangle_filled, SpriteList
+from arcade import SpriteList
 
 # Imports de pacotes locais
 from .contents import Content
@@ -79,6 +79,12 @@ class Cell():
             self._sprite.set_texture(get_texture_index(content, self._front, self._back).value)
 
         self._content = content
+
+    def clear_directions(self) -> None:
+        """ Limpa as direções desta célula """
+
+        self._front = None
+        self._back = None
 
     def setup(self, sprite_list: SpriteList, sprites_file: str) -> None:
         """ Carrega a sprite para esta célula """
