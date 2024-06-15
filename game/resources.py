@@ -1,33 +1,30 @@
 """ Módulo dos recursos """
 
 # Imports de pacotes BuiltIn
-from os import getcwd
 from os.path import join
+from typing import Optional
 
 # Imports de pacotes externos
 from arcade import load_font
 
-# Pastas padrão
-RESOURCES_PATH: str = join(getcwd(), "resources")
-FONTS_PATH: str = join(RESOURCES_PATH, "fonts")
-IMAGES_PATH: str = join(RESOURCES_PATH, "images")
-
-# Fontes padrão
-FONTS: dict[str, str] = {
-    "title": "Dimitri Swank",
-    "body": "Type Machine",
-    "button": "Retro Gaming"
-}
-
 class Resources():
     """ Define as propriedades """
 
-    def __init__(self) -> None:
+    def __init__(self, root_path: str) -> None:
         """ Inicializa os recursos """
 
+        self._resources_path = join(root_path, "resources") if root_path else "resources"
+
         # Fontes
-        self._fonts: dict[str, str] = FONTS
-        self._images_path: str = IMAGES_PATH
+        self._fonts_path: str = join(self._resources_path, "fonts")
+        self._fonts: dict[str, str] = {
+            "title": "Dimitri Swank",
+            "body": "Type Machine",
+            "button": "Retro Gaming"
+        }
+
+        # Imagens
+        self._images_path: str = join(self._resources_path, "images")
 
     @property
     def fonts(self) -> dict[str, str]:
@@ -50,4 +47,4 @@ class Resources():
         """ Carrega todas as fontes """
 
         for font in self._fonts:
-            load_font(join(FONTS_PATH, self._fonts[font] + ".ttf"))
+            load_font(join(self._fonts_path, self._fonts[font] + ".ttf"))

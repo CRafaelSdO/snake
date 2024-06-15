@@ -4,15 +4,9 @@
 from collections.abc import Iterator
 from dataclasses import dataclass
 from math import floor, log
-from os import getcwd
 from os.path import join
 from pathlib import Path
 from typing import Optional, Union
-
-# Pasta, arquivo e codificação padrão
-DEFAULT_RANKING_PATH: str = join(getcwd(), "data")
-DEFAULT_RANKING_FILE: str = "ranking"
-DEFAULT_ENCODING: str = "ascii"
 
 class Ranking(Iterator):
     """ Define o ranking """
@@ -32,24 +26,24 @@ class Ranking(Iterator):
 
             return self.name.encode(encoding) + separator + self.score.to_bytes(byte_count) + separator
 
-    def __init__(self, ranking_path: Optional[str] = DEFAULT_RANKING_PATH, ranking_file: Optional[str] = DEFAULT_RANKING_FILE, encoding: Optional[str] = DEFAULT_ENCODING) -> None:
+    def __init__(self, root_path: str) -> None:
         """ Inicializa um ranking """
 
-        self._ranking_path: str = ranking_path
-        self._ranking_file: str = ranking_file
-        self._encoding: str = encoding
+        self._ranking_path: str = join(root_path, "data")
+        self._ranking_file: str = "ranking"
+        self._encoding: str = "ascii"
         self._ranking_list: list[self.Score] = []
         self._current_index = -1
 
         # Carrega o ranking salvo anteriormente, cria o arquivo caso não exista
         try:
-            with open(join(ranking_path, ranking_file), "rb") as file:
+            with open(join(self._ranking_path, self._ranking_file), "rb") as file:
                 for line in file.readlines():
                     self.add(line)
         except:
-            Path(ranking_path).mkdir(parents = True, exist_ok = True)
+            Path(self._ranking_path).mkdir(parents = True, exist_ok = True)
 
-            with open(join(ranking_path, ranking_file), "wb"):
+            with open(join(self._ranking_path, self._ranking_file), "wb"):
                 pass
 
     def __len__(self) -> int:

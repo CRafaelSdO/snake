@@ -6,7 +6,7 @@ from arcade import Sprite, load_spritesheet
 class GameSprite(Sprite):
     """ Define uma sprite do jogo """
 
-    def __init__(self, filename: str, size: float, center_x: float, center_y: float):
+    def __init__(self, filename: str, size: float, center_x: float, center_y: float) -> None:
         """ Inicializa uma sprite """
 
         # Escala de desenho
