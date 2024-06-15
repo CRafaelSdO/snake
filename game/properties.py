@@ -42,7 +42,7 @@ class Properties():
 
     def __init__(self, root_path: str) -> None:
         """ Inicializa o conjunto de propriedades """
-        
+
         self._properties_path: str = join(root_path, "data")
         self._properties_file: str = "properties"
         self._encoding: str = "ascii"
