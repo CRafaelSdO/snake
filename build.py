@@ -11,6 +11,7 @@ RESOURCES_DIR = "resources"
 ICON_FILE = "icon.png"
 STDOUT = "{PROGRAM_BASE}-output.txt"
 STDERR = "{PROGRAM_BASE}-logs.txt"
+CONSOLE_MODE = "disable"
 TEMP_DIR = join("{TEMP}", "snake")
 OUTPUT_DIR = "build"
 
@@ -20,10 +21,11 @@ ARGS: dict[str, Union[list[str], dict[str, str]]] = {
     "options": {
         "--windows-icon-from-ico": join(RESOURCES_DIR, ICON_FILE),
         "--include-data-dir": f"{RESOURCES_DIR}={RESOURCES_DIR}",
-        "--windows-force-stdout-spec": STDOUT,
-        "--windows-force-stderr-spec": STDERR,
+        "--output-dir": OUTPUT_DIR,
         "--onefile-tempdir-spec": TEMP_DIR,
-        "--output-dir": OUTPUT_DIR
+        "--windows-console-mode": CONSOLE_MODE,
+        "--windows-force-stdout-spec": STDOUT,
+        "--windows-force-stderr-spec": STDERR
     }
 }
 
