@@ -3,7 +3,6 @@
 # Imports de pacotes BuiltIn
 from dataclasses import dataclass
 from math import floor, log
-from os import getcwd
 from os.path import join
 from pathlib import Path
 from typing import Optional, Union
@@ -13,11 +12,6 @@ from arcade import Window
 
 # Imports de pacotes locais
 from .properties_data_types import from_bytes, from_str, PropertiesDataTypes
-
-# Pasta, arquivo e codificação padrão
-DEFAULT_PROPERTIES_PATH: str = join(getcwd(), "data")
-DEFAULT_PROPERTIES_FILE: str = "properties"
-DEFAULT_ENCODING: str = "ascii"
 
 # Propriedades padrão
 DEFAULT_PROPERTIES: dict[str, Union[bool, int]] = {
@@ -46,22 +40,22 @@ class Properties():
 
             return from_str(type(self.value).__name__).to_bytes(name.encode(encoding), self.value.to_bytes(byte_count), ",".encode(encoding))
 
-    def __init__(self, properties_path: Optional[str] = DEFAULT_PROPERTIES_PATH, properties_file: Optional[str] = DEFAULT_PROPERTIES_FILE, encoding: Optional[str] = DEFAULT_ENCODING) -> None:
+    def __init__(self, root_path: str) -> None:
         """ Inicializa o conjunto de propriedades """
 
-        self._properties_path: str = properties_path
-        self._properties_file: str = properties_file
-        self._encoding: str = encoding
+        self._properties_path: str = join(root_path, "data")
+        self._properties_file: str = "properties"
+        self._encoding: str = "ascii"
         self._properties: dict[str, self.Property] = dict()
 
         try:
-            with open(join(properties_path, properties_file), "rb") as file:
+            with open(join(self._properties_path, self._properties_file), "rb") as file:
                 for line in file.readlines():
                     self.add(line)
         except:
-            Path(properties_path).mkdir(parents = True, exist_ok = True)
+            Path(self._properties_path).mkdir(parents = True, exist_ok = True)
 
-            with open(join(properties_path, properties_file), "wb"):
+            with open(join(self._properties_path, self._properties_file), "wb"):
                 pass
 
             for item in DEFAULT_PROPERTIES:

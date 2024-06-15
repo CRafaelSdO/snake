@@ -55,7 +55,7 @@ class Button(UIFlatButton):
         # Configura muda a cena e passando a velocidade escolhida
         self._window.switch_scene(self._scene, self._speed)
 
-    def set_text(self, text: str):
+    def set_text(self, text: str) -> None:
         """ Redefine o texto desse botão """
 
         # Área de texto para definir largura e altura do botão

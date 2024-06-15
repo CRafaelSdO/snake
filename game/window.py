@@ -12,23 +12,22 @@ from .ranking import Ranking
 from .resources import Resources
 from .scenes import *
 
-# Propriedades e recursos padrão
-DEFAULT_PROPERTIES: Properties = Properties()
-DEFAULT_RESOURCES: Resources = Resources()
-
 class GameWindow(Window):
     """ Define uma janela """
 
-    def __init__(self, properties: Optional[Properties] = DEFAULT_PROPERTIES, resources: Optional[Resources] = DEFAULT_RESOURCES) -> None:
+    def __init__(self, root_path: str) -> None:
         """ Inicializa uma janela """
 
-        super().__init__(properties.windowed_width, properties.windowed_height, "Sanke Game", properties.fullscreen, center_window = True)
-
         # Propriedades
-        self._properties: Properties = properties
+        self._properties: Properties = Properties(root_path)
+
+        super().__init__(self._properties.windowed_width, self._properties.windowed_height, "Sanke Game", self._properties.fullscreen, center_window = True)
 
         # Recursos
-        self._resources: Resources = resources
+        self._resources: Resources = Resources(root_path)
+
+        # Ranking
+        self._ranking: Ranking = Ranking(root_path)
 
         # Última cena e cena atual
         self._last_scene: Scene = None
@@ -37,8 +36,6 @@ class GameWindow(Window):
         # Cenas
         self._scenes: dict[str, BaseScene] = None
 
-        # Ranking
-        self._ranking: Ranking = None
 
     @property
     def properties(self) -> Properties:
@@ -64,7 +61,7 @@ class GameWindow(Window):
 
         return self._ranking
 
-    def _create_scenes(self):
+    def _create_scenes(self) -> None:
         """ Cria as cenas desta janela """
 
         # Inicializa as cenas
@@ -88,8 +85,7 @@ class GameWindow(Window):
         # Carrega os resursos
         self._resources.setup()
 
-        # Carrega o Ranking
-        self._ranking = Ranking()
+        
 
         # Cria as cenas desta janela
         self._create_scenes()
