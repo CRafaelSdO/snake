@@ -6,26 +6,38 @@ from os.path import join
 from typing import Union
 
 # Constantes para a build
+## Variáveis do Nuitka
+CACHE_DIR = "{CACHE_DIR}"
+PROGRAM_BASE = "{PROGRAM_BASE}"
+
+## Programa
+PROGRAM_NAME = "Snake"
 MAIN_MODULE = "snake.py"
+
+## Recursos
 RESOURCES_DIR = "resources"
 ICON_FILE = "icon.png"
-STDOUT = "{PROGRAM_BASE}-output.txt"
-STDERR = "{PROGRAM_BASE}-logs.txt"
-CONSOLE_MODE = "disable"
-TEMP_DIR = join("{TEMP}", "snake")
+
+## Compilação
 OUTPUT_DIR = "build"
+
+## Opções de Execução
+CONSOLE_MODE = "disable"
+STDOUT = "out.txt"
+STDERR = "err.txt"
 
 # Srgumentos para build
 ARGS: dict[str, Union[list[str], dict[str, str]]] = {
-    "flags": [MAIN_MODULE, "--onefile", "--remove-output"],
+    "flags": ["--onefile", "--remove-output"],
     "options": {
-        "--windows-icon-from-ico": join(RESOURCES_DIR, ICON_FILE),
+        "--main": MAIN_MODULE,
         "--include-data-dir": f"{RESOURCES_DIR}={RESOURCES_DIR}",
+        "--windows-icon-from-ico": join(RESOURCES_DIR, ICON_FILE),
         "--output-dir": OUTPUT_DIR,
-        "--onefile-tempdir-spec": TEMP_DIR,
+        "--onefile-tempdir-spec": join(CACHE_DIR, PROGRAM_NAME),
         "--windows-console-mode": CONSOLE_MODE,
-        "--windows-force-stdout-spec": STDOUT,
-        "--windows-force-stderr-spec": STDERR
+        "--windows-force-stdout-spec": f"{PROGRAM_BASE}-{STDOUT}",
+        "--windows-force-stderr-spec": f"{PROGRAM_BASE}-{STDERR}"
     }
 }
 
