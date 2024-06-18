@@ -59,7 +59,7 @@ class PlayMenu(BaseScene):
         extreme = Button("Extremo", button_style, self.window, Scene.PLAYING, Speed.EXTREME)
         box.add(extreme)
 
-        back = Button("Voltar", button_style, self.window, self.window.last_scene)
+        back = Button("Voltar", button_style, self.window, Scene.MAIN_MENU)
         box.add(UIAnchorWidget(child = back, anchor_x = "left", anchor_y = "bottom"))
 
         # Define que esta cena foi configurada

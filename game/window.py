@@ -61,18 +61,6 @@ class GameWindow(Window):
 
         return self._ranking
 
-    def _create_scenes(self) -> None:
-        """ Cria as cenas desta janela """
-
-        # Inicializa as cenas
-        self._scenes = dict()
-
-        for scene in Scene:
-            scene_class = get_scene_class(scene)
-
-            if scene_class:
-                self._scenes[scene] = scene_class(self)
-
     def setup(self) -> None:
         """ Configura a janela """
 
@@ -85,13 +73,24 @@ class GameWindow(Window):
         # Carrega os resursos
         self._resources.setup()
 
-        
-
         # Cria as cenas desta janela
         self._create_scenes()
 
         # Inicia o ciclo das cenas
         self.switch_scene(Scene.MAIN_MENU)
+
+    def _create_scenes(self) -> None:
+        """ Cria as cenas desta janela """
+
+        # Inicializa as cenas
+        self._scenes = dict()
+
+        for scene in Scene:
+            scene_class = get_scene_class(scene)
+
+            if scene_class:
+                self._scenes[scene] = scene_class(self)
+                self._scenes[scene].setup()
 
     def switch_scene(self, next_scene: Scene, speed: Optional[Speed] = None, score: Optional[int] = None) -> None:
         """ Faz a mudança de cena """

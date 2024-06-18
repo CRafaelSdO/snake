@@ -46,7 +46,7 @@ def get_scene_class(name: Scene) -> BaseScene:
 
         case GameOverMenu.__name__:
             return GameOverMenu
-        
+
         case _:
             return None
 

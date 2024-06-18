@@ -131,7 +131,7 @@ class Properties():
 
         size = min(self._properties["width"].value, self._properties["height"].value)
 
-        # Novos tamanho e margem horizontal para desenho 
+        # Novos tamanho e margem horizontal para desenho
         if size == self._properties["width"].value:
             cell_size = size // 30
             margin = 0

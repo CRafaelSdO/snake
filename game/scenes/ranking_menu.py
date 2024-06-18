@@ -10,6 +10,7 @@ from arcade.gui import UIAnchorWidget, UIBoxLayout
 # Imports de pacotes locais
 from .base_scene import BaseScene
 from .gui import TextArea, Button
+from .scenes import Scene
 from .speeds import Speed
 
 class RankingMenu(BaseScene):
@@ -114,7 +115,7 @@ class RankingMenu(BaseScene):
         button_style = Button.ButtonStyle(self.window.resources.fonts["button"], self.window.properties.fonts_sizes["button"])
 
         # Instância
-        back = Button("Voltar", button_style, self.window, self.window.last_scene)
+        back = Button("Voltar", button_style, self.window, Scene.MAIN_MENU)
         box.add(UIAnchorWidget(child = back, anchor_x = "left", anchor_y = "bottom"))
 
         # Define que esta cena foi configurada
