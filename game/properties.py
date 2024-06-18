@@ -44,7 +44,7 @@ class Properties():
         """ Inicializa o conjunto de propriedades """
 
         self._properties_path: str = join(root_path, "data")
-        self._properties_file: str = "properties"
+        self._properties_file: str = "properties.dat"
         self._encoding: str = "ascii"
         self._properties: dict[str, self.Property] = dict()
 

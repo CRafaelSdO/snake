@@ -30,7 +30,7 @@ class Ranking(Iterator):
         """ Inicializa um ranking """
 
         self._ranking_path: str = join(root_path, "data")
-        self._ranking_file: str = "ranking"
+        self._ranking_file: str = "ranking.dat"
         self._encoding: str = "ascii"
         self._ranking_list: list[self.Score] = []
         self._current_index = -1
