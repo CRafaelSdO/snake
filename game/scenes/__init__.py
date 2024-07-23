@@ -31,24 +31,10 @@ from .speeds import Speed
 def get_scene_class(name: Scene) -> BaseScene:
     """ Retorna uma cena pelo nome """
 
-    match(name.value):
-        case MainMenu.__name__:
-            return MainMenu
-
-        case PlayMenu.__name__:
-            return PlayMenu
-
-        case RankingMenu.__name__:
-            return RankingMenu
-
-        case Playing.__name__:
-            return Playing
-
-        case GameOverMenu.__name__:
-            return GameOverMenu
-
-        case _:
-            return None
+    try:
+        return globals()[name.value]
+    except KeyError:
+        return None
 
 # Export padrão
 __all__ = ["BaseScene", "Scene", "get_scene_class", "Speed"]
